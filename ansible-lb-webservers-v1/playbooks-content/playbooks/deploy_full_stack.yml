@@ -1,0 +1,13 @@
+---
+- hosts: localhost
+  roles:
+    - setup_cloud_env
+- hosts: webservers:haproxy
+  roles:
+    - wait_for_port1_ready
+- hosts: webservers
+  roles:
+    - config_webservers
+- hosts: haproxy
+  roles:
+    - config_haproxy

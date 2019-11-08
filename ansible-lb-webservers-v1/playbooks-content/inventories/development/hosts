@@ -1,0 +1,9 @@
+all:
+  children:
+    webservers:
+      hosts:
+        webserver_az1_[1:{{ webserver_az1_count }}]
+        webserver_az2_[1:{{ webserver_az2_count }}]
+    haproxy:
+      hosts:
+        haproxy

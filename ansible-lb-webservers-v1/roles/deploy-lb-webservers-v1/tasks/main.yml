@@ -1,7 +1,0 @@
----
-# tasks file for lb-webservers-v1
-
-- include: setup_cloud_env.yml
-- include: wait_for_port1_ready.yml
-- include: config_webservers.yml
-- include: config_haproxy.yml
