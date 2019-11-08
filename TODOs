@@ -1,0 +1,11 @@
+* Baue und verstehe Rolle
+* Baue undeployment in Rolle 
+* Baue Dockerfile dafür
+* Baue pipeline dafür
+* Wenn benutzbarer Container sich daraus bauen lässt -> entferne alle anderen images, e.g. mysql
+* Baue Last Generierung
+* Baue webhook auf prometheus power-measurement und leite Resultate auf dieses repo/evals/runx um
+* Löse Umbenennen issue
+* Experimentiere mit Überbuchung
+* Simon zeigen
+* Mit Simon und Jörg weiteres Vorgehen besprechen
