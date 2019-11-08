@@ -1,0 +1,8 @@
+---
+# vars file for config_haproxy
+# vars file for config_haproxy
+
+haproxy_app_name: myapp
+haproxy_mode: http
+haproxy_enable_stats: enable
+haproxy_algorithm: roundrobin

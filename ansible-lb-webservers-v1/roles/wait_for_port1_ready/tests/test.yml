@@ -1,0 +1,6 @@
+---
+- hosts: localhost
+  remote_user: root
+  roles:
+    - wait_for_port1_ready
+    - wait_for_port1_ready

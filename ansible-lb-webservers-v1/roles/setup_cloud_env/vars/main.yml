@@ -1,0 +1,6 @@
+---
+# vars file for setup_cloud_env
+# vars file for setup_cloud_env
+
+webserver_az1_count: 1
+webserver_az2_count: 1

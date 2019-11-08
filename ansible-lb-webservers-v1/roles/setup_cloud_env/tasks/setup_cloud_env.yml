@@ -1,0 +1,118 @@
+- name: Create OpenStack Cloud Environment
+  hosts: localhost
+  gather_facts: false
+
+  tasks:
+    - name: Create the cookbook network
+      os_network:
+        state: present
+        name: cookbook_network
+        external: false
+        shared: false
+        verify: false
+      register: cookbook_network
+
+    - name: Create the test subnet
+      os_subnet:
+        state: present
+        network_name: "{{ cookbook_network.id }}"
+        name: cookbook_subnet
+        ip_version: 4
+        cidr: 192.168.0.0/24
+        gateway_ip: 192.168.0.1
+        enable_dhcp: yes
+        # dns_nameservers:
+        # - 127.0.0.53
+        verify: false
+      register: cookbook_subnet
+    - name: Create the test router
+      os_router:
+        state: present
+        name: cookbook_router
+        network: extnet
+        interfaces:
+        - cookbook_subnet
+        verify: false
+    - name: Create ansible security group
+      os_security_group:
+        state: present
+        name: ansible
+        verify: false
+    - name: Create a rule to allow SSH connections
+      os_security_group_rule:
+        security_group: ansible
+        protocol: tcp
+        port_range_min: 22
+        port_range_max: 22
+        remote_ip_prefix: 0.0.0.0/0
+        verify: false
+    - name: Create webserver security group
+      os_security_group:
+        state: present
+        name: webserver
+        verify: false
+    - name: Create a rule to allow http connections
+      os_security_group_rule:
+        security_group: webserver
+        protocol: tcp
+        port_range_min: 80
+        port_range_max: 80
+        remote_ip_prefix: 0.0.0.0/0
+        verify: false
+
+    - name: Deploy Webserver Instances az1
+      os_server:
+        state: present
+        name: webserver_az1_{{ item }}
+        image: ubuntu-1804
+        key_name: id_rsa_omistack
+        timeout: 200
+        flavor: medium
+        network: cookbook_network
+        security_groups: default,ansible,webserver
+        availability_zone: "{{ az1 }}"
+        verify: false
+      register: nova_webservers_az1
+      with_sequence:
+        count={{ webserver_az1_count }}
+
+    - name: Deploy Webserver Instances az2
+      os_server:
+        state: present
+        name: webserver_az2_{{ item }}
+        image: ubuntu-1804
+        key_name: id_rsa_omistack
+        timeout: 200
+        flavor: medium
+        network: cookbook_network
+        security_groups: default,ansible,webserver
+        availability_zone: "{{ az2 }}"
+        verify: false
+      register: nova_webservers_az2
+      with_sequence:
+        count={{ webserver_az2_count }}
+
+    - name: Add webservers to inventory
+      add_host: name="{{ item.server.name }}" groups=webservers ansible_ssh_host="{{ item.server.accessIPv4 }}" ansible_ssh_private_key_file="/home/florian/.ssh/id_rsa_omistack"
+      with_items:
+        - "{{ nova_webservers_az1.results }}"
+        - "{{ nova_webservers_az2.results }}"
+
+    - name: Deploy HAProxy Instance
+      os_server:
+        state: present
+        name: haproxy
+        image: ubuntu-1804
+        key_name: id_rsa_omistack
+        timeout: 200
+        flavor: medium
+        network: cookbook_network
+        security_groups: default,ansible,webserver
+        verify: false
+      register: nova_haproxy
+      with_sequence:
+        count=1
+
+    - name: Add HAProxy to inventory
+      add_host: name="{{ item.server.name }}" groups=haproxy ansible_ssh_host="{{ item.server.accessIPv4 }}" ansible_ssh_private_key_file="/home/florian/.ssh/id_rsa_omistack"
+      with_items: "{{ nova_haproxy.results }}"

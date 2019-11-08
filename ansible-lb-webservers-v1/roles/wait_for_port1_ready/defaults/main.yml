@@ -1,0 +1,5 @@
+---
+# defaults file for wait_for_port1_ready
+# defaults file for wait_for_port1_ready
+
+port1: 22
