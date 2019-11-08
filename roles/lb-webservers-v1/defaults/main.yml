@@ -1,0 +1,7 @@
+---
+# defaults file for lb-webservers-v1
+
+ webserver_az1_count: 1                                                                                                                     |▸ templates/
+ webserver_az2_count: 1                                                                                                                     |  full-stack.yml -> /home/flori
+ az1: "noisyneighbour2"                                                                                                                     |  launch-instance.yml
+ az2: "noisyneighbour3"
