@@ -1,0 +1,6 @@
+---
+# defaults file for lb-webservers-v1
+
+ az1: "noisyneighbour2"                                                                                                                     |  launch-instance.yml
+ az2: "noisyneighbour3"
+ port1: 22
