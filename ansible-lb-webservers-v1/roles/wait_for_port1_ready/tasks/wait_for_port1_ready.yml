@@ -1,4 +1,0 @@
-- name: Wait for port1 to be ready
-  gather_facts: False
-  tasks:
-    - local_action: wait_for port="{{ port1 }}" host="{{ ansible_ssh_host }}" search_regex=OpenSSH delay=10

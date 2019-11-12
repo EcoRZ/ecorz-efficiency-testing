@@ -1,19 +1,16 @@
 - name: Update apt cache
   remote_user: ubuntu
   become: yes
-  gather_facts: False
   apt: update_cache=yes cache_valid_time=3600
 
 - name: Install haproxy
   remote_user: ubuntu
   become: yes
-  gather_facts: False
   apt: name=haproxy state=present
 
 - name: Enable init script
   remote_user: ubuntu
   become: yes
-  gather_facts: False
   replace: dest='/etc/default/haproxy'
     regexp='ENABLED=0'
     replace='ENABLED=1'
@@ -21,7 +18,6 @@
 - name: Update HAProxy config
   remote_user: ubuntu
   become: yes
-  gather_facts: False
   template: src=templates/haproxy.cfg.j2
     dest=/etc/haproxy/haproxy.cfg
   notify:

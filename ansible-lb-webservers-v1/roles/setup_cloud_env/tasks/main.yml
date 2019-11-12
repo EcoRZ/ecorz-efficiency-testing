@@ -1,5 +1,5 @@
+---
 - name: Create the cookbook network
-  gather_facts: false
   os_network:
     state: present
     name: cookbook_network
@@ -9,7 +9,6 @@
   register: cookbook_network
 
 - name: Create the test subnet
-  gather_facts: false
   os_subnet:
     state: present
     network_name: "{{ cookbook_network.id }}"
@@ -24,7 +23,6 @@
   register: cookbook_subnet
 
 - name: Create the test router
-  gather_facts: false
   os_router:
     state: present
     name: cookbook_router
@@ -34,14 +32,12 @@
     verify: false
 
 - name: Create ansible security group
-  gather_facts: false
   os_security_group:
     state: present
     name: ansible
     verify: false
 
 - name: Create a rule to allow SSH connections
-  gather_facts: false
   os_security_group_rule:
     security_group: ansible
     protocol: tcp
@@ -51,14 +47,12 @@
     verify: false
 
 - name: Create webserver security group
-  gather_facts: false
   os_security_group:
     state: present
     name: webserver
     verify: false
 
 - name: Create a rule to allow http connections
-  gather_facts: false
   os_security_group_rule:
     security_group: webserver
     protocol: tcp
@@ -68,7 +62,6 @@
     verify: false
 
 - name: Deploy Webserver Instances az1
-  gather_facts: false
   os_server:
     state: present
     name: webserver_az1_{{ item }}

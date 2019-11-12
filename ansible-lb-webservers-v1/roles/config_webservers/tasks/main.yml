@@ -1,18 +1,14 @@
 - name: Ensure Apache is installed
   remote_user: ubuntu
   become: yes
-  gather_facts: False
   apt: name=apache2 state=latest
 
 - name: Ensure that Apache is started
   remote_user: ubuntu
   become: yes
-  gather_facts: False
   service: name=apache2 state=started
 
 - name: Gathering facts about webservers
   remote_user: ubuntu
   become: yes
-  tasks:
-    - name:  Gathering facts
-      setup:
+  setup:

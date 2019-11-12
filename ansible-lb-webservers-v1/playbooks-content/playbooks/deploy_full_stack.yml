@@ -1,20 +1,20 @@
 ---
 - hosts: localhost
-  # gather_facts: false
+  gather_facts: false
   roles:
     - setup_cloud_env
 - hosts: webservers:haproxy
-      # gather_facts: False
+  gather_facts: false
   roles:
     - wait_for_port1_ready
 - hosts: webservers
-  gather_facts: False
+  gather_facts: false
   pre_tasks:
     - import_tasks: inst_python_task.yml
   roles:
     - config_webservers
 - hosts: haproxy
-  gather_facts: False
+  gather_facts: false
   pre_tasks:
     - import_tasks: inst_python_task.yml
   roles:
