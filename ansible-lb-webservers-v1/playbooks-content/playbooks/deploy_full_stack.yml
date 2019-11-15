@@ -1,25 +1,21 @@
 ---
 - hosts: localhost
   gather_facts: false
+  vars:
+      register_name: "{{ nw_register_name }}"
   roles:
     - create_network
-  # set name here -> see comment beyond
-  register: ecorz_nw
 - hosts: localhost
   gather_facts: false
   vars:
-      # constructions like "{{ {{ nw_name }}.id" do not work in ansible
-      nw_id: "{{ ecorz_nw.id }}"
+      nw_id: "{{ nw_register_name.id }}"
+      register_name: "{{ subnet_register_name }}"
   roles:
     - create_subnet
-      # todo: might change this as double parsing of this var is not required
-      # beyond
-  register: ecorz_subnet
 - hosts: localhost
   gather_facts: false
   vars:
-      # todo: might change this, see comment above
-      interface_name: ecorz_subnet
+      interface_name: "{{ subnet_register_name }}"
   roles:
     - create_router
 - hosts: localhost
@@ -52,40 +48,49 @@
   gather_facts: false
   vars:
     webs_name: "{{ item.name }}"
-    nw_name: ecorz_nw
+    nw_name: "{{ nw_register_name }}"
     sec_group_list:
         sec_group1: default
         sec_group2: ansible
         sec_group3: webserver
     az: "{{ az1 }}"
-  roles:
-    - deploy_webserver
-  with_items: "{{ webservers_az1 }}"
+  tasks:
+    - name: tmp deploy webservers in az1
+      include_role:
+        name: deploy_webserver
+      loop:
+        "{{ webservers_az1 }}"
 - hosts: localhost
   gather_facts: false
   vars:
     webs_name: "{{ item.name }}"
-    nw_name: ecorz_nw
+    nw_name:  "{{ nw_register_name }}"
     sec_group_list:
         sec_group1: default
         sec_group2: ansible
         sec_group3: webserver
     az: "{{ az2 }}"
-  roles:
-    - deploy_webserver
-  with_items: "{{ webservers_az2 }}"
+  tasks:
+    - name: tmp deploy webservers in az2
+      include_role:
+        name: deploy_webserver
+      loop:
+        "{{ webservers_az2 }}"
 - hosts: localhost
   gather_facts: false
   vars:
     haproxy_name: "{{ item.name }}"
-    nw_name: ecorz_nw
+    nw_name: "{{ nw_register_name }}"
     sec_group_list:
         sec_group1: default
         sec_group2: ansible
         sec_group3: webserver
-  roles:
-    - deploy_haproxy
-  with_items: "{{ haproxies }}"
+  tasks:
+    - name: tmp deploy haproxy
+      include_role:
+        name: deploy_haproxy
+      loop:
+          "{{ haproxies }}"
 - hosts: webservers:haproxies
   gather_facts: false
   roles:

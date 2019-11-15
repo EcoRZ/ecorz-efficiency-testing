@@ -14,3 +14,6 @@ az2: "noisyneighbour3"
 
 webserver_az1_count: 1
 webserver_az2_count: 1
+
+nw_register_name: ecorz_nw
+subnet_register_name: ecorz_subnet

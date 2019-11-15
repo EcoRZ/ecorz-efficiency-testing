@@ -1,9 +1,9 @@
 ---
-- name: Create a rule to allow port {{ port_nmbr }} connections
+- name: Create a rule to allow port "{{ port_nmbr }}" connections
   os_security_group_rule:
     security_group: "{{ sec_group_name }}"
     protocol: tcp
-    port_range_min: {{ port_nmbr }}
-    port_range_max: {{ port_nmbr }}
+    port_range_min: "{{ port_nmbr }}"
+    port_range_max: "{{ port_nmbr }}"
     remote_ip_prefix: 0.0.0.0/0
     verify: false

@@ -1,5 +1,5 @@
 ---
-- name: Create the {{ subnet_name }} subnet
+- name: Create the "{{ subnet_name }}" subnet
   os_subnet:
     state: present
     network_name: "{{ nw_id }}"
@@ -11,3 +11,4 @@
     # dns_nameservers:
     # - 127.0.0.53
     verify: false
+  register: "{{ register_name }}"

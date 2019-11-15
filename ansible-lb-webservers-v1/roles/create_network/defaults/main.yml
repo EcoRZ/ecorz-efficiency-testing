@@ -2,3 +2,4 @@
 # defaults file for create_network
 
 nw_name: nw_def
+register_name: register_def
