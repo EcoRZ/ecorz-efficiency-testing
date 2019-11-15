@@ -2,20 +2,23 @@
 - hosts: localhost
   gather_facts: false
   vars:
+      nw_name: "{{ nw_name }}"
       register_name: "{{ nw_register_name }}"
   roles:
     - create_network
 - hosts: localhost
   gather_facts: false
   vars:
-      nw_id: "{{ nw_register_name.id }}"
-      register_name: "{{ subnet_register_name }}"
+    subnet_name: "{{ subnet_name }}"
+    nw_id: "{{ nw_register_name.id }}"
+    register_name: "{{ subnet_register_name }}"
   roles:
     - create_subnet
 - hosts: localhost
   gather_facts: false
   vars:
-      interface_name: "{{ subnet_register_name }}"
+    router_name: "{{ router_name }}"
+    interface_name: "{{ subnet_register_name }}"
   roles:
     - create_router
 - hosts: localhost
@@ -64,7 +67,7 @@
   gather_facts: false
   vars:
     webs_name: "{{ item.name }}"
-    nw_name:  "{{ nw_register_name }}"
+    nw_name: "{{ nw_register_name }}"
     sec_group_list:
         sec_group1: default
         sec_group2: ansible
