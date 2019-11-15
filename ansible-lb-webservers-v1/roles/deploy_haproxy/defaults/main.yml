@@ -1,0 +1,10 @@
+---
+# defaults file for deploy_haproxy
+
+haproxy_name: def_haproxy
+nw_name: def_nw
+
+sec_group_list:
+    sec_group1: ansible
+
+az: def_az

@@ -1,0 +1,13 @@
+---
+- name: Deploy Webserver Instance in {{ az }}
+  os_server:
+    state: present
+    name: "{{ webs_name }}"
+    image: ubuntu-1804
+    key_name: id_rsa_omistack
+    timeout: 200
+    flavor: medium
+    network: "{{ nw_name }}"
+    security_groups: {{ sec_group_list|join(',') }}
+    availability_zone: "{{ az }}"
+    verify: false

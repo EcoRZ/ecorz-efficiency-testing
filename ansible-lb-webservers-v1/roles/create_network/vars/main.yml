@@ -1,0 +1,8 @@
+---
+# vars file for create_network
+# vars file for create_network
+# vars file for create_network
+# vars file for create_network
+
+webserver_az1_count: 1
+webserver_az2_count: 1

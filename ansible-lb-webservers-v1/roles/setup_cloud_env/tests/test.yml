@@ -1,6 +1,0 @@
----
-- hosts: localhost
-  remote_user: root
-  roles:
-    - setup_cloud_env
-    - setup_cloud_env

@@ -1,0 +1,8 @@
+---
+- hosts: localhost
+  remote_user: root
+  roles:
+    - create_network
+    - create_network
+    - create_network
+    - create_network

@@ -1,0 +1,6 @@
+---
+# defaults file for create_router
+
+router_name: def_router
+ext_nw_name: extnet
+interface_name: def_iface

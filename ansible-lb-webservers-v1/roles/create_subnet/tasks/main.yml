@@ -1,0 +1,13 @@
+---
+- name: Create the {{ subnet_name }} subnet
+  os_subnet:
+    state: present
+    network_name: "{{ nw_id }}"
+    name: "{{ subnet_name }}"
+    ip_version: 4
+    cidr: 192.168.0.0/24
+    gateway_ip: 192.168.0.1
+    enable_dhcp: yes
+    # dns_nameservers:
+    # - 127.0.0.53
+    verify: false

@@ -1,2 +1,16 @@
+nw_name: ecorz_nw
+subnet_name: ecorz_subnet
+
+router_name: ecorz_router
+
+sec_group_name_ans: ansible
+sec_group_name_webs: webserver
+
+port_nmbr_ssh: 22
+port_nmbr_web: 80
+
+az1: "noisyneighbour2"
+az2: "noisyneighbour3"
+
 webserver_az1_count: 1
 webserver_az2_count: 1

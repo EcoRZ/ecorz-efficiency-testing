@@ -1,0 +1,8 @@
+---
+- name: Create the {{ nw_name }} network
+  os_network:
+    state: present
+    name: "{{ nw_name }}"
+    external: false
+    shared: false
+    verify: false

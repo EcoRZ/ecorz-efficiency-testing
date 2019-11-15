@@ -2,8 +2,91 @@
 - hosts: localhost
   gather_facts: false
   roles:
-    - setup_cloud_env
-- hosts: webservers:haproxy
+    - create_network
+  # set name here -> see comment beyond
+  register: ecorz_nw
+- hosts: localhost
+  gather_facts: false
+  vars:
+      # constructions like "{{ {{ nw_name }}.id" do not work in ansible
+      nw_id: "{{ ecorz_nw.id }}"
+  roles:
+    - create_subnet
+      # todo: might change this as double parsing of this var is not required
+      # beyond
+  register: ecorz_subnet
+- hosts: localhost
+  gather_facts: false
+  vars:
+      # todo: might change this, see comment above
+      interface_name: ecorz_subnet
+  roles:
+    - create_router
+- hosts: localhost
+  gather_facts: false
+  vars:
+      sec_group_name: "{{ sec_group_name_ans }}"
+  roles:
+    - create_security_group
+- hosts: localhost
+  gather_facts: false
+  vars:
+      sec_group_name: "{{ sec_group_name_ans }}"
+      port_nmbr: "{{ port_nmbr_ssh }}"
+  roles:
+    - create_rule
+- hosts: localhost
+  gather_facts: false
+  vars:
+    sec_group_name: "{{ sec_group_name_webs }}"
+  roles:
+    - create_security_group
+- hosts: localhost
+  gather_facts: false
+  vars:
+    sec_group_name: "{{ sec_group_name_webs }}"
+    port_nmbr: "{{ port_nmbr_webs }}"
+  roles:
+    - create_rule
+- hosts: localhost
+  gather_facts: false
+  vars:
+    webs_name: "{{ item.name }}"
+    nw_name: ecorz_nw
+    sec_group_list:
+        sec_group1: default
+        sec_group2: ansible
+        sec_group3: webserver
+    az: "{{ az1 }}"
+  roles:
+    - deploy_webserver
+  with_items: "{{ webservers_az1 }}"
+- hosts: localhost
+  gather_facts: false
+  vars:
+    webs_name: "{{ item.name }}"
+    nw_name: ecorz_nw
+    sec_group_list:
+        sec_group1: default
+        sec_group2: ansible
+        sec_group3: webserver
+    az: "{{ az2 }}"
+  roles:
+    - deploy_webserver
+  with_items: "{{ webservers_az2 }}"
+- hosts: localhost
+  gather_facts: false
+  vars:
+    haproxy_name: "{{ item.name }}"
+    nw_name: ecorz_nw
+    sec_group_list:
+        sec_group1: default
+        sec_group2: ansible
+        sec_group3: webserver
+  roles:
+    - deploy_haproxy
+  with_items: "{{ haproxies }}"
+- hosts: webservers:haproxies
   gather_facts: false
   roles:
     - wait_for_port1_ready
@@ -13,7 +96,7 @@
     - import_tasks: inst_python_task.yml
   roles:
     - config_webservers
-- hosts: haproxy
+- hosts: haproxies
   gather_facts: false
   pre_tasks:
     - import_tasks: inst_python_task.yml

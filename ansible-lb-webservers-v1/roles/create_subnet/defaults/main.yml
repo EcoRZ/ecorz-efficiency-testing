@@ -1,0 +1,5 @@
+---
+# defaults file for create_subnet
+
+subnet_name: def_subnet
+nw_id: c5324966-e109-484b-8088-00b0ca9d3641

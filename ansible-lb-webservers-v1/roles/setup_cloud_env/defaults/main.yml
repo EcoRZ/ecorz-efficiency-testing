@@ -1,6 +1,0 @@
----
-# defaults file for setup_cloud_env
-# defaults file for setup_cloud_env
-
-az1: "noisyneighbour2"
-az2: "noisyneighbour3"

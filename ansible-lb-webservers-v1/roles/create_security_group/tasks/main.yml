@@ -1,0 +1,6 @@
+---
+- name: Create {{ sec_group_name }} security group
+  os_security_group:
+    state: present
+    name: "{{ sec_group_name }}"
+    verify: false

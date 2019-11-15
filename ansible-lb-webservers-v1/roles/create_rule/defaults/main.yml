@@ -1,0 +1,5 @@
+---
+# defaults file for create_rule
+
+sec_group_name: ansible
+port_nmbr: 22
