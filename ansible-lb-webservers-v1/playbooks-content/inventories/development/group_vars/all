@@ -1,7 +1,7 @@
-nw_name: ecorz_nw
-subnet_name: ecorz_subnet
+nw_name_par: "ecorz_nw"
+subnet_name_par: ecorz_subnet
 
-router_name: ecorz_router
+router_name_par: ecorz_router
 
 sec_group_name_ans: ansible
 sec_group_name_webs: webserver

@@ -2,14 +2,14 @@
 - hosts: localhost
   gather_facts: false
   vars:
-      nw_name: "{{ nw_name }}"
+      nw_name: "{{ nw_name_par }}"
       register_name: "{{ nw_register_name }}"
   roles:
     - create_network
 - hosts: localhost
   gather_facts: false
   vars:
-    subnet_name: "{{ subnet_name }}"
+    subnet_name: "{{ subnet_name_par }}"
     nw_id: "{{ nw_register_name.id }}"
     register_name: "{{ subnet_register_name }}"
   roles:
@@ -17,7 +17,7 @@
 - hosts: localhost
   gather_facts: false
   vars:
-    router_name: "{{ router_name }}"
+    router_name: "{{ router_name_par }}"
     interface_name: "{{ subnet_register_name }}"
   roles:
     - create_router
@@ -44,7 +44,7 @@
   gather_facts: false
   vars:
     sec_group_name: "{{ sec_group_name_webs }}"
-    port_nmbr: "{{ port_nmbr_webs }}"
+    port_nmbr: "{{ port_nmbr_web }}"
   roles:
     - create_rule
 - hosts: localhost
