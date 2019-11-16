@@ -94,11 +94,11 @@
         name: deploy_haproxy
       loop:
           "{{ haproxies }}"
-- hosts: webservers:haproxies
+- hosts: webservers_az1:webservers_az2:haproxies
   gather_facts: false
   roles:
     - wait_for_port1_ready
-- hosts: webservers
+- hosts: webservers_az1:webservers_az2
   gather_facts: false
   pre_tasks:
     - import_tasks: inst_python_task.yml
