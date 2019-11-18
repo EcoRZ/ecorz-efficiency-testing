@@ -9,58 +9,51 @@
 ---
 - hosts: localhost
   gather_facts: false
-  vars:
-      nw_name: "{{ nw_name_par }}"
   tasks:
     - name: create network
+      vars:
+        nw_name: "{{ nw_name_par }}"
       include_role:
         name: create_network
-- hosts: localhost
-  gather_facts: false
-  vars:
-    subnet_name: "{{ subnet_name_par }}"
-    nw_id: "{{ hostvars['localhost']['ecorz_nw'].id }}"
-  tasks:
     - name: create subnet
+      vars:
+        subnet_name: "{{ subnet_name_par }}"
+        nw_id: "{{ hostvars['localhost']['ecorz_nw'].id }}"
       include_role:
         name: create_subnet
+    - name: create router
+      vars:
+        router_name: "{{ router_name_par }}"
+        interface_name: ecorz_subnet
+      include_role:
+        name: create_router
+    - name: create security group
+      vars:
+        sec_group_name: "{{ sec_group_name_ans }}"
+      include_role:
+        name: create_security_group
+    - name: create security group rule
+      vars:
+        sec_group_name: "{{ sec_group_name_ans }}"
+        port_nmbr: "{{ port_nmbr_ssh }}"
+      include_role:
+        name: create_rule
+    - name: create security group
+      vars:
+        sec_group_name: "{{ sec_group_name_webs }}"
+      include_role:
+        name: create_security_group
+    - name: create security group rule
+      vars:
+        sec_group_name: "{{ sec_group_name_webs }}"
+        port_nmbr: "{{ port_nmbr_web }}"
+      include_role:
+        name: create_rule
+
 - hosts: localhost
-  gather_facts: false
-  vars:
-    router_name: "{{ router_name_par }}"
-    interface_name: ecorz_subnet
-  roles:
-    - create_router
-- hosts: localhost
-  gather_facts: false
-  vars:
-      sec_group_name: "{{ sec_group_name_ans }}"
-  roles:
-    - create_security_group
-- hosts: localhost
-  gather_facts: false
-  vars:
-      sec_group_name: "{{ sec_group_name_ans }}"
-      port_nmbr: "{{ port_nmbr_ssh }}"
-  roles:
-    - create_rule
-- hosts: localhost
-  gather_facts: false
-  vars:
-    sec_group_name: "{{ sec_group_name_webs }}"
-  roles:
-    - create_security_group
-- hosts: localhost
-  gather_facts: false
-  vars:
-    sec_group_name: "{{ sec_group_name_webs }}"
-    port_nmbr: "{{ port_nmbr_web }}"
-  roles:
-    - create_rule
-- hosts: localhost
-  gather_facts: false
+  gather_facts: true
   tasks:
-    - name: tmp deploy webservers in az1
+    - name: Deploy webservers in az1
       vars:
         webs_name: "{{ item }}"
         nw_name: ecorz_nw
@@ -70,10 +63,7 @@
         name: deploy_webserver
       loop:
         "{{ groups['webservers_az1'] }}"
-- hosts: localhost
-  gather_facts: false
-  tasks:
-    - name: tmp deploy webservers in az2
+    - name: Deploy webservers in az2
       vars:
         webs_name: "{{ item }}"
         nw_name: ecorz_nw
@@ -83,10 +73,7 @@
         name: deploy_webserver
       loop:
         "{{ groups['webservers_az2'] }}"
-- hosts: localhost
-  gather_facts: false
-  tasks:
-    - name: tmp deploy haproxy
+    - name: Deploy haproxy
       vars:
         haproxy_name: "{{ item }}"
         nw_name: ecorz_nw
@@ -95,16 +82,19 @@
         name: deploy_haproxy
       loop:
         "{{ groups['haproxies'] }}"
+
 - hosts: webservers_az1:webservers_az2:haproxies
   gather_facts: false
   roles:
     - wait_for_port1_ready
+
 - hosts: webservers_az1:webservers_az2
   gather_facts: false
   pre_tasks:
     - import_tasks: inst_python_task.yml
   roles:
     - config_webservers
+
 - hosts: haproxies
   gather_facts: false
   pre_tasks:
