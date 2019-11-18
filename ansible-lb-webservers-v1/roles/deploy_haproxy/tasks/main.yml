@@ -10,3 +10,4 @@
     network: "{{ nw_name }}"
     security_groups: "{{ sec_group_list|join(',') }}"
     verify: false
+  register: haproxies_

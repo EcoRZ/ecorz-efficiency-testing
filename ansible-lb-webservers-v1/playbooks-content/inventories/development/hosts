@@ -3,11 +3,11 @@ all:
     webservers_az1:
       hosts:
         # webserver_az1_[1:{{ webserver_az1_count }}]
-        webserver_az1_[1:1]
+        # webserver_az1_[1:1]
     webservers_az2:
       hosts:
         # webserver_az2_[1:{{ webserver_az2_count }}]
-        webserver_az2_[1:1]
+        # webserver_az2_[1:1]
     haproxies:
       hosts:
-        haproxy
+        # haproxy

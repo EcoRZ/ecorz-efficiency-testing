@@ -12,6 +12,9 @@ port_nmbr_web: 80
 az1: "noisyneighbour2"
 az2: "noisyneighbour3"
 
+webserver_pref_az1: webserver_az1
+webserver_pref_az2: webserver_az2
+
 webserver_az1_count: 1
 webserver_az2_count: 1
 

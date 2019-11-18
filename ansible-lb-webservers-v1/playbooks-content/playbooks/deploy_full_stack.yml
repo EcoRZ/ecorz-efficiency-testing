@@ -49,39 +49,51 @@
         port_nmbr: "{{ port_nmbr_web }}"
       include_role:
         name: create_rule
-
-- hosts: localhost
-  gather_facts: true
-  tasks:
     - name: Deploy webservers in az1
       vars:
-        webs_name: "{{ item }}"
+        webs_name: "{{ webserver_pref_az1 }}_{{ item }}"
         nw_name: ecorz_nw
         sec_group_list: [default,ansible,webserver]
         az: "{{ az1 }}"
       include_role:
         name: deploy_webserver
-      loop:
-        "{{ groups['webservers_az1'] }}"
+      with_sequence: start=1 end="{{ webserver_az1_count }}"
     - name: Deploy webservers in az2
       vars:
-        webs_name: "{{ item }}"
+        webs_name: "{{ webserver_pref_az2 }}_{{ item }}"
         nw_name: ecorz_nw
         sec_group_list: [default,ansible,webserver]
         az: "{{ az2 }}"
       include_role:
         name: deploy_webserver
-      loop:
-        "{{ groups['webservers_az2'] }}"
+      with_sequence: start=1 end="{{ webserver_az2_count }}"
     - name: Deploy haproxy
       vars:
-        haproxy_name: "{{ item }}"
+        haproxy_name: "haproxy_{{ item }}"
         nw_name: ecorz_nw
         sec_group_list: [default,ansible,webserver]
       include_role:
         name: deploy_haproxy
-      loop:
-        "{{ groups['haproxies'] }}"
+      with_sequence: start=1 end=1
+      #- debug:
+      #var:
+      #hostvars['localhost']['webservers_az']
+    - name: Add webservers az1 to inventory
+      add_host: name="{{ item.server.name }}" groups=webservers_az1 ansible_ssh_host="{{ item.server.accessIPv4 }}" ansible_ssh_private_key_file="/home/florian/.ssh/id_rsa_omistack"
+      when:
+        -  item.server.az == az1
+      with_items:
+        - "{{ hostvars['localhost']['webservers_az'] }}"
+    - name: Add webservers az2 to inventory
+      add_host: name="{{ item.server.name }}" groups=webservers_az2 ansible_ssh_host="{{ item.server.accessIPv4 }}" ansible_ssh_private_key_file="/home/florian/.ssh/id_rsa_omistack"
+      when:
+        -  item.server.az == az2
+      with_items:
+        - "{{ hostvars['localhost']['webservers_az'] }}"
+    - name: Add haproxy to inventory
+      add_host: name="{{ item.server.name }}" groups=haproxies ansible_ssh_host="{{ item.server.accessIPv4 }}" ansible_ssh_private_key_file="/home/florian/.ssh/id_rsa_omistack"
+      with_items:
+        - "{{ hostvars['localhost']['haproxies_'] }}"
 
 - hosts: webservers_az1:webservers_az2:haproxies
   gather_facts: false
