@@ -1,7 +1,7 @@
 ---
 # defaults file for deploy_webserver
 
-webs_name: def_webserver
+name: def_webserver
 nw_name: def_nw
 
 sec_group_list:

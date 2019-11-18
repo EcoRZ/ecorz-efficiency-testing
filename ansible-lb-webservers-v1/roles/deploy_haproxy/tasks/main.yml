@@ -1,5 +1,5 @@
 ---
-- name: Deploy HAProxy Instance
+- name: Deploy HAProxy Instance with name "{{ haproxy_name }}"
   os_server:
     state: present
     name: "{{ haproxy_name }}"

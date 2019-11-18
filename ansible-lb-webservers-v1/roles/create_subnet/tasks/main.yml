@@ -11,4 +11,5 @@
     # dns_nameservers:
     # - 127.0.0.53
     verify: false
-  register: "{{ register_name }}"
+  # "register" is not templatable ...
+  register: ecorz_subnet

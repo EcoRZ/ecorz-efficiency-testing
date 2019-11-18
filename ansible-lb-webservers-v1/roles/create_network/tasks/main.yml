@@ -6,4 +6,5 @@
     external: false
     shared: false
     verify: false
-  register: "{{ register_name }}"
+  # "register" is not templatable ...
+  register: ecorz_nw

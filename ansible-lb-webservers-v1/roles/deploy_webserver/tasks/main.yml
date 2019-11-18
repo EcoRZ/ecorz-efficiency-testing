@@ -1,5 +1,5 @@
 ---
-- name: Deploy Webserver Instance in "{{ az }}"
+- name: Deploy Webserver Instance "{{ webs_name }}" in "{{ az }}"
   os_server:
     state: present
     name: "{{ webs_name }}"
