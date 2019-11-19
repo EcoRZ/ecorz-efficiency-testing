@@ -9,6 +9,8 @@
 ---
 - hosts: localhost
   gather_facts: false
+  vars:
+      register_upstream: []
   tasks:
     - name: create network
       vars:
@@ -75,25 +77,24 @@
       include_role:
         name: deploy_haproxy
       with_sequence: start=1 end=1
-      #- debug:
-      #var:
-      #hostvars['localhost']['webservers_az']
     - name: Add webservers az1 to inventory
       add_host: name="{{ item.server.name }}" groups=webservers_az1 ansible_ssh_host="{{ item.server.accessIPv4 }}" ansible_ssh_private_key_file="/home/florian/.ssh/id_rsa_omistack"
       when:
         -  item.server.az == az1
       with_items:
-        - "{{ hostvars['localhost']['webservers_az'] }}"
+        - "{{ register_upstream }}"
     - name: Add webservers az2 to inventory
       add_host: name="{{ item.server.name }}" groups=webservers_az2 ansible_ssh_host="{{ item.server.accessIPv4 }}" ansible_ssh_private_key_file="/home/florian/.ssh/id_rsa_omistack"
       when:
         -  item.server.az == az2
       with_items:
-        - "{{ hostvars['localhost']['webservers_az'] }}"
+        - "{{ register_upstream }}"
     - name: Add haproxy to inventory
       add_host: name="{{ item.server.name }}" groups=haproxies ansible_ssh_host="{{ item.server.accessIPv4 }}" ansible_ssh_private_key_file="/home/florian/.ssh/id_rsa_omistack"
+      when:
+        - item.server.az != az1 and item.server.az != az2
       with_items:
-        - "{{ hostvars['localhost']['haproxies_'] }}"
+        - "{{ register_upstream }}"
 
 - hosts: webservers_az1:webservers_az2:haproxies
   gather_facts: false

@@ -8,3 +8,4 @@ sec_group_list:
     sec_group1: ansible
 
 az: def_az
+register_upstream: []

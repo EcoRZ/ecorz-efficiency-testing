@@ -12,3 +12,6 @@
     availability_zone: "{{ az }}"
     verify: false
   register: webservers_az
+- name: Persist register-variable for upstream use
+  set_fact:
+    register_upstream: "{{ register_upstream + [webservers_az] }}"

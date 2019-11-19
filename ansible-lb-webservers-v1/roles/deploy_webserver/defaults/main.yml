@@ -4,7 +4,7 @@
 name: def_webserver
 nw_name: def_nw
 
-sec_group_list:
-    sec_group1: ansible
+sec_group_list: [ansible]
 
 az: def_az
+register_upstream: []

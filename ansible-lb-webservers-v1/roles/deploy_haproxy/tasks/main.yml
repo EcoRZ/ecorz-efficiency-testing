@@ -11,3 +11,6 @@
     security_groups: "{{ sec_group_list|join(',') }}"
     verify: false
   register: haproxies_
+- name: Persist register-variable for upstream use
+  set_fact:
+    register_upstream: "{{ register_upstream + [haproxies_] }}"
