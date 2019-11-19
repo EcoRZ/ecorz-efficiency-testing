@@ -97,6 +97,7 @@
         - "{{ register_upstream }}"
 
 - hosts: webservers_az1:webservers_az2:haproxies
+  remote_user: ubuntu
   gather_facts: false
   roles:
     - wait_for_port1_ready
