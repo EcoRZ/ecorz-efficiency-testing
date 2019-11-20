@@ -1,7 +1,7 @@
 ---
 # handlers file for config_haproxy
-# handlers file for config_haproxy
-#
+
 - name: restart haproxy
   remote_user: ubuntu
+  become: yes
   service: name=haproxy state=restarted
