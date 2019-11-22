@@ -1,0 +1,7 @@
+---
+- name: Delete Webserver Instance "{{ webs_name }}"
+  os_server:
+    state: absent
+    name: "{{ webs_name }}"
+    timeout: 200
+    verify: false

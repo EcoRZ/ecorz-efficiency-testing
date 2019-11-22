@@ -1,0 +1,8 @@
+---
+- name: Destroy HAProxy Instance with name "{{ haproxy_name }}"
+  os_server:
+    state: absent
+    name: "{{ haproxy_name }}"
+    key_name: id_rsa_omistack
+    timeout: 200
+    verify: false

@@ -1,0 +1,4 @@
+---
+# defaults file for delete_haproxy
+
+haproxy_name: def_haproxy

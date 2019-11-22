@@ -1,0 +1,22 @@
+---
+- hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Uneploy webservers in az1
+      vars:
+        webs_name: "{{ webserver_pref_az1 }}_{{ item }}"
+      include_role:
+        name: delete_webserver
+      with_sequence: start=1 end="{{ webserver_az1_count }}"
+    - name: Undeploy webservers in az2
+      vars:
+        webs_name: "{{ webserver_pref_az2 }}_{{ item }}"
+      include_role:
+        name: delete_webserver
+      with_sequence: start=1 end="{{ webserver_az2_count }}"
+    - name: Undeploy haproxy
+      vars:
+        haproxy_name: "haproxy_{{ item }}"
+      include_role:
+        name: delete_haproxy
+      with_sequence: start=1 end=1
