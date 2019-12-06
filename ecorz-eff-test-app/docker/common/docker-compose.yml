@@ -1,0 +1,26 @@
+version: '2'
+services:
+  # configserver:
+    # image: confsvr
+    # ports:
+       # - "8888:8888"
+    # environment:
+      # ENCRYPT_KEY: ${DB_ENCRYPT_KEY}
+  database:
+    image: postgres:9.5
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: "eagle_eye_local"
+  # stresstestagent:
+    # image: stresstest-agent
+    # ports:
+      # - "8080:8080"
+    # environment:
+      # PROFILE: "default"
+      # CONFIGSERVER_URI: "http://${CONFSVR_HOST}:8888"
+      # CONFIGSERVER_PORT:   "8888"
+      # DATABASESERVER_PORT: "5432"
+      # ENCRYPT_KEY: ${DB_ENCRYPT_KEY}
