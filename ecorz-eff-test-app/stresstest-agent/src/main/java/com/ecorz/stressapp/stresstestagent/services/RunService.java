@@ -3,9 +3,9 @@ package com.ecorz.stressapp.stresstestagent.services;
 import com.ecorz.stressapp.stresstestagent.config.RunServiceConfig;
 import com.ecorz.stressapp.stresstestagent.engines.RunEngine;
 import com.ecorz.stressapp.stresstestagent.repository.TmpRepository;
-import com.ecorz.stressapp.stresstestagent.result.ResultDomain;
-import com.ecorz.stressapp.stresstestagent.result.ResultFile;
-import com.ecorz.stressapp.stresstestagent.run.RunConfigFields;
+import com.ecorz.stressapp.stresstestagent.domain.result.ResultDomain;
+import com.ecorz.stressapp.stresstestagent.domain.result.ResultFile;
+import com.ecorz.stressapp.stresstestagent.run.RunConfig;
 import com.ecorz.stressapp.stresstestagent.run.RunException;
 import com.ecorz.stressapp.stresstestagent.run.benchmarks.BMOption;
 import com.ecorz.stressapp.stresstestagent.run.benchmarks.BenchmarkContainer;
@@ -25,23 +25,25 @@ public class RunService {
   @Autowired
   private TmpRepository tmpRepository;
   @Autowired
+  private ResultService resultService;
+  @Autowired
   private RunEngine runEngine;
   @Autowired
   private RunServiceConfig config;
 
-  public UUID saveRun(RunConfigFields runConfigFields) {
+  public UUID saveRun(RunConfig runConfig) {
     UUID uuid = UUID.randomUUID();
-    tmpRepository.addConfig(uuid, runConfigFields);
+    tmpRepository.addConfig(uuid, runConfig);
 
     return uuid;
   }
 
-  public List<RunConfigFields> getRuns() {
-    return new ArrayList<RunConfigFields>(tmpRepository.getConfigMap().values());
+  public List<RunConfig> getRuns() {
+    return new ArrayList<RunConfig>(tmpRepository.getConfigMap().values());
   }
 
   public UUID startRun(UUID runUuid) throws RunException {
-    RunConfigFields configFields = tmpRepository.getConfigById(runUuid);
+    RunConfig configFields = tmpRepository.getConfigById(runUuid);
 
     if(configFields == null) {
       throw new RunException(String.format("Cannot start run with id %s as it does not exist.", runUuid));
@@ -53,15 +55,12 @@ public class RunService {
         config.getResultsDumpFolder(), bmContainer);
 
     runEngine.trigger(bmContainer, optAndArgsList, file.getFullFileName());
-
-    UUID uuid = UUID.randomUUID();
-
-    tmpRepository.addResultDomain(uuid, new ResultDomain(file.getFullFileName()));
+    UUID uuid = resultService.saveResult(new ResultDomain(file.getFullFileName()));
 
     return uuid;
   }
 
-  private static List<OptAndArgs> getOptAndArgsList(RunConfigFields configFields) {
+  private static List<OptAndArgs> getOptAndArgsList(RunConfig configFields) {
     Map<BMOption,List<String>> optAndArgsMap = configFields.getContainer().getOptAndArgsMap();
     return OptAndArgs.of(optAndArgsMap);
   }

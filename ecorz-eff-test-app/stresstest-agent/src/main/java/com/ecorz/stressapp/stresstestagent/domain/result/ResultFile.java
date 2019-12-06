@@ -1,4 +1,4 @@
-package com.ecorz.stressapp.stresstestagent.result;
+package com.ecorz.stressapp.stresstestagent.domain.result;
 
 import com.ecorz.stressapp.stresstestagent.run.benchmarks.BenchmarkContainer;
 import java.text.DateFormat;

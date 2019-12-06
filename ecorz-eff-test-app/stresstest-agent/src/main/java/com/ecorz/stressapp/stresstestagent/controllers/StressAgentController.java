@@ -1,24 +1,23 @@
 package com.ecorz.stressapp.stresstestagent.controllers;
 
-import com.ecorz.stressapp.stresstestagent.result.ResultDomain;
-import com.ecorz.stressapp.stresstestagent.run.RunConfigFields;
+import com.ecorz.stressapp.stresstestagent.domain.run.RunConfigFields;
+import com.ecorz.stressapp.stresstestagent.domain.result.ResultDomain;
+import com.ecorz.stressapp.stresstestagent.run.RunConfig;
+import com.ecorz.stressapp.stresstestagent.run.RunConfig.RunConfigFactory;
 import com.ecorz.stressapp.stresstestagent.run.RunException;
 import com.ecorz.stressapp.stresstestagent.services.ResultService;
 import com.ecorz.stressapp.stresstestagent.services.RunService;
-import com.ecorz.stressapp.stresstestagent.model.Run;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.List;
 
@@ -40,12 +39,17 @@ public class StressAgentController {
 
     @RequestMapping(value="/run/setrun",method = RequestMethod.POST)
     public UUID setRun( @Valid @RequestBody RunConfigFields configFields) {
-      return runService.saveRun(configFields);
+      RunConfig config = RunConfigFactory.ofDomain(configFields);
+      return runService.saveRun(config);
     }
 
     @RequestMapping(value="/run",method = RequestMethod.GET)
     public List<RunConfigFields> getRunConfigFieldsList() {
-      return runService.getRuns();
+      List<RunConfigFields> configFieldsList = runService.getRuns().stream()
+          .map(configItem -> RunConfigFields.ofConfig(configItem)).collect(
+          Collectors.toList());
+
+      return configFieldsList;
     }
 
     @RequestMapping(value="/run/{runId}",method = RequestMethod.POST)

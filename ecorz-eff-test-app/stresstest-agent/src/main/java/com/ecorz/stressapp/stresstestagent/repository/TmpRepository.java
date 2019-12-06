@@ -1,7 +1,7 @@
 package com.ecorz.stressapp.stresstestagent.repository;
 
-import com.ecorz.stressapp.stresstestagent.result.ResultDomain;
-import com.ecorz.stressapp.stresstestagent.run.RunConfigFields;
+import com.ecorz.stressapp.stresstestagent.domain.result.ResultDomain;
+import com.ecorz.stressapp.stresstestagent.run.RunConfig;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class TmpRepository {
-  private final Map<UUID,RunConfigFields> configMap;
+  private final Map<UUID,RunConfig> configMap;
   private final Map<UUID,ResultDomain> resultMap;
 
   public TmpRepository() {
@@ -17,7 +17,7 @@ public class TmpRepository {
     resultMap = new HashMap<>();
   }
 
-  public Map<UUID, RunConfigFields> getConfigMap() {
+  public Map<UUID, RunConfig> getConfigMap() {
     return configMap;
   }
 
@@ -25,7 +25,7 @@ public class TmpRepository {
     return resultMap;
   }
 
-  public RunConfigFields getConfigById(UUID runConigUuid) {
+  public RunConfig getConfigById(UUID runConigUuid) {
     return configMap.get(runConigUuid);
   }
 
@@ -33,7 +33,7 @@ public class TmpRepository {
     return resultMap.get(resultUuid);
   }
 
-  public void addConfig(UUID uuid, RunConfigFields configFields) {
+  public void addConfig(UUID uuid, RunConfig configFields) {
     configMap.put(uuid, configFields);
   }
 

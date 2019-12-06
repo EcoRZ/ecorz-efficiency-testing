@@ -1,7 +1,7 @@
 package com.ecorz.stressapp.stresstestagent.services;
 
 import com.ecorz.stressapp.stresstestagent.repository.TmpRepository;
-import com.ecorz.stressapp.stresstestagent.result.ResultDomain;
+import com.ecorz.stressapp.stresstestagent.domain.result.ResultDomain;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
