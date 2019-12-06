@@ -60,6 +60,10 @@ public class RunService {
     return uuid;
   }
 
+  public void deleteRun(UUID uuid) {
+    tmpRepository.deleteConfigById(uuid);
+  }
+
   private static List<OptAndArgs> getOptAndArgsList(RunConfig configFields) {
     Map<BMOption,List<String>> optAndArgsMap = configFields.getContainer().getOptAndArgsMap();
     return OptAndArgs.of(optAndArgsMap);

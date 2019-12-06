@@ -64,6 +64,12 @@ public class StressAgentController {
       return null;
     }
 
+    @RequestMapping(value="/run/{runId}",method = RequestMethod.DELETE)
+    public void deleteRun( @PathVariable("runId") String runId) {
+      UUID uuid = UUID.fromString(runId);
+      runService.deleteRun(uuid);
+    }
+
     @RequestMapping(value="/result",method = RequestMethod.GET)
     public List<ResultDomain> getResults() {
       return resultService.getResults();

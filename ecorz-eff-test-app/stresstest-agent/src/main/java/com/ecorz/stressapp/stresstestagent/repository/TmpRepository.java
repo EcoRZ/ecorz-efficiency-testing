@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class TmpRepository {
   private final Map<UUID,RunConfig> configMap;
+  // todo: make this consistent, i.e. this should be not a domain object then
   private final Map<UUID,ResultDomain> resultMap;
 
   public TmpRepository() {
@@ -35,6 +36,14 @@ public class TmpRepository {
 
   public void addConfig(UUID uuid, RunConfig configFields) {
     configMap.put(uuid, configFields);
+  }
+
+  public void deleteConfigById(UUID uuid) {
+    if(!configMap.containsKey(uuid)) {
+      throw new IllegalArgumentException(String.format("Cannot delete run config with id %s as this id does not exist", uuid));
+    }
+
+    configMap.remove(uuid);
   }
 
   public void addResultDomain(UUID uuid, ResultDomain result) {
