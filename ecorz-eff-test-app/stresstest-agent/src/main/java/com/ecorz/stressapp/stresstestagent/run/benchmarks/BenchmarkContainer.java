@@ -21,12 +21,6 @@ public enum BenchmarkContainer {
     }
   }
 
-  // todo: test this
-  @Override
-  public String toString() {
-    return MoreObjects.toStringHelper(this).toString();
-  }
-
   public void addOptArg(BMOption opt, String arg) {
     if(!isAllowedOpt(opt)) {
       throw new IllegalArgumentException(String.format("%s is not a valid option for benchmark %s.", opt, this));

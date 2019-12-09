@@ -7,6 +7,7 @@ import com.ecorz.stressapp.stresstestagent.run.RunException;
 import com.ecorz.stressapp.stresstestagent.run.benchmarks.BenchmarkContainer;
 import com.ecorz.stressapp.stresstestagent.run.benchmarks.OptAndArgs;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -15,13 +16,18 @@ import org.springframework.stereotype.Component;
 public class RunEngine {
   private static Logger LOGGER = LoggerFactory.getLogger(RunEngine.class);
 
-  public void trigger(BenchmarkContainer bmContainer, List<OptAndArgs> optAndArgsList, String dumpFile) throws RunException {
+  public void trigger(BenchmarkContainer bmContainer, String dumpFile) throws RunException {
     LOGGER.info(String.format("Starting %s with following cli String:\n %s", this,
-        convertToCliString(optAndArgsList, dumpFile)));
+        convertToCliCommandString(bmContainer, dumpFile)));
   }
 
-  private static String convertToCliString(List<OptAndArgs> optAndArgsList, String dumpFile) {
-    final String returnStr = String.join(" ", optAndArgsList.toArray().toString(), "--file", dumpFile);
+  private static String convertToCliCommandString(BenchmarkContainer bmContainer, String dumpFile) {
+    final String optsAndArgsMergedString = bmContainer.getOptAndArgsMap().entrySet().stream().
+        map(entry -> String.join(" ","--" + entry.getKey(), String.join(
+            " ", entry.getValue()))).collect(Collectors.joining(" "));
+    final String bmSpecificString = String.join(" ", bmContainer.name(),
+        optsAndArgsMergedString);
+    final String returnStr = String.join(" ", bmSpecificString, "--file", dumpFile);
 
     return returnStr;
   }

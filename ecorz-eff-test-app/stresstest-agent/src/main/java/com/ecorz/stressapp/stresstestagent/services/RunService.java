@@ -60,11 +60,10 @@ public class RunService {
     }
 
     BenchmarkContainer bmContainer = configFields.getContainer();
-    List<OptAndArgs> optAndArgsList = getOptAndArgsList(configFields);
     final ResultFile file = ResultFile.ResultsFileFactory.of(
         config.getResultsDumpFolder(), bmContainer);
 
-    runEngine.trigger(bmContainer, optAndArgsList, file.getFullFileName());
+    runEngine.trigger(bmContainer, file.getFullFileName());
     UUID uuid = UUID.randomUUID();
     resultService.saveResult(new ResultPersist(uuid, file.getFullFileName()));
 
