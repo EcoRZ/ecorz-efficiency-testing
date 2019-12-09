@@ -1,10 +1,11 @@
 package com.ecorz.stressapp.stresstestagent.services;
 
 import com.ecorz.stressapp.stresstestagent.config.RunServiceConfig;
+import com.ecorz.stressapp.stresstestagent.domain.result.ResultDomain;
 import com.ecorz.stressapp.stresstestagent.engines.RunEngine;
 import com.ecorz.stressapp.stresstestagent.repository.TmpRepository;
-import com.ecorz.stressapp.stresstestagent.domain.result.ResultDomain;
-import com.ecorz.stressapp.stresstestagent.domain.result.ResultFile;
+import com.ecorz.stressapp.stresstestagent.result.ResultFile;
+import com.ecorz.stressapp.stresstestagent.result.ResultPersist;
 import com.ecorz.stressapp.stresstestagent.run.RunConfig;
 import com.ecorz.stressapp.stresstestagent.run.RunException;
 import com.ecorz.stressapp.stresstestagent.run.benchmarks.BMOption;
@@ -55,7 +56,7 @@ public class RunService {
         config.getResultsDumpFolder(), bmContainer);
 
     runEngine.trigger(bmContainer, optAndArgsList, file.getFullFileName());
-    UUID uuid = resultService.saveResult(new ResultDomain(file.getFullFileName()));
+    UUID uuid = resultService.saveResult(new ResultPersist(file.getFullFileName()));
 
     return uuid;
   }

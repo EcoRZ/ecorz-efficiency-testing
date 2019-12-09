@@ -1,6 +1,6 @@
 package com.ecorz.stressapp.stresstestagent.repository;
 
-import com.ecorz.stressapp.stresstestagent.domain.result.ResultDomain;
+import com.ecorz.stressapp.stresstestagent.result.ResultPersist;
 import com.ecorz.stressapp.stresstestagent.run.RunConfig;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,8 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class TmpRepository {
   private final Map<UUID,RunConfig> configMap;
-  // todo: make this consistent, i.e. this should be not a domain object then
-  private final Map<UUID,ResultDomain> resultMap;
+  private final Map<UUID,ResultPersist> resultMap;
 
   public TmpRepository() {
     configMap = new HashMap<>();
@@ -22,7 +21,7 @@ public class TmpRepository {
     return configMap;
   }
 
-  public Map<UUID, ResultDomain> getResultDomainMap() {
+  public Map<UUID, ResultPersist> getResultPersistMap() {
     return resultMap;
   }
 
@@ -30,7 +29,7 @@ public class TmpRepository {
     return configMap.get(runConigUuid);
   }
 
-  public ResultDomain getResultById(UUID resultUuid) {
+  public ResultPersist getResultById(UUID resultUuid) {
     return resultMap.get(resultUuid);
   }
 
@@ -46,7 +45,7 @@ public class TmpRepository {
     configMap.remove(uuid);
   }
 
-  public void addResultDomain(UUID uuid, ResultDomain result) {
+  public void addResultPersist(UUID uuid, ResultPersist result) {
     resultMap.put(uuid, result);
   }
 }

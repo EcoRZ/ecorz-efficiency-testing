@@ -2,6 +2,7 @@ package com.ecorz.stressapp.stresstestagent.controllers;
 
 import com.ecorz.stressapp.stresstestagent.domain.run.RunConfigFields;
 import com.ecorz.stressapp.stresstestagent.domain.result.ResultDomain;
+import com.ecorz.stressapp.stresstestagent.result.ResultPersist;
 import com.ecorz.stressapp.stresstestagent.run.RunConfig;
 import com.ecorz.stressapp.stresstestagent.run.RunConfig.RunConfigFactory;
 import com.ecorz.stressapp.stresstestagent.run.RunException;
@@ -72,6 +73,10 @@ public class StressAgentController {
 
     @RequestMapping(value="/result",method = RequestMethod.GET)
     public List<ResultDomain> getResults() {
-      return resultService.getResults();
+      List<ResultPersist> resultPersistList = resultService.getResults();
+
+      return resultPersistList.stream().map(persistItem -> {
+        ResultDomain domain = new ResultDomain(); return domain.resultFileName(persistItem.getResultFileName());}).collect(
+          Collectors.toList());
     }
 }

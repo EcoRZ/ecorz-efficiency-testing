@@ -2,6 +2,7 @@ package com.ecorz.stressapp.stresstestagent.services;
 
 import com.ecorz.stressapp.stresstestagent.repository.TmpRepository;
 import com.ecorz.stressapp.stresstestagent.domain.result.ResultDomain;
+import com.ecorz.stressapp.stresstestagent.result.ResultPersist;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -17,14 +18,14 @@ public class ResultService {
   @Autowired
   private TmpRepository tmpRepository;
 
-  public UUID saveResult(ResultDomain resultDomain) {
+  public UUID saveResult(ResultPersist resultPersist) {
     UUID uuid = UUID.randomUUID();
-    tmpRepository.addResultDomain(uuid, resultDomain);
+    tmpRepository.addResultPersist(uuid, resultPersist);
 
     return uuid;
   }
 
-  public List<ResultDomain> getResults() {
-    return new ArrayList<ResultDomain>(tmpRepository.getResultDomainMap().values());
+  public List<ResultPersist> getResults() {
+    return new ArrayList<ResultPersist>(tmpRepository.getResultPersistMap().values());
   }
 }

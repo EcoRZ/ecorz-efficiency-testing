@@ -4,10 +4,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ResultDomain {
   @JsonProperty
-  private final String resultFileName;
+  String resultFileName;
 
-  public ResultDomain(String resultFileName) {
+  public ResultDomain resultFileName(String resultFileName) {
     this.resultFileName = resultFileName;
+    return this;
   }
 
   public String getResultFileName() {
