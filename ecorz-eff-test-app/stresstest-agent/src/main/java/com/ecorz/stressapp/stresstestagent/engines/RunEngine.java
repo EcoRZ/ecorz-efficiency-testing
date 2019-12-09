@@ -21,7 +21,7 @@ public class RunEngine {
   }
 
   private static String convertToCliString(List<OptAndArgs> optAndArgsList, String dumpFile) {
-    final String returnStr = String.join(" ", optAndArgsList.toString(), "--file", dumpFile);
+    final String returnStr = String.join(" ", optAndArgsList.toArray().toString(), "--file", dumpFile);
 
     return returnStr;
   }

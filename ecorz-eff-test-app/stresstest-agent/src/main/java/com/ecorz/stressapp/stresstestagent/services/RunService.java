@@ -1,11 +1,14 @@
 package com.ecorz.stressapp.stresstestagent.services;
 
 import com.ecorz.stressapp.stresstestagent.config.ResultServiceConfig;
+import com.ecorz.stressapp.stresstestagent.domain.run.RunConfigFields;
+import com.ecorz.stressapp.stresstestagent.domain.run.RunConfigFieldsResponse;
 import com.ecorz.stressapp.stresstestagent.engines.RunEngine;
 import com.ecorz.stressapp.stresstestagent.repository.TmpRepository;
 import com.ecorz.stressapp.stresstestagent.result.ResultFile;
 import com.ecorz.stressapp.stresstestagent.result.ResultPersist;
 import com.ecorz.stressapp.stresstestagent.run.RunConfig;
+import com.ecorz.stressapp.stresstestagent.run.RunConfig.RunConfigFactory;
 import com.ecorz.stressapp.stresstestagent.run.RunException;
 import com.ecorz.stressapp.stresstestagent.run.benchmarks.BMOption;
 import com.ecorz.stressapp.stresstestagent.run.benchmarks.BenchmarkContainer;
@@ -14,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,15 +35,21 @@ public class RunService {
   @Autowired
   private ResultServiceConfig config;
 
-  public UUID saveRun(RunConfig runConfig) {
+  public UUID saveRun(RunConfigFields runConfigFields) {
     UUID uuid = UUID.randomUUID();
-    tmpRepository.addConfig(uuid, runConfig);
+    RunConfig config = RunConfigFactory.ofDomain(uuid, runConfigFields);
+    tmpRepository.addConfig(uuid, config);
 
     return uuid;
   }
 
-  public List<RunConfig> getRuns() {
-    return new ArrayList<RunConfig>(tmpRepository.getConfigMap().values());
+  public List<RunConfigFieldsResponse> getRuns() {
+    return tmpRepository.getConfigMap().entrySet().stream().
+        map(entry -> { RunConfigFields fields = RunConfigFields.ofConfig(entry.getValue());
+          RunConfigFieldsResponse response = new RunConfigFieldsResponse();
+          response.uuid(entry.getKey()); response.arg1(fields.getArg1());
+          response.bmName(fields.getBmName()); response.stuff(fields.getStuff());
+          return response; } ).collect(Collectors.toList());
   }
 
   public UUID startRun(UUID runUuid) throws RunException {
@@ -55,7 +65,8 @@ public class RunService {
         config.getResultsDumpFolder(), bmContainer);
 
     runEngine.trigger(bmContainer, optAndArgsList, file.getFullFileName());
-    UUID uuid = resultService.saveResult(new ResultPersist(file.getFullFileName()));
+    UUID uuid = UUID.randomUUID();
+    resultService.saveResult(new ResultPersist(uuid, file.getFullFileName()));
 
     return uuid;
   }

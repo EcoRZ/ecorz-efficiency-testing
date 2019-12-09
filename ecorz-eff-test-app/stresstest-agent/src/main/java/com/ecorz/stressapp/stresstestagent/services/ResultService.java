@@ -1,11 +1,13 @@
 package com.ecorz.stressapp.stresstestagent.services;
 
+import com.ecorz.stressapp.stresstestagent.domain.result.ResultDomainResponse;
 import com.ecorz.stressapp.stresstestagent.repository.TmpRepository;
 import com.ecorz.stressapp.stresstestagent.domain.result.ResultDomain;
 import com.ecorz.stressapp.stresstestagent.result.ResultPersist;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +27,10 @@ public class ResultService {
     return uuid;
   }
 
-  public List<ResultPersist> getResults() {
-    return new ArrayList<ResultPersist>(tmpRepository.getResultPersistMap().values());
+  public List<ResultDomainResponse> getResults() {
+    return tmpRepository.getResultPersistMap().entrySet().stream().
+        map(entry -> { ResultDomainResponse response = new ResultDomainResponse();
+        response.uuid(entry.getKey()); response.resultFileName(entry.getValue().
+              getResultFileName()); return response; } ).collect(Collectors.toList());
   }
 }

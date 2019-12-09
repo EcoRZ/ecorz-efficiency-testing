@@ -1,8 +1,10 @@
 package com.ecorz.stressapp.stresstestagent.controllers;
 
 import com.ecorz.stressapp.stresstestagent.converters.ResultDomainToPersist;
+import com.ecorz.stressapp.stresstestagent.domain.result.ResultDomainResponse;
 import com.ecorz.stressapp.stresstestagent.domain.run.RunConfigFields;
 import com.ecorz.stressapp.stresstestagent.domain.result.ResultDomain;
+import com.ecorz.stressapp.stresstestagent.domain.run.RunConfigFieldsResponse;
 import com.ecorz.stressapp.stresstestagent.result.ResultPersist;
 import com.ecorz.stressapp.stresstestagent.run.RunConfig;
 import com.ecorz.stressapp.stresstestagent.run.RunConfig.RunConfigFactory;
@@ -41,17 +43,12 @@ public class StressAgentController {
 
     @RequestMapping(value="/run/setrun",method = RequestMethod.POST)
     public UUID setRun( @Valid @RequestBody RunConfigFields configFields) {
-      RunConfig config = RunConfigFactory.ofDomain(configFields);
-      return runService.saveRun(config);
+      return runService.saveRun(configFields);
     }
 
     @RequestMapping(value="/run",method = RequestMethod.GET)
-    public List<RunConfigFields> getRunConfigFieldsList() {
-      List<RunConfigFields> configFieldsList = runService.getRuns().stream()
-          .map(configItem -> RunConfigFields.ofConfig(configItem)).collect(
-          Collectors.toList());
-
-      return configFieldsList;
+    public List<RunConfigFieldsResponse> getRunConfigFieldsList() {
+      return runService.getRuns();
     }
 
     @RequestMapping(value="/run/{runId}",method = RequestMethod.POST)
@@ -73,10 +70,7 @@ public class StressAgentController {
     }
 
     @RequestMapping(value="/result",method = RequestMethod.GET)
-    public List<ResultDomain> getResults() {
-      List<ResultPersist> resultPersistList = resultService.getResults();
-
-      return resultPersistList.stream().map(persistItem -> ResultDomainToPersist.convertBack(persistItem)).
-        collect(Collectors.toList());
+    public List<ResultDomainResponse> getResults() {
+      return resultService.getResults();
     }
 }
