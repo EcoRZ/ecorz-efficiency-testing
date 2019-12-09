@@ -1,5 +1,6 @@
 package com.ecorz.stressapp.stresstestagent.controllers;
 
+import com.ecorz.stressapp.stresstestagent.converters.ResultDomainToPersist;
 import com.ecorz.stressapp.stresstestagent.domain.run.RunConfigFields;
 import com.ecorz.stressapp.stresstestagent.domain.result.ResultDomain;
 import com.ecorz.stressapp.stresstestagent.result.ResultPersist;
@@ -75,8 +76,7 @@ public class StressAgentController {
     public List<ResultDomain> getResults() {
       List<ResultPersist> resultPersistList = resultService.getResults();
 
-      return resultPersistList.stream().map(persistItem -> {
-        ResultDomain domain = new ResultDomain(); return domain.resultFileName(persistItem.getResultFileName());}).collect(
-          Collectors.toList());
+      return resultPersistList.stream().map(persistItem -> ResultDomainToPersist.convertBack(persistItem)).
+        collect(Collectors.toList());
     }
 }
