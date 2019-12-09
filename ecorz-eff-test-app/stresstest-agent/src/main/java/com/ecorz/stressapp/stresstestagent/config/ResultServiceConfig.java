@@ -4,17 +4,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RunServiceConfig {
+public class ResultServiceConfig {
+
   // @Value("${example.property}")
   // private String exampleProperty;
-  private final static String lbIp = "134.60.64.128";
-  private final static String lbPort = "8080";
+  private final static String resultsDumpFolder = "./resultsDump";
 
-  public String getLbIp (){
-    return lbIp;
-  }
-
-  public String getLbPort (){
-    return lbPort;
+  public String getResultsDumpFolder (){
+    return resultsDumpFolder;
   }
 }

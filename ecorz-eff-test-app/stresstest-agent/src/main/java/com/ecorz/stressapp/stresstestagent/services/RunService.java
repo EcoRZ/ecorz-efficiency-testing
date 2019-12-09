@@ -1,7 +1,6 @@
 package com.ecorz.stressapp.stresstestagent.services;
 
-import com.ecorz.stressapp.stresstestagent.config.RunServiceConfig;
-import com.ecorz.stressapp.stresstestagent.domain.result.ResultDomain;
+import com.ecorz.stressapp.stresstestagent.config.ResultServiceConfig;
 import com.ecorz.stressapp.stresstestagent.engines.RunEngine;
 import com.ecorz.stressapp.stresstestagent.repository.TmpRepository;
 import com.ecorz.stressapp.stresstestagent.result.ResultFile;
@@ -30,7 +29,7 @@ public class RunService {
   @Autowired
   private RunEngine runEngine;
   @Autowired
-  private RunServiceConfig config;
+  private ResultServiceConfig config;
 
   public UUID saveRun(RunConfig runConfig) {
     UUID uuid = UUID.randomUUID();
