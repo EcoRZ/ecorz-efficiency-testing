@@ -9,18 +9,21 @@ import org.apache.jmeter.threads.ThreadGroup;
 import org.apache.jmeter.util.JMeterUtils;
 import org.apache.jorphan.collections.HashTree;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-class ExampleUtil {
+@Component
+public class JMeterEngineWrapper {
 
   @Autowired
   RunServiceConfig config;
 
-  void exampleRun() {
+  public void exampleRun() {
     //JMeter Engine
     StandardJMeterEngine jmeter = new StandardJMeterEngine();
 
     //JMeter initialization (properties, log levels, locale, etc)
-    JMeterUtils.loadJMeterProperties("/path/to/your/jmeter/bin/jmeter.properties");
+    JMeterUtils.loadJMeterProperties(
+        "stresstest-agent/target/classes/com/ecorz/stressapp/stresstestagent/engines/jmeter/config/jmeter.properties");
     JMeterUtils.initLocale();
 
     // JMeter Test Plan, basic all u JOrphan HashTree
