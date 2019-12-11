@@ -46,6 +46,10 @@ public class RunConfigFields {
         arg3Tmp = container.getOptAndArgsMap().get(tg).get(2);
         break;
       }
+      case NOT_IMPLEMENTED: {
+        arg1Tmp = arg2Tmp = arg3Tmp = "";
+        break;
+      }
       case BENCH_2:
       default:
         throw new IllegalArgumentException(String.format("Arg field generation from Config not implemented for %s yet.", container.toString()));

@@ -34,6 +34,14 @@ public enum BenchmarkContainer {
     setParams.get(opt).add(arg);
   }
 
+  public void replaceOptArgs(BMOption opt, List<String> args) {
+    if(!isAllowedOpt(opt)) {
+      throw new IllegalArgumentException(String.format("%s is not a valid option for benchmark %s.", opt, this));
+    }
+
+    setParams.put(opt,args);
+  }
+
   public void removeOptArg(BMOption opt, String arg) {
     if(!isAllowedOpt(opt)) {
       throw new IllegalArgumentException(String.format("%s is not a valid option for benchmark %s.", opt, this));
@@ -41,7 +49,6 @@ public enum BenchmarkContainer {
 
     setParams.put(opt, setParams.get(opt).stream().filter(
         argKeep -> argKeep != arg).collect(Collectors.toList()));
-    setParams.get(opt).stream();
   }
 
   public Map<BMOption,List<String>> getOptAndArgsMap() {

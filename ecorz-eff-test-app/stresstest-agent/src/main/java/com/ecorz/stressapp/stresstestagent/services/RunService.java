@@ -64,6 +64,7 @@ public class RunService {
         map(entry -> { RunConfigFields fields = RunConfigFields.ofConfig(entry.getValue());
           RunConfigFieldsResponse response = new RunConfigFieldsResponse();
           response.uuid(entry.getKey()); response.arg1(fields.getArg1());
+          response.arg2(fields.getArg2()); response.arg3(fields.getArg3());
           response.bmName(fields.getBmName()); response.stuff(fields.getStuff());
           return response; } ).collect(Collectors.toList());
   }

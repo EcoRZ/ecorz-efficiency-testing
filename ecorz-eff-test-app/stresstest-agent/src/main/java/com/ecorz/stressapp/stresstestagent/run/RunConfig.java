@@ -61,9 +61,11 @@ public class RunConfig {
     this.container = container;
 
     for(OptAndArgs optAndArgs: optAndArgsList) {
+      List<String> args = new ArrayList<>();
       for(String arg: optAndArgs.args) {
-        container.addOptArg(optAndArgs.opt, arg);
+        args.add(arg);
       }
+      container.replaceOptArgs(optAndArgs.opt, args);
     }
 
     this.stuff = stuff;
