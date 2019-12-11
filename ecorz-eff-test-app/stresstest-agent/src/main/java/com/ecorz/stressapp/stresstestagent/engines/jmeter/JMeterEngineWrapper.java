@@ -38,15 +38,15 @@ public class JMeterEngineWrapper {
 
     // Loop Controller
     LoopController loopController = new LoopController();
-    loopController.setLoops(1);
+    loopController.setLoops(5);
     loopController.addTestElement(httpSampler);
     loopController.setFirst(true);
     loopController.initialize();
 
     // Thread Group
     ThreadGroup threadGroup = new ThreadGroup();
-    threadGroup.setNumThreads(1);
-    threadGroup.setRampUp(1);
+    threadGroup.setNumThreads(10);
+    threadGroup.setRampUp(2);
     threadGroup.setSamplerController(loopController);
 
     // Test Plan

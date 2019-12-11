@@ -1,24 +1,28 @@
 package com.ecorz.stressapp.stresstestagent.run.benchmarks;
 
+import static com.ecorz.stressapp.stresstestagent.run.benchmarks.BMOption.tg;
+import static com.ecorz.stressapp.stresstestagent.run.benchmarks.BMOption.urt;
+
+import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import com.google.common.base.MoreObjects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public enum BenchmarkContainer {
-  BENCH_1(new BMOption[]{ BMOption.OPT_1 }),
-  BENCH_2(new BMOption[]{ BMOption.OPT_2 });
+  BENCH_1(new HashMap<BMOption,List<String>>() {{
+    put(tg, Arrays.asList("0", "0", "0")); }}),
+  BENCH_2(new HashMap<BMOption,List<String>>() {{
+    put(urt, Arrays.asList("0", "0")); }});
 
   private final Map<BMOption,List<String>> setParams;
 
-  BenchmarkContainer(BMOption[] opts) {
-    setParams = new HashMap<>();
-
-    for(BMOption opt: opts) {
-      setParams.put(opt, new ArrayList<>());
-    }
+  BenchmarkContainer(HashMap<BMOption,List<String>> initializeMap) {
+    this.setParams = initializeMap;
   }
 
   public void addOptArg(BMOption opt, String arg) {

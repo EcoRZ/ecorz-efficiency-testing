@@ -15,8 +15,9 @@ public class RunConfig {
 
   public static class RunConfigFactory {
 
-    public static RunConfig createBM1_stuff1(UUID uuid, String argForOpt1, List<String> stuff) {
-      OptAndArgs optAndArgs1 = new OptAndArgs(BMOption.OPT_1, argForOpt1);
+    public static RunConfig createBM1_stuff1(UUID uuid, ArgsWrapper wrapper, List<String> stuff) {
+      OptAndArgs optAndArgs1 = new OptAndArgs(BMOption.tg, Arrays.asList(wrapper.arg1, wrapper.arg2,
+          wrapper.arg3));
       List<OptAndArgs> optAndArgsList = Arrays.asList(optAndArgs1);
       return new RunConfig(uuid, BenchmarkContainer.BENCH_1, optAndArgsList, stuff);
     }
@@ -26,7 +27,8 @@ public class RunConfig {
 
       switch(container) {
         case BENCH_1:
-          return createBM1_stuff1(uuid, fields.getArg1(), fields.getStuff());
+          return createBM1_stuff1(uuid, new ArgsWrapper(fields.getArg1(), fields.getArg2(),
+              fields.getArg3()), fields.getStuff());
         case BENCH_2:
         default:
           throw new IllegalArgumentException(String.format("Cannot convert %s to Benchmark type", fields.getBmName()));
@@ -53,5 +55,15 @@ public class RunConfig {
 
   public List<String> getStuff() {
     return stuff;
+  }
+
+  private static class ArgsWrapper {
+    public final String arg1, arg2, arg3;
+
+    public ArgsWrapper(String arg1, String arg2, String arg3) {
+      this.arg1 = arg1;
+      this.arg2 = arg2;
+      this.arg3 = arg3;
+    }
   }
 }
