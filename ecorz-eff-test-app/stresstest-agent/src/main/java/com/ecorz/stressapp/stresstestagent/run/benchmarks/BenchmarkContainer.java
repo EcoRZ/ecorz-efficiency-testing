@@ -17,7 +17,8 @@ public enum BenchmarkContainer {
   BENCH_1(new HashMap<BMOption,List<String>>() {{
     put(tg, Arrays.asList("0", "0", "0")); }}),
   BENCH_2(new HashMap<BMOption,List<String>>() {{
-    put(urt, Arrays.asList("0", "0")); }});
+    put(urt, Arrays.asList("0", "0")); }}),
+  NOT_IMPLEMENTED(new HashMap<>());
 
   private final Map<BMOption,List<String>> setParams;
 

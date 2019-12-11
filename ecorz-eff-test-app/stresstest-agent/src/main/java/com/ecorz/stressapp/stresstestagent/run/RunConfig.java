@@ -4,11 +4,18 @@ import com.ecorz.stressapp.stresstestagent.domain.run.RunConfigFields;
 import com.ecorz.stressapp.stresstestagent.run.benchmarks.BMOption;
 import com.ecorz.stressapp.stresstestagent.run.benchmarks.BenchmarkContainer;
 import com.ecorz.stressapp.stresstestagent.run.benchmarks.OptAndArgs;
+import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import org.omg.CORBA.NO_IMPLEMENT;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class RunConfig {
+  private final static Logger LOGGER = LoggerFactory.getLogger(RunConfig.class);
+
   private final UUID uuid;
   private final BenchmarkContainer container;
   private final List<String> stuff;
@@ -34,6 +41,19 @@ public class RunConfig {
           throw new IllegalArgumentException(String.format("Cannot convert %s to Benchmark type", fields.getBmName()));
       }
     }
+
+    public static RunConfig ofFile(UUID uuid, File file_) {
+      LOGGER.warn("ofFile method not implemented yet, falling back to building empty RunConfig object ...");
+      return new RunConfig();
+    }
+  }
+
+  private RunConfig() {
+    LOGGER.warn("Use empty constructor temporarily");
+
+    this.uuid = UUID.randomUUID();
+    this.container = BenchmarkContainer.NOT_IMPLEMENTED;
+    this.stuff = new ArrayList<>();
   }
 
   private RunConfig(UUID uuid, BenchmarkContainer container, List<OptAndArgs> optAndArgsList, List<String> stuff) {

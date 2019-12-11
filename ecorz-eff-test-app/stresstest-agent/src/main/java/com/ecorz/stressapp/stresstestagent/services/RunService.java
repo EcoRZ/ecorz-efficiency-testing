@@ -13,16 +13,21 @@ import com.ecorz.stressapp.stresstestagent.run.RunException;
 import com.ecorz.stressapp.stresstestagent.run.benchmarks.BMOption;
 import com.ecorz.stressapp.stresstestagent.run.benchmarks.BenchmarkContainer;
 import com.ecorz.stressapp.stresstestagent.run.benchmarks.OptAndArgs;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class RunService {
+  private final static Logger LOGGER = LoggerFactory.getLogger(RunService.class);
 
   // @Autowired
   // private RunRepository runRepository;
@@ -39,6 +44,17 @@ public class RunService {
     UUID uuid = UUID.randomUUID();
     RunConfig config = RunConfigFactory.ofDomain(uuid, runConfigFields);
     tmpRepository.addConfig(uuid, config);
+
+    return uuid;
+  }
+
+
+  public UUID saveRun(String file) {
+    UUID uuid = UUID.randomUUID();
+    File file_ = new File(file);
+    RunConfig config = RunConfigFactory.ofFile(uuid, file_);
+    tmpRepository.addConfig(uuid, config);
+    tmpRepository.addFile(uuid, file_);
 
     return uuid;
   }
@@ -63,7 +79,17 @@ public class RunService {
     final ResultFile file = ResultFile.ResultsFileFactory.of(
         config.getResultsDumpFolder(), bmContainer);
 
-    runEngine.trigger(bmContainer, file.getFullFileName());
+    if(tmpRepository.getFileById(runUuid) != null) {
+      LOGGER.warn("Using temporary solution to trigger engine directly with file");
+      try {
+        runEngine.trigger(tmpRepository.getFileById(runUuid));
+      } catch (IOException e) {
+        LOGGER.error(String.format("Cannot start engine via input-file %s",
+            tmpRepository.getConfigById(runUuid)), e);
+      }
+    } else {
+      runEngine.trigger(bmContainer, file.getFullFileName());
+    }
     UUID uuid = UUID.randomUUID();
     resultService.saveResult(new ResultPersist(uuid, file.getFullFileName()));
 

@@ -14,6 +14,7 @@ import com.ecorz.stressapp.stresstestagent.services.RunService;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
+import javax.ws.rs.Path;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,9 +42,14 @@ public class StressAgentController {
     private ResultService resultService;
     private final static Logger LOGGER = LoggerFactory.getLogger(StressAgentController.class);
 
-    @RequestMapping(value="/run/setrun",method = RequestMethod.POST)
+    @RequestMapping(value="/run/setconfig",method = RequestMethod.POST)
     public UUID setRun( @Valid @RequestBody RunConfigFields configFields) {
       return runService.saveRun(configFields);
+    }
+
+    @RequestMapping(value="/run/setfile",method = RequestMethod.POST)
+    public UUID setRun( @Valid @RequestBody String file) {
+      return runService.saveRun(file);
     }
 
     @RequestMapping(value="/run",method = RequestMethod.GET)

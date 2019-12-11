@@ -1,9 +1,13 @@
 package com.ecorz.stressapp.stresstestagent.engines.jmeter;
 
 import com.ecorz.stressapp.stresstestagent.config.RunServiceConfig;
+import com.ecorz.stressapp.stresstestagent.result.ResultFile;
+import java.io.File;
+import java.io.IOException;
 import org.apache.jmeter.control.LoopController;
 import org.apache.jmeter.engine.StandardJMeterEngine;
 import org.apache.jmeter.protocol.http.sampler.HTTPSampler;
+import org.apache.jmeter.save.SaveService;
 import org.apache.jmeter.testelement.TestPlan;
 import org.apache.jmeter.threads.ThreadGroup;
 import org.apache.jmeter.util.JMeterUtils;
@@ -59,6 +63,23 @@ public class JMeterEngineWrapper {
     testPlanTree.add("httpSampler", httpSampler);
 
     // Run Test Plan
+    jmeter.configure(testPlanTree);
+    jmeter.run();
+  }
+
+  public void runWithJmxFile(File file) throws IOException {
+    //JMeter initialization (properties, log levels, locale, etc)
+    JMeterUtils.loadJMeterProperties(
+        "stresstest-agent/target/classes/com/ecorz/stressapp/stresstestagent/engines/jmeter/config/jmeter.properties");
+    JMeterUtils.initLocale();
+
+    // Initialize JMeter SaveService
+    SaveService.loadProperties();
+
+    HashTree testPlanTree = SaveService.loadTree(file);
+
+    // Run JMeter Test
+    StandardJMeterEngine jmeter = new StandardJMeterEngine();
     jmeter.configure(testPlanTree);
     jmeter.run();
   }
