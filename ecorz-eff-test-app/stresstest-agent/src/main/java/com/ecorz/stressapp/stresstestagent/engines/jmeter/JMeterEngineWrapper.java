@@ -67,11 +67,12 @@ public class JMeterEngineWrapper {
     jmeter.run();
   }
 
-  public void runWithJmxFile(File file) throws IOException {
+  public void runWithJmxFile(String jmeterHome, File file) throws IOException {
     //JMeter initialization (properties, log levels, locale, etc)
     JMeterUtils.loadJMeterProperties(
         "stresstest-agent/target/classes/com/ecorz/stressapp/stresstestagent/engines/jmeter/config/jmeter.properties");
     JMeterUtils.initLocale();
+    JMeterUtils.setJMeterHome(jmeterHome);
 
     // Initialize JMeter SaveService
     SaveService.loadProperties();

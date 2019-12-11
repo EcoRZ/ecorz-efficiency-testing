@@ -9,6 +9,7 @@ public class RunServiceConfig {
   // private String exampleProperty;
   private final static String lbIp = "134.60.64.217";
   private final static String lbPort = "8080";
+  private final static String JMETER_HOME = "/home/florian/apache-jmeter-5.2.1";
 
   public String getLbIp (){
     return lbIp;
@@ -16,5 +17,9 @@ public class RunServiceConfig {
 
   public String getLbPort (){
     return lbPort;
+  }
+
+  public String getJmeterHome (){
+    return JMETER_HOME;
   }
 }

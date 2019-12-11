@@ -31,11 +31,11 @@ public class RunEngine {
     jmeterWrapper.exampleRun();
   }
 
-  public void trigger(File fileById) throws IOException {
-    LOGGER.info(String.format("Starting %s with following testPlan file:\n %s", this,
-        fileById));
+  public void trigger(String jmeterHome, File fileById) throws IOException {
+    LOGGER.info(String.format("Starting %s with following testPlan file:\n%s\n"
+            + "and following jmeter_home:\n%s", this, fileById, jmeterHome));
 
-    jmeterWrapper.runWithJmxFile(fileById);
+    jmeterWrapper.runWithJmxFile(jmeterHome, fileById);
   }
 
   private static String convertToCliCommandString(BenchmarkContainer bmContainer, String dumpFile) {

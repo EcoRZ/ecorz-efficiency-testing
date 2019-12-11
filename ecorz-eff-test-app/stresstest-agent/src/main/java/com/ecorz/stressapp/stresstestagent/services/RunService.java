@@ -1,6 +1,7 @@
 package com.ecorz.stressapp.stresstestagent.services;
 
 import com.ecorz.stressapp.stresstestagent.config.ResultServiceConfig;
+import com.ecorz.stressapp.stresstestagent.config.RunServiceConfig;
 import com.ecorz.stressapp.stresstestagent.domain.run.RunConfigFields;
 import com.ecorz.stressapp.stresstestagent.domain.run.RunConfigFieldsResponse;
 import com.ecorz.stressapp.stresstestagent.engines.RunEngine;
@@ -37,8 +38,11 @@ public class RunService {
   private ResultService resultService;
   @Autowired
   private RunEngine runEngine;
+  // todo: put this config in ResultService and adjust code here
   @Autowired
-  private ResultServiceConfig config;
+  private ResultServiceConfig resultConfig;
+  @Autowired
+  private RunServiceConfig runConfig;
 
   public UUID saveRun(RunConfigFields runConfigFields) {
     UUID uuid = UUID.randomUUID();
@@ -78,15 +82,15 @@ public class RunService {
 
     BenchmarkContainer bmContainer = configFields.getContainer();
     final ResultFile file = ResultFile.ResultsFileFactory.of(
-        config.getResultsDumpFolder(), bmContainer);
+        resultConfig.getResultsDumpFolder(), bmContainer);
 
     if(tmpRepository.getFileById(runUuid) != null) {
       LOGGER.warn("Using temporary solution to trigger engine directly with file");
       try {
-        runEngine.trigger(tmpRepository.getFileById(runUuid));
+        runEngine.trigger(runConfig.getJmeterHome(), tmpRepository.getFileById(runUuid));
       } catch (IOException e) {
         LOGGER.error(String.format("Cannot start engine via input-file %s",
-            tmpRepository.getConfigById(runUuid)), e);
+            tmpRepository.getFileById(runUuid)), e);
       }
     } else {
       runEngine.trigger(bmContainer, file.getFullFileName());
