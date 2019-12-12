@@ -5,11 +5,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class RunServiceConfig {
-  // @Value("${example.property}")
-  // private String exampleProperty;
-  private final static String lbIp = "134.60.64.217";
-  private final static String lbPort = "8080";
-  private final static String JMETER_HOME = "/home/florian/apache-jmeter-5.2.1";
+  @Value("${ecorz.lb.ip}")
+  private String lbIp;
+  @Value("${ecorz.lb.port}")
+  private String lbPort;
+  @Value("${ecorz.jmeter.home}")
+  private String JMETER_HOME;
 
   public String getLbIp (){
     return lbIp;

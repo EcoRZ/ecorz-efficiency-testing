@@ -5,10 +5,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ResultServiceConfig {
-
-  // @Value("${example.property}")
-  // private String exampleProperty;
-  private final static String resultsDumpFolder = "./resultsDump";
+  @Value("${ecorz.results.resultsdumpfolder}")
+  private String resultsDumpFolder;
 
   public String getResultsDumpFolder (){
     return resultsDumpFolder;

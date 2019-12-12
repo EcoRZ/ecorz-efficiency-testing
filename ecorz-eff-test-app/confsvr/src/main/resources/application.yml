@@ -19,7 +19,7 @@ spring:
         encrypt.enabled: false
         git:
           uri: https://omi-gitlab.e-technik.uni-ulm.de/fh/ecorz-efficiency-testing-config.git
-          searchPaths: stresstest-agent,resultservice,runservice,service
+          searchPaths: stresstest-agent
           # username: native-cloud-apps
           # password: 0ffended
 
