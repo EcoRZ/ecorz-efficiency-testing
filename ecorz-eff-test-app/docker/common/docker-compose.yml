@@ -13,7 +13,7 @@ services:
     environment:
       POSTGRES_USER: ${DATABASE_USER}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-      POSTGRES_DB: "eagle_eye_local"
+      POSTGRES_DB: "ecorz_results"
   # stresstestagent:
     # image: stresstest-agent
     # ports:

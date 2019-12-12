@@ -18,10 +18,10 @@ spring:
       server:
         encrypt.enabled: false
         git:
-          uri: https://github.com/carnellj/config-repo/
-          searchPaths: licensingservice,organizationservice
-          username: native-cloud-apps
-          password: 0ffended
+          uri: https://omi-gitlab.e-technik.uni-ulm.de/fh/ecorz-efficiency-testing-config.git
+          searchPaths: stresstest-agent,resultservice,runservice,service
+          # username: native-cloud-apps
+          # password: 0ffended
 
 
 ####
