@@ -11,6 +11,8 @@ public class RunServiceConfig {
   private String lbPort;
   @Value("${ecorz.jmeter.home}")
   private String JMETER_HOME;
+  @Value("${ecorz.run.totalargs}")
+  private String totalArgs;
 
   public String getLbIp (){
     return lbIp;
@@ -22,5 +24,9 @@ public class RunServiceConfig {
 
   public String getJmeterHome (){
     return JMETER_HOME;
+  }
+
+  public String getTotalArgs() {
+    return totalArgs;
   }
 }

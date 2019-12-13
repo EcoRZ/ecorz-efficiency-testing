@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
-import org.omg.CORBA.NO_IMPLEMENT;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,21 +21,30 @@ public class RunConfig {
 
   public static class RunConfigFactory {
 
-    public static RunConfig createBM1_stuff1(UUID uuid, ArgsWrapper wrapper, List<String> stuff) {
+    public static RunConfig createThreadGroupConfig(UUID uuid, ArgsWrapper wrapper, List<String> stuff) {
       OptAndArgs optAndArgs1 = new OptAndArgs(BMOption.tg, Arrays.asList(wrapper.arg1, wrapper.arg2,
           wrapper.arg3));
       List<OptAndArgs> optAndArgsList = Arrays.asList(optAndArgs1);
-      return new RunConfig(uuid, BenchmarkContainer.BENCH_1, optAndArgsList, stuff);
+      return new RunConfig(uuid, BenchmarkContainer.TGROUP_BENCH, optAndArgsList, stuff);
+    }
+
+    public static RunConfig createURandomTimerConfig(UUID uuid, ArgsWrapper wrapper, List<String> stuff) {
+      OptAndArgs optAndArgs1 = new OptAndArgs(BMOption.urt, Arrays.asList(wrapper.arg1, wrapper.arg2,
+          wrapper.arg3));
+      List<OptAndArgs> optAndArgsList = Arrays.asList(optAndArgs1);
+      return new RunConfig(uuid, BenchmarkContainer.URT_BENCH, optAndArgsList, stuff);
     }
 
     public static RunConfig ofDomain(UUID uuid, RunConfigFields fields) {
       BenchmarkContainer container = BenchmarkContainer.valueOf(fields.getBmName());
 
       switch(container) {
-        case BENCH_1:
-          return createBM1_stuff1(uuid, new ArgsWrapper(fields.getArg1(), fields.getArg2(),
+        case TGROUP_BENCH:
+          return createThreadGroupConfig(uuid, new ArgsWrapper(fields.getArg1(), fields.getArg2(),
               fields.getArg3()), fields.getStuff());
-        case BENCH_2:
+        case URT_BENCH:
+          return createURandomTimerConfig(uuid, new ArgsWrapper(fields.getArg1(), fields.getArg2(),
+              fields.getArg3()), fields.getStuff());
         default:
           throw new IllegalArgumentException(String.format("Cannot convert %s to Benchmark type", fields.getBmName()));
       }

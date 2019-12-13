@@ -4,13 +4,10 @@ package com.ecorz.stressapp.stresstestagent.engines;
   //- POST Methode startrun/id: zum Starten des Simulations-Runs -> nein, in RunEngine
 
 import com.ecorz.stressapp.stresstestagent.engines.jmeter.JMeterEngineWrapper;
-import com.ecorz.stressapp.stresstestagent.result.ResultFile;
 import com.ecorz.stressapp.stresstestagent.run.RunException;
 import com.ecorz.stressapp.stresstestagent.run.benchmarks.BenchmarkContainer;
-import com.ecorz.stressapp.stresstestagent.run.benchmarks.OptAndArgs;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,10 +22,10 @@ public class RunEngine {
   private JMeterEngineWrapper jmeterWrapper;
 
   public void trigger(BenchmarkContainer bmContainer, String dumpFile) throws RunException {
-    LOGGER.info(String.format("Starting %s with following cli String:\n %s", this,
-        convertToCliCommandString(bmContainer, dumpFile)));
+    LOGGER.info(String.format("Starting %s with following Configuration String:\n %s", this,
+        convertToGenericCommandString(bmContainer, dumpFile)));
 
-    jmeterWrapper.exampleRun();
+    jmeterWrapper.runWithConfig(bmContainer.getOptAndArgsMap(), dumpFile);
   }
 
   public void trigger(String jmeterHome, File fileById) throws IOException {
@@ -38,7 +35,7 @@ public class RunEngine {
     jmeterWrapper.runWithJmxFile(jmeterHome, fileById);
   }
 
-  private static String convertToCliCommandString(BenchmarkContainer bmContainer, String dumpFile) {
+  private static String convertToGenericCommandString(BenchmarkContainer bmContainer, String dumpFile) {
     final String optsAndArgsMergedString = bmContainer.getOptAndArgsMap().entrySet().stream().
         map(entry -> String.join(" ","--" + entry.getKey(), String.join(
             " ", entry.getValue()))).collect(Collectors.joining(" "));

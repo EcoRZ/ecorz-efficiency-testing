@@ -7,9 +7,7 @@ import com.ecorz.stressapp.stresstestagent.run.benchmarks.BMOption;
 import com.ecorz.stressapp.stresstestagent.run.benchmarks.BenchmarkContainer;
 import com.ecorz.stressapp.stresstestagent.run.benchmarks.OptAndArgs;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class RunConfigFields {
@@ -35,7 +33,7 @@ public class RunConfigFields {
     // todo: get the hard coded info which option corresponds to arg1, arg2, arg3 from global config
     switch(container) {
       // todo: handle this with Optional
-      case BENCH_1: {
+      case TGROUP_BENCH: {
         checkOptSet(container, tg);
         checkArgsSet(container, container.getOptAndArgsMap().entrySet().
             stream().filter(entry -> entry.getKey() == tg).
@@ -50,7 +48,7 @@ public class RunConfigFields {
         arg1Tmp = arg2Tmp = arg3Tmp = "";
         break;
       }
-      case BENCH_2:
+      case URT_BENCH:
       default:
         throw new IllegalArgumentException(String.format("Arg field generation from Config not implemented for %s yet.", container.toString()));
     }
