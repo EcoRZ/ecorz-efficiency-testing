@@ -87,7 +87,7 @@ public class RunService {
     if(tmpRepository.getFileById(runUuid) != null) {
       LOGGER.warn("Using temporary solution to trigger engine directly with file");
       try {
-        runEngine.trigger(runConfig.getJmeterHome(), tmpRepository.getFileById(runUuid));
+        runEngine.trigger(tmpRepository.getFileById(runUuid));
       } catch (IOException e) {
         LOGGER.error(String.format("Cannot start engine via input-file %s",
             tmpRepository.getFileById(runUuid)), e);

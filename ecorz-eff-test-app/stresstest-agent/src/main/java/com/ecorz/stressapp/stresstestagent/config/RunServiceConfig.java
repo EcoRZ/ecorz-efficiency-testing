@@ -9,8 +9,6 @@ public class RunServiceConfig {
   private String lbIp;
   @Value("${ecorz.lb.port}")
   private String lbPort;
-  @Value("${ecorz.jmeter.home}")
-  private String JMETER_HOME;
   @Value("${ecorz.run.totalargs}")
   private String totalArgs;
 
@@ -20,10 +18,6 @@ public class RunServiceConfig {
 
   public String getLbPort (){
     return lbPort;
-  }
-
-  public String getJmeterHome (){
-    return JMETER_HOME;
   }
 
   public String getTotalArgs() {

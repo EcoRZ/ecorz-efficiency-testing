@@ -28,11 +28,11 @@ public class RunEngine {
     jmeterWrapper.runWithConfig(bmContainer.getOptAndArgsMap(), dumpFile);
   }
 
-  public void trigger(String jmeterHome, File fileById) throws IOException {
-    LOGGER.info(String.format("Starting %s with following testPlan file:\n%s\n"
-            + "and following jmeter_home:\n%s", this, fileById, jmeterHome));
+  public void trigger(File fileById) throws IOException {
+    LOGGER.info(String.format("Starting %s with following testPlan file:\n%s",
+        this, fileById));
 
-    jmeterWrapper.runWithJmxFile(jmeterHome, fileById);
+    jmeterWrapper.runWithJmxFile(fileById);
   }
 
   private static String convertToGenericCommandString(BenchmarkContainer bmContainer, String dumpFile) {
