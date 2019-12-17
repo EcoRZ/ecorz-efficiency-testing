@@ -59,22 +59,6 @@
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
     </dependency>
-    <dependency>
-      <groupId>org.apache.jmeter</groupId>
-      <artifactId>ApacheJMeter_core</artifactId>
-      <version>3.2</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.apache.logging.log4j</groupId>
-          <artifactId>slf4j-impl</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.jmeter</groupId>
-      <artifactId>ApacheJMeter_http</artifactId>
-      <version>2.8</version>
-    </dependency>
 
     <dependency>
       <groupId>postgresql</groupId>
@@ -93,6 +77,11 @@
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
       <version>2.6.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.lithium.mineraloil</groupId>
+      <artifactId>mineraloil-jmeter</artifactId>
+      <version>0.1.40</version>
     </dependency>
 
   </dependencies>
@@ -114,7 +103,7 @@
              <artifactId>maven-resources-plugin</artifactId>
              <executions>
                  <execution>
-                     <id>copy-resources</id>
+                     <id>copy-resources-docker</id>
                      <!-- here the phase you need -->
                      <phase>validate</phase>
                      <goals>
@@ -130,7 +119,24 @@
                          </resources>
                      </configuration>
                  </execution>
-             </executions>
+                 <execution>
+                   <id>copy-resources-jmeter</id>
+                   <!-- here the phase you need -->
+                   <phase>validate</phase>
+                   <goals>
+                     <goal>copy-resources</goal>
+                   </goals>
+                   <configuration>
+                     <outputDirectory>${basedir}/target/jmeter</outputDirectory>
+                     <resources>
+                       <resource>
+                         <directory>src/main/jmeter</directory>
+                         <filtering>true</filtering>
+                       </resource>
+                     </resources>
+                   </configuration>
+                 </execution>
+               </executions>
          </plugin>
        <!-- Selber -->
        <plugin>

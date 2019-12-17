@@ -5,9 +5,16 @@ import static com.google.common.base.Preconditions.checkState;
 
 import com.ecorz.stressapp.stresstestagent.config.JMeterConfig;
 import com.ecorz.stressapp.stresstestagent.config.RunServiceConfig;
+import com.ecorz.stressapp.stresstestagent.engines.jmeter.config.CustomThreadGroupElement;
+import com.ecorz.stressapp.stresstestagent.engines.jmeter.config.DefaultHttpSamplerElement;
+import com.ecorz.stressapp.stresstestagent.engines.jmeter.config.DefaultLoopElement;
 import com.ecorz.stressapp.stresstestagent.result.ResultFile;
 import com.ecorz.stressapp.stresstestagent.run.RunException;
 import com.ecorz.stressapp.stresstestagent.run.benchmarks.BMOption;
+import com.lithium.mineraloil.jmeter.JMeterRunner;
+import com.lithium.mineraloil.jmeter.test_elements.HTTPSamplerElement;
+import com.lithium.mineraloil.jmeter.test_elements.LoopElement;
+import com.lithium.mineraloil.jmeter.test_elements.ThreadGroupElement;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -26,6 +33,7 @@ import org.apache.jmeter.threads.ThreadGroup;
 import org.apache.jmeter.timers.UniformRandomTimer;
 import org.apache.jmeter.util.JMeterUtils;
 import org.apache.jorphan.collections.HashTree;
+import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,78 +49,33 @@ public class JMeterEngineWrapper {
   JMeterConfig jmeterConfig;
 
   public void runWithConfig(Map<BMOption, List<String>> optAndArgsMap, String dumpFile) throws RunException {
-    //JMeter Engine
-    StandardJMeterEngine jmeter = new StandardJMeterEngine();
+    JMeterRunner jmeter = new JMeterRunner(dumpFile, jmeterConfig.getJmeterHome());
 
-    //JMeter initialization (properties, log levels, locale, etc)
-    JMeterUtils.loadJMeterProperties(
-        //"stresstest-agent/target/classes/com/ecorz/stressapp/stresstestagent/engines/jmeter/config/jmeter.properties");
-       jmeterConfig.getJmeterHomeBin() + "/jmeter.properties");
-    JMeterUtils.initLocale();
-    JMeterUtils.setJMeterHome(jmeterConfig.getJmeterHome());
-
-    // JMeter Test Plan, basic all u JOrphan HashTree
-    HashTree testPlanTree = new HashTree();
-
-    // ResponseAssertion
-    ResponseAssertion responseAssertion = new ResponseAssertion();
-    responseAssertion.addTestString("This is the default welcome page used");
-    responseAssertion.setToSubstringType();
-    responseAssertion.setTestFieldResponseData();
-
-    // URT
     checkValidOpt(optAndArgsMap, BMOption.urt);
-    UniformRandomTimer uniformRandomTimer = new UniformRandomTimer();
-    // uniformRandomTimer.setDelay("1000");
-    // uniformRandomTimer.setRange(100);
-    uniformRandomTimer.setDelay(optAndArgsMap.get(BMOption.urt).get(0));
-    uniformRandomTimer.setRange(optAndArgsMap.get(BMOption.urt).get(1));
-    LOGGER.warn(String.format("Arg 3: %s not used yet for opt: %s",
-        optAndArgsMap.get(BMOption.urt).get(2), BMOption.urt));
+    LOGGER.warn(String.format("%s option/step cannot be set at the current implementation state.", BMOption.urt));
 
-    // HTTP Sampler
-    HTTPSampler httpSampler = new HTTPSampler();
-    httpSampler.setDomain(runServiceConfig.getLbIp());
-    httpSampler.setPort(Integer.valueOf(runServiceConfig.getLbPort()));
-    httpSampler.setPath("/");
-    httpSampler.setMethod("GET");
+    // todo: Configure testString
+    HTTPSamplerElement httpSamplerElement = DefaultHttpSamplerElement.INSTANCE.create(
+"particular configuration snippets which manage modules, global configuration",
+          runServiceConfig.getLbIp(), Integer.valueOf(runServiceConfig.getLbPort())
+    );
 
-    // Loop Controller
-    LoopController loopController = new LoopController();
-    loopController.setContinueForever(true);
-    loopController.addTestElement(httpSampler);
-    loopController.setFirst(true);
-    loopController.initialize();
+    LoopElement loopElement = DefaultLoopElement.INSTANCE.create(-1);
+    loopElement.addStep(httpSamplerElement);
 
-    // Thread Group
     checkValidOpt(optAndArgsMap, BMOption.tg);
-    ThreadGroup threadGroup = new ThreadGroup();
-    threadGroup.setNumThreads(Integer.valueOf(optAndArgsMap.get(BMOption.tg).get(0)));
-    threadGroup.setRampUp(Integer.valueOf(optAndArgsMap.get(BMOption.tg).get(1)));
-    threadGroup.setDuration(60);
-    threadGroup.setDelay(5);
-    threadGroup.setSamplerController(loopController);
-    LOGGER.warn(String.format("Arg 3: %s not used yet for opt: %s",
-        optAndArgsMap.get(BMOption.tg).get(2), BMOption.tg.toString()));
+    CustomThreadGroupElement.Fields fields = CustomThreadGroupElement.Fields.builder().
+        numOfThreads(Integer.valueOf(optAndArgsMap.get(BMOption.tg).get(0))).
+        duration(Integer.valueOf(jmeterConfig.getTestDuration())).
+        rampUpPeriod(Integer.valueOf(optAndArgsMap.get(BMOption.tg).get(1))).
+        startUpDel(Integer.valueOf(jmeterConfig.getTestDelay())).build();
+    ThreadGroupElement threadGroupElement = new CustomThreadGroupElement(fields).create();
+    threadGroupElement.addReportableStep(loopElement);
 
-    ResultCollector resultCollector = new ResultCollector();
-    resultCollector.setFilename(jmeterConfig.getFSBaseDir() + "/stuff-x");
-
-    // Test Plan
-    TestPlan testPlan = new TestPlan("Create JMeter Script From Java Code");
-
-    // Construct Test Plan from previously initialized elements
-    testPlanTree.add("testPlan", testPlan);
-    testPlanTree.add("responseAssertion", responseAssertion);
-    testPlanTree.add("uniformRandomTimer", uniformRandomTimer);
-    testPlanTree.add("loopController", loopController);
-    testPlanTree.add("threadGroup", threadGroup);
-    testPlanTree.add("httpSampler", httpSampler);
-    testPlanTree.add("resultCollector", resultCollector);
-
-    // Run Test Plan
-    jmeter.configure(testPlanTree);
+    jmeter.addStep(threadGroupElement);
     jmeter.run();
+    //Assert.assertTrue("Test run failed. Error rate: " + jmeter.getSummaryResults().getErrorRate(),
+    //    jmeter.getSummaryResults().isSuccessful());
   }
 
   private void checkValidOpt(Map<BMOption, List<String>> optAndArgsMap, BMOption opt) throws RunException {
@@ -132,21 +95,19 @@ public class JMeterEngineWrapper {
   }
 
   public void runWithJmxFile(File file) throws IOException {
-    //JMeter initialization (properties, log levels, locale, etc)
-    JMeterUtils.loadJMeterProperties(
-        //"stresstest-agent/target/classes/com/ecorz/stressapp/stresstestagent/engines/jmeter/config/jmeter.properties");
+    LOGGER.warn("Method runWithJmxFile() needs to get implemented");
+    //TODO
+    /* JMeterUtils.loadJMeterProperties(
         jmeterConfig.getJmeterHomeBin() + "/jmeter.properties");
     JMeterUtils.initLocale();
     JMeterUtils.setJMeterHome(jmeterConfig.getJmeterHome());
 
-    // Initialize JMeter SaveService
     SaveService.loadProperties();
 
     HashTree testPlanTree = SaveService.loadTree(file);
 
-    // Run JMeter Test
     StandardJMeterEngine jmeter = new StandardJMeterEngine();
     jmeter.configure(testPlanTree);
-    jmeter.run();
+    jmeter.run(); */
   }
 }

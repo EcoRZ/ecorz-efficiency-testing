@@ -11,6 +11,10 @@ public class JMeterConfig {
   private String JMETER_HOME_BIN;
   @Value("${ecorz.jmeter.fs.base.directory}")
   private String FILE_SERVER_BASE_DIRECTORY;
+  @Value("${ecorz.jmeter.test.duration}")
+  private String TEST_DURATION;
+  @Value("${ecorz.jmeter.test.delay}")
+  private String TEST_DELAY;
 
   public String getJmeterHome (){
     return JMETER_HOME;
@@ -22,5 +26,13 @@ public class JMeterConfig {
 
   public String getFSBaseDir() {
     return FILE_SERVER_BASE_DIRECTORY;
+  }
+
+  public String getTestDuration() {
+    return TEST_DURATION;
+  }
+
+  public String getTestDelay() {
+    return TEST_DELAY;
   }
 }
