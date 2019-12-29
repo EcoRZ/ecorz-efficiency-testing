@@ -1,28 +1,76 @@
+image: maven:3.6.1-jdk-11
+variables:
+  MAVEN_OPTS: "-Dhttps.protocols=TLSv1.2 -Dmaven.repo.local=.m2/repository -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
+  MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end"
+  ANSIBLE_SITE_DIR: "$CI_PROJECT_DIR/ansible/ansible-lb-webservers-v1/playbooks-content"
+  CONFIG_SERVER_ROOT: "$CI_PROJECT_DIR/ecorz-eff-test-app/confsvr"
+  STRESSTEST_AGENT_ROOT: "$CI_PROJECT_DIR/ecorz-eff-test-app/stresstest-agent"
+# Cache the Maven repository so that each job does not have to download it.
+cache:
+  key: mavenrepo
+  paths:
+    - ./.m2/repository/
 stages:
+  - pre_ansible_setup
   - build
   - test
+  - create_docker_image
+  - push_docker_image
   - deploy
 
-job 0:
-  stage: .pre
-  script: make something useful before build stage
-
-job 1:
+# TODO: Save set floating ips to make them referencabe in later stages
+pre_ansible_setup:
   stage: build
-  script: make build dependencies
+  before_script:
+      # set openstack_config and credentials
+    - source ${OPENSTACK_ENV}
+  script:
+      - cd ${ANSIBLE_SITE_DIR}
+      - ansible-playbook site.yml --extra-vars "inventories/development/group_vars/all" --extra-vars "key_file_path=${SSH_KEY} deploy=1"
 
-job 2:
+build_configsvr:
   stage: build
-  script: make build artifacts
+  script:
+    - cd ${CONFIG_SERVER_ROOT}
+    - mvn $MAVEN_CLI_OPTS install
 
-job 3:
+build_stresstest_agent:
+  stage: build
+  script:
+    - cd ${STRESSTEST_AGENT_ROOT}
+    - mvn $MAVEN_CLI_OPTS install
+
+# TODO
+test:
   stage: test
-  script: make test
+  script:
+    - echo "test stage needs to be implemented"
 
-job 4:
+# TODO
+create_docker_image:
+  stage: create_docker_image
+  script:
+    - echo "create_docker_image stage needs to be implemented"
+
+# TODO
+push_docker_image:
+  stage: push_docker_image
+  script:
+    - echo "push_docker_image stage needs to be implemented"
+
+# TODO
+deploy:
   stage: deploy
-  script: make deploy
-
-job 5:
-  stage: .post
-  script: make something useful at the end of pipeline
+  variables:
+    DB_CONT_NAME: "results_db"
+    DB_NAME: "ecorz_results"
+    CONF_SVR_CONT_NAME: "confsvr"
+    STRESSTEST_AGENT_CONT_NAME: "stresstest_agent"
+  script:
+    - echo "deploy stage needs to be implemented"
+    - echo "todo: ansible role to create 3 VMs (temporarily, maybe even more) needs to be implemented,
+      to deploy the different app-components (db, configsvr, stresstest-agent)"
+    - echo "deploy-commands something like ...:"
+    - echo "for postgre-db: docker run -p 5432:5432 -e POSTGRES_USER=${DATABASE_USER} -e POSTGRES_PASSWORD=${DATABASE_PASSWORD} -e POSTGRES_DB=${DB_NAME} -d --name ${DB_CONT_NAME} --restart on-failure postgres:9.5"
+    - echo "for configsvr: java -Dspring.cloud.config.server.git.username=${CONFIG_USER} -Dspring.cloud.config.server.git.password=${DATABASE_PASSWORD} -jar .m2/repository/com/thoughtmechanix/configurationserver/0.0.1-SNAPSHOT/configurationserver-0.0.1-SNAPSHOT.jar"
+    - echo "for stresstest-agent: java -Dspring.cloud.config.uri=http://localhost:8888 -Dspring.profiles.active=default -jar .m2/repository/com/ecorz/stressapp/stresstestagent/0.0.1-SNAPSHOT/stresstestagent-0.0.1-SNAPSHOT.jar"
