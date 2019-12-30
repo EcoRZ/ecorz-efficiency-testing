@@ -75,3 +75,15 @@ deploy:
     - 'echo "for postgre-db: docker run -p 5432:5432 -e POSTGRES_USER=${DATABASE_USER} -e POSTGRES_PASSWORD=${DATABASE_PASSWORD} -e POSTGRES_DB=${DB_NAME} -d --name ${DB_CONT_NAME} --restart on-failure postgres:9.5"'
     - 'echo "for configsvr: java -Dspring.cloud.config.server.git.username=${CONFIG_USER} -Dspring.cloud.config.server.git.password=${DATABASE_PASSWORD} -jar .m2/repository/com/thoughtmechanix/configurationserver/0.0.1-SNAPSHOT/configurationserver-0.0.1-SNAPSHOT.jar"'
     - 'echo "for stresstest-agent: java -Dspring.cloud.config.uri=http://localhost:8888 -Dspring.profiles.active=default -jar .m2/repository/com/ecorz/stressapp/stresstestagent/0.0.1-SNAPSHOT/stresstestagent-0.0.1-SNAPSHOT.jar"'
+
+post_ansible_setup:
+  stage: build
+  image:
+    name: williamyeh/ansible:ubuntu18.04
+  before_script:
+      # set openstack_config and credentials
+    - source ${OPENSTACK_ENV}
+  script:
+    - cd ${ANSIBLE_SITE_DIR}
+    - ansible-playbook site.yml --extra-vars "inventories/development/group_vars/all" --extra-vars "key_file_path=${SSH_KEY} delete=1"
+  when: manual
