@@ -21,12 +21,14 @@ stages:
 # TODO: Save set floating ips to make them referencabe in later stages
 pre_ansible_setup:
   stage: build
+  image:
+    name: williamyeh/ansible:ubuntu18.04
   before_script:
       # set openstack_config and credentials
     - source ${OPENSTACK_ENV}
   script:
-      - cd ${ANSIBLE_SITE_DIR}
-      - ansible-playbook site.yml --extra-vars "inventories/development/group_vars/all" --extra-vars "key_file_path=${SSH_KEY} deploy=1"
+    - cd ${ANSIBLE_SITE_DIR}
+    - ansible-playbook site.yml --extra-vars "inventories/development/group_vars/all" --extra-vars "key_file_path=${SSH_KEY} deploy=1"
 
 build_configsvr:
   stage: build
