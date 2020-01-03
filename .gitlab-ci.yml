@@ -28,12 +28,12 @@ pre_ansible_setup:
     - apt-get update -qy
     - apt-get install -y python-dev python-pip
     - pip install openstacksdk
-      # set openstack_config and credentials
-    - source ${OPENSTACK_ENV}
+
   script:
     - cd ${ANSIBLE_SITE_DIR}
     - echo 'Ansible refuses to read from a world-writeable folder, hence' && chmod -v 700 $(pwd)
-    - ansible-playbook site.yml --extra-vars "inventories/development/group_vars/all" --extra-vars "key_file_path=${SSH_KEY} deploy=1"
+    # set openstack_config and credentials beforehand
+    - source ${OPENSTACK_ENV} && ansible-playbook site.yml --extra-vars "inventories/development/group_vars/all" --extra-vars "key_file_path=${SSH_KEY} deploy=1"
 
 build_configsvr:
   stage: build
@@ -89,10 +89,9 @@ post_ansible_setup:
     - apt-get update -qy
     - apt-get install -y python-dev python-pip
     - pip install openstacksdk
-      # set openstack_config and credentials
-    - source ${OPENSTACK_ENV}
   script:
     - cd ${ANSIBLE_SITE_DIR}
     - echo 'Ansible refuses to read from a world-writeable folder, hence' && chmod -v 700 $(pwd)
-    - ansible-playbook site.yml --extra-vars "inventories/development/group_vars/all" --extra-vars "key_file_path=${SSH_KEY} delete=1"
+    # set openstack_config and credentials beforehand
+    - source ${OPENSTACK_ENV} && ansible-playbook site.yml --extra-vars "inventories/development/group_vars/all" --extra-vars "key_file_path=${SSH_KEY} delete=1"
   when: manual
