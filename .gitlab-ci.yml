@@ -26,9 +26,9 @@ pre_ansible_setup:
     name: williamyeh/ansible:ubuntu18.04
   before_script:
     - chmod -v 500 ${SSH_KEY}
-    - ln -s /usr/bin/python3 /usr/bin/python
     - apt-get update -qy
-    - apt-get install -y python-apt python-dev python-pip
+    - apt-get install -y python-dev python-pip
+    - ln -s /usr/bin/python3 /usr/bin/python
     - pip install openstacksdk
 
   script:
@@ -91,7 +91,8 @@ post_ansible_setup:
     - chmod -v 500 ${SSH_KEY}
     - ln -s /usr/bin/python3 /usr/bin/python
     - apt-get update -qy
-    - apt-get install -y python-apt python-dev python-pip
+    - apt-get install -y ython-dev python-pip
+    - ln -s /usr/bin/python3 /usr/bin/python
     - pip install openstacksdk
   script:
     - cd ${ANSIBLE_SITE_DIR}
