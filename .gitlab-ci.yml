@@ -28,6 +28,7 @@ pre_ansible_setup:
       # set openstack_config and credentials
     - source ${OPENSTACK_ENV}
   script:
+    - echo 'Ansible refuses to read from a world-writeable folder, hence' && chmod -v 700 $(pwd)
     - cd ${ANSIBLE_SITE_DIR}
     - ansible-playbook site.yml --extra-vars "inventories/development/group_vars/all" --extra-vars "key_file_path=${SSH_KEY} deploy=1"
 
@@ -85,6 +86,7 @@ post_ansible_setup:
       # set openstack_config and credentials
     - source ${OPENSTACK_ENV}
   script:
+    - echo 'Ansible refuses to read from a world-writeable folder, hence' && chmod -v 700 $(pwd)
     - cd ${ANSIBLE_SITE_DIR}
     - ansible-playbook site.yml --extra-vars "inventories/development/group_vars/all" --extra-vars "key_file_path=${SSH_KEY} delete=1"
   when: manual
