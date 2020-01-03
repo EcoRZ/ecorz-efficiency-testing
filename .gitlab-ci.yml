@@ -17,10 +17,11 @@ stages:
   - create_docker_image
   - push_docker_image
   - deploy
+  - post_ansible_setup
 
 # TODO: Save set floating ips to make them referencabe in later stages
 pre_ansible_setup:
-  stage: build
+  stage: pre_ansible_setup
   image:
     name: williamyeh/ansible:ubuntu18.04
   before_script:
@@ -77,7 +78,7 @@ deploy:
     - 'echo "for stresstest-agent: java -Dspring.cloud.config.uri=http://localhost:8888 -Dspring.profiles.active=default -jar .m2/repository/com/ecorz/stressapp/stresstestagent/0.0.1-SNAPSHOT/stresstestagent-0.0.1-SNAPSHOT.jar"'
 
 post_ansible_setup:
-  stage: build
+  stage: post_ansible_setup
   image:
     name: williamyeh/ansible:ubuntu18.04
   before_script:
