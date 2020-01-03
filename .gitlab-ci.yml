@@ -28,7 +28,7 @@ pre_ansible_setup:
     - chmod -v 500 ${SSH_KEY}
     - apt-get update -qy
     - apt-get install -y python-dev python-pip
-    - ln -s /usr/bin/python3 /usr/bin/python
+    # - ln -s /usr/bin/python3 /usr/bin/python
     - pip install openstacksdk
 
   script:
@@ -92,7 +92,7 @@ post_ansible_setup:
     - ln -s /usr/bin/python3 /usr/bin/python
     - apt-get update -qy
     - apt-get install -y ython-dev python-pip
-    - ln -s /usr/bin/python3 /usr/bin/python
+    # - ln -s /usr/bin/python3 /usr/bin/python
     - pip install openstacksdk
   script:
     - cd ${ANSIBLE_SITE_DIR}
