@@ -25,6 +25,9 @@ pre_ansible_setup:
   image:
     name: williamyeh/ansible:ubuntu18.04
   before_script:
+    - apt-get update -qy
+    - apt-get install -y python-dev python-pip
+    - pip install openstacksdk
       # set openstack_config and credentials
     - source ${OPENSTACK_ENV}
   script:
@@ -83,6 +86,9 @@ post_ansible_setup:
   image:
     name: williamyeh/ansible:ubuntu18.04
   before_script:
+    - apt-get update -qy
+    - apt-get install -y python-dev python-pip
+    - pip install openstacksdk
       # set openstack_config and credentials
     - source ${OPENSTACK_ENV}
   script:
