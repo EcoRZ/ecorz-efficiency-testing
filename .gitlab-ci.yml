@@ -69,14 +69,12 @@ test:
 
 create_docker_image:
   stage: create_docker_image
-  image:
-    name: docker:19.03.1
   variables:
     CONFSVR_DIR: "$CI_PROJECT_DIR/ecorz-eff-test-app/confsvr"
     STRESSTESTAGENT_DIR: "$CI_PROJECT_DIR/ecorz-eff-test-app/stresstest-agent"
   before_script:
     - apt-get update -qy
-    - apt-get install -y maven
+    - apt-get install -y docker-ce docker-ce-cli containerd.io
   script:
     - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
     - cd "${CONFSVR_DIR}"
