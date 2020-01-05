@@ -9,7 +9,8 @@ variables:
 cache:
   key: mavenrepo
   paths:
-    - ./.m2/repository/
+    - .m2/repository/
+    - target/
 stages:
   - pre_ansible_setup
   - build
@@ -40,15 +41,25 @@ pre_ansible_setup:
 
 build_configsvr:
   stage: build
+  variables:
+    SNAPSHOT_NAME: "configurationserver-0.0.1-SNAPSHOT.jar"
   script:
     - cd ${CONFIG_SERVER_ROOT}
     - mvn $MAVEN_CLI_OPTS install
+  artifacts:
+    paths:
+      - "target/${SNAPSHOT_NAME}"
 
 build_stresstest_agent:
   stage: build
+  variables:
+    SNAPSHOT_NAME: "stresstestagent-0.0.1-SNAPSHOT.jar"
   script:
     - cd ${STRESSTEST_AGENT_ROOT}
     - mvn $MAVEN_CLI_OPTS install
+  artifacts:
+    paths:
+      - "target/${SNAPSHOT_NAME}"
 
 # TODO
 test:
