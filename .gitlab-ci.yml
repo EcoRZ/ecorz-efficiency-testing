@@ -56,11 +56,19 @@ test:
   script:
     - echo "test stage needs to be implemented"
 
-# TODO
 create_docker_image:
   stage: create_docker_image
+  variables:
+    CONFSVR_DIR: "$CI_PROJECT_DIR/ecorz-eff-test-app/confsvr"
+    STRESSTESTAGENT_DIR: "$CI_PROJECT_DIR/ecorz-eff-test-app/stresstest-agent"
   script:
-    - echo "create_docker_image stage needs to be implemented"
+    - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
+    - cd "${CONFSVR_DIR}"
+    - mvn package
+    - mvn deploy
+    - cd "${STRESSTESTAGENT_DIR}"
+    - mvn package
+    - mvn deploy
 
 # TODO
 push_docker_image:

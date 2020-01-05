@@ -7,7 +7,8 @@ RUN wget --header='Cookie: oraclelicense=accept-securebackup-cookie' "http://dow
 RUN unzip jce_policy-8.zip
 RUN rm jce_policy-8.zip
 RUN yes |cp -v ./UnlimitedJCEPolicyJDK8/*.jar /usr/lib/jvm/java-1.8-openjdk/jre/lib/security/
-ADD configurationserver-0.0.1-SNAPSHOT.jar /usr/local/configserver/
-ADD run.sh run.sh
+ARG JAR_FILE
+ADD target/${JAR_FILE} /usr/local/configserver/
+ADD target/dockerfile/run.sh run.sh
 RUN chmod +x run.sh
 CMD ./run.sh

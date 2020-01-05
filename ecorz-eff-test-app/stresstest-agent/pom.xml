@@ -138,89 +138,27 @@
                  </execution>
                </executions>
          </plugin>
-       <!-- Selber -->
        <plugin>
-         <groupId>org.apache.maven.plugins</groupId>
-         <artifactId>maven-dependency-plugin</artifactId>
+         <groupId>com.spotify</groupId>
+         <artifactId>dockerfile-maven-plugin</artifactId>
+         <version>1.4.3</version>
          <executions>
            <execution>
-             <id>copy</id>
-             <phase>package</phase>
+             <id>default</id>
              <goals>
-               <goal>copy</goal>
+               <goal>build</goal>
+               <goal>push</goal>
              </goals>
-             <configuration>
-               <artifactItems>
-                 <artifactItem>
-                 <!--
-                     Specify groupId, artifactId, version and type for the
-                     artifact you want to package in the Docker image.
-                     In the case of a Spring Boot application, these are
-                     the same as the project group id, artifact id
-                     and version.
-                 -->
-                 <groupId>${project.groupId}</groupId>
-                 <artifactId>${project.artifactId}</artifactId>
-                 <version>${project.version}</version>
-                 <type>jar</type>
-                 <overWrite>true</overWrite>
-                 <outputDirectory>${basedir}/target/dockerfile</outputDirectory>
-                 <!--
-                     Specify the destination name as to have one and the same name
-                     to refer to in the Docker file.
-                 -->
-               </artifactItem>
-               <!-- Add additional artifacts to be packaged in the Docker image here. -->
-
-               </artifactItems>
-               <outputDirectory>${basedir}/target/dockerfile</outputDirectory>
-               <overWriteReleases>true</overWriteReleases>
-               <overWriteSnapshots>true</overWriteSnapshots>
-             </configuration>
            </execution>
          </executions>
+         <configuration>
+           <repository>ecorz-eff-test-app/stresstestagent</repository>
+           <tag>${project.version}</tag>
+           <buildArgs>
+             <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+           </buildArgs>
+         </configuration>
        </plugin>
-       <!--
-       <plugin>
-         <artifactId>maven-resources-plugin</artifactId>
-         <version>3.1.0</version>
-         <executions>
-           <execution>
-             <id>copy-resources</id>
-             <phase>validate</phase>
-             <goals>
-               <goal>copy-resources</goal>
-             </goals>
-             <configuration>
-               <outputDirectory>${basedir}/target/classes/com/ecorz/stressapp/stresstestagent/engines/jmeter/config</outputDirectory>
-               <resources>
-                 <resource>
-                   <directory>src/main/java/com/ecorz/stressapp/stresstestagent/engines/jmeter/config</directory>
-                   <filtering>true</filtering>
-                 </resource>
-               </resources>
-             </configuration>
-           </execution>
-         </executions>
-       </plugin>
-      -->
-       <!-- Ende selber -->
-         <plugin>
-             <groupId>com.spotify</groupId>
-             <artifactId>docker-maven-plugin</artifactId>
-             <version>0.4.10</version>
-             <configuration>
-                 <imageName>${docker.image.name}:${docker.image.tag}</imageName>
-                 <dockerDirectory>${basedir}/target/dockerfile</dockerDirectory>
-                 <resources>
-                     <resource>
-                         <targetPath>/</targetPath>
-                         <directory>${project.build.directory}</directory>
-                         <include>${project.build.finalName}.jar</include>
-                     </resource>
-                 </resources>
-             </configuration>
-         </plugin>
          <plugin>
              <groupId>org.springframework.boot</groupId>
              <artifactId>spring-boot-maven-plugin</artifactId>
