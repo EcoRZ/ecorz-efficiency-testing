@@ -74,6 +74,9 @@ create_docker_image:
   variables:
     CONFSVR_DIR: "$CI_PROJECT_DIR/ecorz-eff-test-app/confsvr"
     STRESSTESTAGENT_DIR: "$CI_PROJECT_DIR/ecorz-eff-test-app/stresstest-agent"
+  before_script:
+    - apt-get update -qy
+    - apt-get install -y maven
   script:
     - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
     - cd "${CONFSVR_DIR}"
@@ -111,7 +114,6 @@ post_ansible_setup:
     name: williamyeh/ansible:ubuntu18.04
   before_script:
     - chmod -v 500 ${SSH_KEY}
-    - ln -s /usr/bin/python3 /usr/bin/python
     - apt-get update -qy
     - apt-get install -y ython-dev python-pip
     # - ln -s /usr/bin/python3 /usr/bin/python
