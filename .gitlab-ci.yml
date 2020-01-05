@@ -69,6 +69,8 @@ test:
 
 create_docker_image:
   stage: create_docker_image
+  image:
+    name: docker:19.03.1
   variables:
     CONFSVR_DIR: "$CI_PROJECT_DIR/ecorz-eff-test-app/confsvr"
     STRESSTESTAGENT_DIR: "$CI_PROJECT_DIR/ecorz-eff-test-app/stresstest-agent"
