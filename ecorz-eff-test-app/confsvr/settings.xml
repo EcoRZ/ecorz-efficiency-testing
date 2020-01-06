@@ -7,7 +7,7 @@
   <pluginGroups/>
   <servers>
     <server>
-      <id>omi-gitlab.e-technik.uni-ulm.de:443</id>
+      <id>omi-gitlab.e-technik.uni-ulm.de</id>
     </server>
   </servers>
 <mirrors/>
