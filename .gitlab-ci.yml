@@ -79,10 +79,10 @@ create_docker_image:
     - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
     - cd "${CONFSVR_DIR}"
     - mvn package
-    - mvn deploy
+    - mvn deploy -DaltDeploymentRepository=internal.repo::default::file:///.m2
     - cd "${STRESSTESTAGENT_DIR}"
     - mvn package
-    - mvn deploy
+    - mvn deploy -DaltDeploymentRepository=internal.repo::default::file:///.m2
 
 # TODO
 push_docker_image:
