@@ -111,7 +111,7 @@
              </execution>
            </executions>
            <configuration>
-             <repository>ecorz-eff-test-app/confsvr</repository>
+             <repository>fh/docker-reg/confsvr</repository>
              <tag>${project.version}</tag>
              <buildArgs>
                <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
