@@ -78,12 +78,10 @@ create_docker_image:
   script:
     - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
     - cd "${CONFSVR_DIR}"
-    - mvn dockerfile:build
-    - mvn dockerfile:tag
+    - mvn package
     - mvn dockerfile:push
     - cd "${STRESSTESTAGENT_DIR}"
-    - mvn dockerfile:build
-    - mvn dockerfile:tag
+    - mvn package
     - mvn dockerfile:push
 
 # TODO
