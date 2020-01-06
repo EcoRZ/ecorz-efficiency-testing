@@ -7,7 +7,7 @@
   <pluginGroups/>
 <servers>
   <server>
-    <id>omi-gitlab.e-technik.uni-ulm.de</id>
+    <id>omi-registry.e-technik.uni-ulm.de/fh/docker-reg</id>
   </server>
 </servers>
   <mirrors/>

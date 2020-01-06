@@ -111,7 +111,7 @@
              </execution>
            </executions>
            <configuration>
-             <repository>fh/docker-reg/confsvr</repository>
+             <repository>omi-registry.e-technik.uni-ulm.de/fh/docker-reg/confsvr</repository>
              <tag>${project.version}</tag>
              <buildArgs>
                <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
