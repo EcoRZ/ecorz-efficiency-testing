@@ -152,7 +152,7 @@
            </execution>
          </executions>
          <configuration>
-           <repository>fh/docker-reg/stresstestagent</repository>
+           <repository>omi-gitlab.e-technik.uni-ulm.de:443/fh/docker-reg/stresstestagent</repository>
            <tag>${project.version}</tag>
            <buildArgs>
              <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
