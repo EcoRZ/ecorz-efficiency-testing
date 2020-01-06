@@ -116,7 +116,6 @@
              <buildArgs>
                <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
              </buildArgs>
-             <useMavenSettingsForAuth>false</useMavenSettingsForAuth>
            </configuration>
        </plugin>
        <plugin>
