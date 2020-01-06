@@ -45,7 +45,7 @@ build_configsvr:
     SNAPSHOT_NAME: "configurationserver-0.0.1-SNAPSHOT.jar"
   script:
     - cd ${CONFIG_SERVER_ROOT}
-    - mvn $MAVEN_CLI_OPTS install
+    - mvn $MAVEN_CLI_OPTS install -Ddockerfile.skip
   artifacts:
     paths:
       - "target/${SNAPSHOT_NAME}"
@@ -56,7 +56,7 @@ build_stresstest_agent:
     SNAPSHOT_NAME: "stresstestagent-0.0.1-SNAPSHOT.jar"
   script:
     - cd ${STRESSTEST_AGENT_ROOT}
-    - mvn $MAVEN_CLI_OPTS install
+    - mvn $MAVEN_CLI_OPTS install -Ddockerfile.skip
   artifacts:
     paths:
       - "target/${SNAPSHOT_NAME}"
