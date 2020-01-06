@@ -77,7 +77,7 @@ create_docker_image:
     - sh get-docker.sh
   script:
     - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
-    - wc -l ~/.docker/config.json 
+    - cat ~/.docker/config.json 
     - cd "${CONFSVR_DIR}"
     - mvn package
     - mvn deploy -DaltDeploymentRepository=internal.repo::default::file:///.m2
