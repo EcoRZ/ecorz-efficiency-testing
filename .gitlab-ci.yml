@@ -8,7 +8,6 @@ variables:
   CONTAINER_REG_URL: "omi-registry.e-technik.uni-ulm.de/fh/docker-reg"
 # Cache the Maven repository so that each job does not have to download it.
 cache:
-  key: mavenrepo
   paths:
     - .m2/repository/
     - target/
