@@ -32,6 +32,7 @@ pre_ansible_setup:
     - apt-get install -y python-dev python-pip
     # - ln -s /usr/bin/python3 /usr/bin/python
     - pip install openstacksdk
+    - mkdir -p target/
 
   script:
     - cd ${ANSIBLE_SITE_DIR}
