@@ -21,6 +21,6 @@ webserver_az2_count: 1
 nw_register_name: ecorz_nw
 subnet_register_name: ecorz_subnet
 
-hosts_tmp_folder: .
+hosts_tmp_folder: target
 hosts_tmp_file: hosts
 hosts_tmp: "{{ hosts_tmp_folder }}/{{ hosts_tmp_file }}"
