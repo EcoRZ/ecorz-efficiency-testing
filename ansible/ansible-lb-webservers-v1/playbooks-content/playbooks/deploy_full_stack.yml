@@ -95,6 +95,10 @@
         - item.server.az != az1 and item.server.az != az2
       with_items:
         - "{{ register_upstream }}"
+    - name: persist hostnames and ips
+      lineinfile: path={{ hosts_tmp }} line="{{ item.server.name }},{{ item.server.accessIPv4 }}" create=yes state=present
+      with_items:
+        - "{{ register_upstream }}"
 
 - hosts: webservers:haproxies
   remote_user: ubuntu
