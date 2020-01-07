@@ -43,6 +43,9 @@ pre_ansible_setup:
     # TODO: Remove this tmp solution when populating in-memory inventory works
     # in runner
     - echo -e "webserver_az1_1,134.60.64.119\nwebserver_az2_1,134.60.64.217\nhaproxy_1,134.60.64.249" > target/hosts
+  cache:
+    paths:
+      - target/
   allow_failure: true
 
 build_configsvr:
