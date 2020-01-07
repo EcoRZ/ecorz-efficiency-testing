@@ -42,8 +42,7 @@ pre_ansible_setup:
     - source ${OPENSTACK_ENV} && ansible-playbook site.yml --extra-vars "inventories/development/group_vars/all" --extra-vars "key_file_path=${SSH_KEY} deploy=1"
     # TODO: Remove this tmp solution when populating in-memory inventory works
     # in runner
-    - ls
-    - echo -e "webserver_az1_1,134.60.64.119\nwebserver_az2_1,134.60.64.217\nhaproxy_1,134.60.64.249" > target/hosts
+    - cd "${CI_PROJECT_DIR}" && echo -e "webserver_az1_1,134.60.64.119\nwebserver_az2_1,134.60.64.217\nhaproxy_1,134.60.64.249" > target/hosts
   artifacts:
     paths:
       - "target/hosts"
