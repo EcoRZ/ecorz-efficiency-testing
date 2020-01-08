@@ -44,8 +44,10 @@
       include_role:
         name: create_rule
       loop: "{{ docker_container_ports }}"
-    - name: Debug
+    - name: Debug1
       shell: ansible --version
+      register: tmpi
+    - debug: msg="{{ tmpi.stdout }}"
     - name: Deploy VMs for docker installation
       vars:
         docker_container_name: "{{ item }}"
