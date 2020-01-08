@@ -44,10 +44,6 @@
       include_role:
         name: create_rule
       loop: "{{ docker_container_ports }}"
-    - name: Debug1
-      shell: ansible --version
-      register: tmpi
-    - debug: msg="{{ tmpi.stdout }}"
     - name: Deploy VMs for docker installation
       vars:
         docker_container_name: "{{ item }}"
@@ -56,7 +52,7 @@
       include_role:
         name: deploy_docker
       with_items:
-        - "{{ groups['docker_containers'] }}"
+        - "{{ groups['all'] }}"
     - name: Add VMs for docker installation to inventory
       add_host: name="{{ item.server.name }}" groups=docker_containers ansible_ssh_host="{{ item.server.accessIPv4 }}" ansible_ssh_private_key_file="{{ key_file_path }}"
       with_items:
