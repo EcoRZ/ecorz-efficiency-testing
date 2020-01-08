@@ -1,0 +1,84 @@
+---
+- name: update apt
+  remote_user: ubuntu
+  become: yes
+  apt:
+    update_cache: yes
+
+- name: Install apt-transport-https (see https://docs.docker.com/engine/installation/linux/ubuntu/#recommended-extra-packages-for-trusty-1404)
+  remote_user: ubuntu
+  become: yes
+  apt:
+    name: apt-transport-https
+    state: latest
+
+- name: Install ca-certificates
+  remote_user: ubuntu
+  become: yes
+  apt:
+    name: ca-certificates
+    state: latest
+
+- name: Install software-properties-common
+  remote_user: ubuntu
+  become: yes
+  apt:
+    name: software-properties-common
+    state: latest
+
+- name: Add Docker apt key
+  remote_user: ubuntu
+  become: yes
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    id: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
+    state: present
+  register: add_repository_key
+  ignore_errors: true
+
+- name: Ensure curl is present (on older systems without SNI).
+  remote_user: ubuntu
+  become: yes
+  apt:
+    name: curl
+    state: latest
+  when: add_repository_key|failed
+
+- name: Add Docker apt key (alternative for older systems without SNI).
+  remote_user: ubuntu
+  become: yes
+  shell: "curl -sSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -"
+  args:
+    warn: no
+  when: add_repository_key|failed
+
+  # - name: Install lsb-core apt package
+  # remote_user: ubuntu
+  # become: yes
+  # apt:
+  # pkg: lsb-core
+  # state: latest
+  # update_cache: yes
+
+- name: Add docker apt repo
+  remote_user: ubuntu
+  become: yes
+  apt_repository:
+    repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
+    update_cache: yes
+
+- name: Install Docker apt package
+  remote_user: ubuntu
+  become: yes
+  apt:
+    pkg: docker-ce
+    state: latest
+    update_cache: yes
+
+- name: Ensure Docker service is installed and restarted
+  remote_user: ubuntu
+  become: yes
+  service:
+    name: docker
+    state: restarted
+    enabled: yes

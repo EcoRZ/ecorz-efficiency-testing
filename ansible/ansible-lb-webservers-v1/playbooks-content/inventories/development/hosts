@@ -13,3 +13,8 @@ all:
     haproxies:
       hosts:
         # haproxy
+    docker_containers:
+      hosts:
+        confsvr:
+        stresstest_agent:
+        results_db:

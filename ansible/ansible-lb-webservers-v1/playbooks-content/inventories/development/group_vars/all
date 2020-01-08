@@ -5,6 +5,7 @@ router_name_par: ecorz_router
 
 sec_group_name_ans: ansible
 sec_group_name_webs: webserver
+sec_group_name_docker: docker_ecorz
 
 port_nmbr_ssh: 22
 port_nmbr_web: 80
@@ -24,3 +25,12 @@ subnet_register_name: ecorz_subnet
 hosts_tmp_folder: target
 hosts_tmp_file: hosts
 hosts_tmp: "{{ hosts_tmp_folder }}/{{ hosts_tmp_file }}"
+
+hosts_tmp_stresstest_folder: target
+hosts_tmp_stresstest_file: hosts_stresstest
+hosts_tmp_stresstest: "{{ hosts_tmp_stresstest_folder }}/{{ hosts_tmp_stresstest_file }}"
+
+docker_container_ports:
+  - 8090
+  - 8091
+  - 5432

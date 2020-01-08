@@ -1,0 +1,18 @@
+---
+- name: Install Docker on VM
+  os_server:
+    state: present
+    # container name must be set here -> not best design, i.e. make deploy vm
+    # generic and set generic app-name here
+    name: "{{ docker_container_name }}"
+    image: ubuntu-1804
+    key_name: id_rsa_omistack
+    timeout: 200
+    flavor: medium
+    network: "{{ nw_name }}"
+    security_groups: "{{ sec_group_list|join(',') }}"
+    verify: false
+  register: containers_
+- name: Persist register-variable for upstream use
+  set_fact:
+    register_upstream: "{{ register_upstream + [containers_] }}"

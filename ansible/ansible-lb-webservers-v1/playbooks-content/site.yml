@@ -4,3 +4,5 @@
   when: deploy is defined
 - import_playbook: playbooks/delete_full_stack.yml
   when: delete is defined
+- import_playbook: playbooks/deploy_stresstest_setup.yml
+  when: stresstest_setup is defined

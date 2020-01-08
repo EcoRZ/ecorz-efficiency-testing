@@ -1,0 +1,10 @@
+---
+# defaults file for deploy_docker
+
+name: def_docker
+nw_name: def_nw
+
+sec_group_list: [ansible]
+
+az: def_az
+register_upstream: []

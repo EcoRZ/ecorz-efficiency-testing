@@ -1,0 +1,78 @@
+---
+- hosts: localhost
+  gather_facts: false
+  vars:
+      register_upstream: []
+  tasks:
+    - name: create network
+      vars:
+        nw_name: "{{ nw_name_par }}"
+      include_role:
+        name: create_network
+    - name: create subnet
+      vars:
+        subnet_name: "{{ subnet_name_par }}"
+        nw_id: "{{ hostvars['localhost']['ecorz_nw'].id }}"
+      include_role:
+        name: create_subnet
+    - name: create router
+      vars:
+        router_name: "{{ router_name_par }}"
+        interface_name: ecorz_subnet
+      include_role:
+        name: create_router
+    - name: create security group
+      vars:
+        sec_group_name: "{{ sec_group_name_ans }}"
+      include_role:
+        name: create_security_group
+    - name: create security group rule
+      vars:
+        sec_group_name: "{{ sec_group_name_ans }}"
+        port_nmbr: "{{ port_nmbr_ssh }}"
+      include_role:
+        name: create_rule
+    - name: create security group
+      vars:
+        sec_group_name: "{{ sec_group_name_docker }}"
+      include_role:
+        name: create_security_group
+    - name: create security group rule
+      vars:
+        sec_group_name: "{{ sec_group_name_docker }}"
+        port_nmbr: "{{ item }}"
+      include_role:
+        name: create_rule
+      loop: "{{ docker_container_ports }}"
+    - name: Deploy VMs for docker installation
+      vars:
+        docker_container_name: "{{ item }}"
+        nw_name: ecorz_nw
+        sec_group_list: [default,ansible,docker_ecorz]
+      include_role:
+        name: deploy_docker
+      with_items: "{{ groups['docker_containers'] }}"
+    - name: Add VMs for docker installation to inventory
+      add_host: name="{{ item.server.name }}" groups=docker_containers ansible_ssh_host="{{ item.server.accessIPv4 }}" ansible_ssh_private_key_file="{{ key_file_path }}"
+      with_items:
+        - "{{ register_upstream }}"
+    - name: persist hostnames and ips in {{ hosts_tmp_stresstest }}
+      lineinfile: path={{ hosts_tmp_stresstest }} line="{{ item.server.name }},{{ item.server.accessIPv4 }}" create=yes state=present
+      with_items:
+        - "{{ register_upstream }}"
+
+- hosts: docker_containers
+  remote_user: ubuntu
+  gather_facts: false
+  roles:
+    - wait_for_port1_ready
+
+- hosts: docker_containers
+  gather_facts: false
+  roles:
+    - config_docker
+
+# - hosts: docker_containers
+#  gather_facts: false
+  # roles:
+  # - config_haproxy
