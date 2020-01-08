@@ -44,10 +44,9 @@
       include_role:
         name: create_rule
       loop: "{{ docker_container_ports }}"
-    - name: Debug inventory
-      debug: msg="host {{ item }}"
-      with_items:
-        - "{{ groups['all']['docker_containers'] }}"
+    - name: Debug
+      tasks:
+        - shell: ansible --version
     - name: Deploy VMs for docker installation
       vars:
         docker_container_name: "{{ item }}"
