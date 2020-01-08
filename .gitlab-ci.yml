@@ -100,7 +100,6 @@ push_docker_image:
   script:
     - echo "push_docker_image stage needs to be implemented"
 
-# TODO
 deploy:
   stage: deploy
   variables:
@@ -108,14 +107,28 @@ deploy:
     DB_NAME: "ecorz_results"
     CONF_SVR_CONT_NAME: "confsvr"
     STRESSTEST_AGENT_CONT_NAME: "stresstest_agent"
+  image:
+    name: williamyeh/ansible:ubuntu18.04
+  before_script:
+    - chmod -v 500 ${SSH_KEY}
+    - apt-get update -qy
+    - apt-get install -y python-dev python-pip
+    # - ln -s /usr/bin/python3 /usr/bin/python
+    - pip install openstacksdk
+    - mkdir -p target/
+
   script:
-    - 'echo "deploy stage needs to be implemented"'
-    - 'echo "todo: ansible role to create 3 VMs (temporarily, maybe even more) needs to be implemented, to deploy the different app-components (db, configsvr, stresstest-agent)"'
-    - 'echo "deploy-commands something like ...:"'
-    - 'echo "for postgre-db: docker run -p 5432:5432 -e POSTGRES_USER=${DATABASE_USER} -e POSTGRES_PASSWORD=${DATABASE_PASSWORD} -e POSTGRES_DB=${DB_NAME} -d --name ${DB_CONT_NAME} --restart on-failure postgres:9.5"'
-    - 'echo "for configsvr: java -Dspring.cloud.config.server.git.username=${CONFIG_USER} -Dspring.cloud.config.server.git.password=${DATABASE_PASSWORD} -jar .m2/repository/com/thoughtmechanix/configurationserver/0.0.1-SNAPSHOT/configurationserver-0.0.1-SNAPSHOT.jar"'
-    - 'echo "for stresstest-agent: java -Dspring.cloud.config.uri=http://localhost:8888 -Dspring.profiles.active=default -jar .m2/repository/com/ecorz/stressapp/stresstestagent/0.0.1-SNAPSHOT/stresstestagent-0.0.1-SNAPSHOT.jar"'
-    - cat target/hosts
+    - cd ${ANSIBLE_SITE_DIR}
+    - echo 'Ansible refuses to read from a world-writeable folder, hence' && chmod -v 700 $(pwd)
+    # set openstack_config and credentials beforehand
+    - source ${OPENSTACK_ENV} && ansible-playbook site.yml --extra-vars "inventories/development/group_vars/all" --extra-vars "key_file_path=${SSH_KEY} stresstest_setup=1"
+    # TODO: Remove this tmp solution when populating in-memory inventory works
+    # in runner
+    # - cd "${CI_PROJECT_DIR}" && echo -e "webserver_az1_1,134.60.64.119\nwebserver_az2_1,134.60.64.217\nhaproxy_1,134.60.64.249" > target/hosts
+  artifacts:
+    paths:
+      - "target/hosts_stresstest"
+  allow_failure: true
 
 post_ansible_setup:
   stage: post_ansible_setup
