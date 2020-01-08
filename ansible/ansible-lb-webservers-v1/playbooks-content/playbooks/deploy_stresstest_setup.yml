@@ -47,7 +47,7 @@
     - name: Debug inventory
       debug: msg="host {{ item }}"
       with_items:
-        - "{{ groups['docker_containers'] }}"
+        - "{{ groups['all']['docker_containers'] }}"
     - name: Deploy VMs for docker installation
       vars:
         docker_container_name: "{{ item }}"
