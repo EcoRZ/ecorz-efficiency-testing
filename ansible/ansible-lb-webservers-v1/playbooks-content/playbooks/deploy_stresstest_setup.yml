@@ -51,7 +51,7 @@
         sec_group_list: [default,ansible,docker_ecorz]
       include_role:
         name: deploy_docker
-      with_items: "{{ groups['docker_containers'] }}"
+      with_items: "{{ groups['haproxies'] }}"
     - name: Add VMs for docker installation to inventory
       add_host: name="{{ item.server.name }}" groups=docker_containers ansible_ssh_host="{{ item.server.accessIPv4 }}" ansible_ssh_private_key_file="{{ key_file_path }}"
       with_items:
