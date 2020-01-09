@@ -108,7 +108,7 @@ deploy:
     CONF_SVR_CONT_NAME: "confsvr"
     STRESSTEST_AGENT_CONT_NAME: "stresstest_agent"
   image:
-    name: ansible/ansible:default
+    name: williamyeh/ansible:ubuntu16.04
   before_script:
     - chmod -v 500 ${SSH_KEY}
     - apt-get update -qy
