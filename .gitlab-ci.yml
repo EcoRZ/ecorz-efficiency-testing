@@ -26,7 +26,7 @@ stages:
 pre_ansible_setup:
   stage: pre_ansible_setup
   image:
-    name: williamyeh/ansible:ubuntu1604
+    name: williamyeh/ansible:ubuntu16.04
   before_script:
     - chmod -v 500 ${SSH_KEY}
     - apt-get update -qy
@@ -133,7 +133,7 @@ deploy:
 post_ansible_setup:
   stage: post_ansible_setup
   image:
-    name: williamyeh/ansible:ubuntu1604
+    name: williamyeh/ansible:ubuntu16.04
   before_script:
     - chmod -v 500 ${SSH_KEY}
     - apt-get update -qy
