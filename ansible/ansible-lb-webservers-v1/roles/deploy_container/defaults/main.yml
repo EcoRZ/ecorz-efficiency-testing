@@ -1,0 +1,19 @@
+---
+# defaults file for deploy_container
+
+name: def_container
+username: user
+password: pw
+registry_url: docker.io
+do_login: 1
+image_name: image-name
+tag: latest
+port_mapping: 80:8080
+env_var1: stuff=interesting
+env_var2: stuff=interesting
+env_var3: stuff=interesting
+env_var4: stuff=interesting
+env_var5: stuff=interesting
+
+port_opts: "-p {{ port_mapping }}"
+env_opts: "-e {{ env_var1 }} -e {{ env_var2 }} -e {{ env_var3 }} -e {{ env_var4 }} -e {{ env_var5 }}"

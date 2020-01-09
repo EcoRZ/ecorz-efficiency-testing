@@ -1,0 +1,8 @@
+---
+- name: login to registry "{{ registry_url }}"
+  shell: docker login -u "{{ username }}" -p "{{ password }}" "{{ registry_url }}"
+  when: do_login == 1
+- name: pull image
+  shell: docker pull "{{ registry_url }}/{{ image_name }}:{{ tag }}"
+- name: run container
+  shell: docker run -d --name {{ name }} --restart no --interactive {{ port_opts }} {{ env_opts }} {{ local_image_path }}

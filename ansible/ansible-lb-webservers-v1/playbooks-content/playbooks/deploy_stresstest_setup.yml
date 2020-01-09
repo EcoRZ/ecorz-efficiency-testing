@@ -4,6 +4,13 @@
   vars:
       register_upstream: []
   tasks:
+      #- name: debug
+      #vars:
+      #testi: "{{ hostvars[item].image_name }}"
+      #debug:
+      #msg: "{{ testi }}"
+      #with_items:
+      #- "{{ groups['docker_containers'] }}"
     - name: create network
       vars:
         nw_name: "{{ nw_name_par }}"
@@ -44,10 +51,6 @@
       include_role:
         name: create_rule
       loop: "{{ docker_container_ports }}"
-    - name: Debug inventory
-      debug: msg="host {{ item }}"
-      with_items:
-        - "{{ groups['all'] }}"
     - name: Deploy VMs for docker installation
       vars:
         docker_container_name: "{{ item }}"
@@ -57,13 +60,40 @@
         name: deploy_docker
       with_items:
         - "{{ groups['docker_containers'] }}"
-    - name: Add VMs for docker installation to inventory
-      add_host: name="{{ item.server.name }}" groups=docker_containers ansible_ssh_host="{{ item.server.accessIPv4 }}" ansible_ssh_private_key_file="{{ key_file_path }}"
+    - name: remember custom set env-var with confsvr-ip content for use in stresstest_agent container
+      set_fact:
+          confsvr_ip_env: "CONFIGSERVER_URI=http://{{ item.server.accessIPv4 }}:8888"
+      when:
+        - item.server.name == "confsvr"
       with_items:
         - "{{ register_upstream }}"
-    - name: persist hostnames and ips in {{ hosts_tmp_stresstest }}
-      lineinfile: path={{ hosts_tmp_stresstest }} line="{{ item.server.name }},{{ item.server.accessIPv4 }}" create=yes state=present
-      with_items:
+    - name: Add VM for docker {{ item.server.name }} installation to inventory
+      add_host: >
+        name="{{ item[1].server.name }}"
+        groups=docker_containers
+        ansible_ssh_host="{{ item[1].server.accessIPv4 }}"
+        ansible_ssh_private_key_file="{{ key_file_path }}"
+        image_name="{{ hostvars[item[0]].image_name }}"
+        port_mapping="{{ hostvars[item[0]].port_mapping }}"
+        env_var1="{{ hostvars[item[0]].env_var1 }}"
+        env_var2="{{ hostvars[item[0]].env_var2 if hostvars[item[0]].name != hostvars['stresstest_agent'].name else confsvr_ip_env }}"
+        env_var3="{{ hostvars[item[0]].env_var3 }}"
+        env_var4="{{ hostvars[item[0]].env_var4 }}"
+        env_var5="{{ hostvars[item[0]].env_var5 }}"
+      when:
+        - hostvars[item[0]].name == item[1].server.name
+      with_nested:
+        - "{{ groups['docker_containers'] }}"
+        - "{{ register_upstream }}"
+    - name: persist relevant server vars in {{ hosts_tmp_stresstest }}
+      lineinfile: >
+          path={{ hosts_tmp_stresstest }}
+          line="{{ item[1].server.name }},{{ item[1].server.accessIPv4 }},{{ hostvars[item[0]].image_name }},{{ hostvars[item[0]].port_mapping }},{{ hostvars[item[0]].env_var1 }},{{ hostvars[item[0]].env_var2 }},{{ hostvars[item[0]].env_var3 }},{{ hostvars[item[0]].env_var4 }},{{ hostvars[item[0]].env_var5 }}"
+          create=yes state=present
+      when:
+        - hostvars[item[0]].name == item[1].server.name
+      with_nested:
+        - "{{ groups['docker_containers'] }}"
         - "{{ register_upstream }}"
 
 - hosts: docker_containers
@@ -73,11 +103,17 @@
     - wait_for_port1_ready
 
 - hosts: docker_containers
+  remote_user: ubuntu
   gather_facts: false
   roles:
     - config_docker
 
-# - hosts: docker_containers
-#  gather_facts: false
-  # roles:
-  # - config_haproxy
+- hosts: docker_containers
+  remote_user: ubuntu
+  become: yes
+  gather_facts: false
+  vars:
+    port_opts: "-p {{ port_mapping }}"
+    env_opts: "-e {{ env_var1 }} -e {{ env_var2 }} -e {{ env_var3 }} -e {{ env_var4 }} -e {{ env_var5 }}"
+  roles:
+    - deploy_container

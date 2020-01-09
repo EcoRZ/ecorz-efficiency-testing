@@ -16,5 +16,39 @@ all:
     docker_containers:
       hosts:
         confsvr:
-        stresstest_agent:
+            name: confsvr
+            registry_url: omi-registry.e-technik.uni-ulm.de
+            image_name: fh/docker-reg/confsvr
+            tag: 0.0.1-SNAPSHOT
+            local_image_path: "{{ registry_url }}/{{ image_name }}:{{ tag }}"
+            port_mapping: 8888:8888
+            env_var1: ENCRYPT_KEY={{ encrypt_key }}
+            env_var2: dummy=stuff
+            env_var3: dummy=stuff
+            env_var4: dummy=stuff
+            env_var5: dummy=stuff
         results_db:
+            name: results_db
+            registry_url: docker.io
+            do_login: 0
+            image_name: postgres
+            tag: latest
+            local_image_path: "{{ image_name }}:{{ tag }}"
+            port_mapping: 5432:5432
+            env_var1: POSTGRES_USER={{ pg_user }}
+            env_var2: POSTGRES_PASSWORD={{ pg_pass }}
+            env_var3: POSTGRES_DB=ecorz_results
+            env_var4: dummy=stuff
+            env_var5: dummy=stuff
+        stresstest_agent:
+            name: stresstest_agent
+            registry_url: omi-registry.e-technik.uni-ulm.de
+            image_name: fh/docker-reg/stresstestagent
+            tag: 0.0.1-SNAPSHOT
+            local_image_path: "{{ registry_url }}/{{ image_name }}:{{ tag }}"
+            port_mapping: 8080:8080
+            env_var1: PROFILE=default
+            env_var2: CONFIGSERVER_URI=http://{{ confsvr_ip_ }}:8888
+            env_var3: CONFIGSERVER_PORT=8888
+            env_var4: DATABASESERVER_PORT=5432
+            env_var5: ENCRYPT_KEY={{ encrypt_key }}
