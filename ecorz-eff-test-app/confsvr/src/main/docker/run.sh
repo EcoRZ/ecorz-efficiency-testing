@@ -2,4 +2,4 @@
 echo "********************************************************"
 echo "Starting Configuration Server"
 echo "********************************************************"
-javaw -jar /usr/local/configserver/@project.build.finalName@-jar-with-dependencies.jar
+javaw -jar /usr/local/configserver/@project.build.finalName@.jar

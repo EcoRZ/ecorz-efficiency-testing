@@ -133,7 +133,7 @@
              <repository>omi-registry.e-technik.uni-ulm.de/fh/docker-reg/confsvr</repository>
              <tag>${project.version}</tag>
              <buildArgs>
-               <JAR_FILE>${project.build.finalName}-jar-with-dependencies.jar</JAR_FILE>
+               <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
              </buildArgs>
              <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
            </configuration>
