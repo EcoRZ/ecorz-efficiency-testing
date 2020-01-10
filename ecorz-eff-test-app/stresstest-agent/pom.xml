@@ -167,7 +167,7 @@
            <!-- MainClass in mainfest make a executable jar -->
            <archive>
              <manifest>
-               <mainClass>com.ecorz.stressapp.confsvr.ConfigServerApplication</mainClass>
+               <mainClass>com.ecorz.stressapp.stresstestagent.Application</mainClass>
              </manifest>
            </archive>
 
