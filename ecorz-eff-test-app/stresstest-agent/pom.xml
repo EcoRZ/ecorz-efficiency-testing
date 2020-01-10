@@ -93,6 +93,8 @@
     <start-class>com.ecorz.stressapp.stresstestagent.Application</start-class>
     <docker.image.name>stresstest-agent</docker.image.name>
     <docker.image.tag>latest</docker.image.tag>
+    <!-- Spring boot main class -->
+    <start-class>com.ecorz.stressapp.stresstestagent.Application</start-class>
   </properties>
 
   <build>
@@ -154,35 +156,6 @@
             </configuration>
         </plugin>
         -->
-
-       <plugin>
-         <groupId>org.apache.maven.plugins</groupId>
-         <artifactId>maven-assembly-plugin</artifactId>
-         <version>2.4.1</version>
-         <configuration>
-           <!-- get all project dependencies -->
-           <descriptorRefs>
-             <descriptorRef>jar-with-dependencies</descriptorRef>
-           </descriptorRefs>
-           <!-- MainClass in mainfest make a executable jar -->
-           <archive>
-             <manifest>
-               <mainClass>com.ecorz.stressapp.stresstestagent.Application</mainClass>
-             </manifest>
-           </archive>
-
-         </configuration>
-         <executions>
-           <execution>
-             <id>make-assembly</id>
-             <!-- bind to the packaging phase -->
-             <phase>package</phase>
-             <goals>
-               <goal>single</goal>
-             </goals>
-           </execution>
-         </executions>
-       </plugin>
 
        <plugin>
          <groupId>com.spotify</groupId>
