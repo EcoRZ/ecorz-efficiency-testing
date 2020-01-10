@@ -108,6 +108,9 @@
   roles:
     - config_docker
 
+- name: Destroy containers if they already exist
+  import_playbook: destroy_containers.yml
+
 - hosts: docker_containers
   remote_user: ubuntu
   become: yes
