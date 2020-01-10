@@ -1,7 +1,8 @@
 ---
-- name: Check if {{ container_name_ }} listed as docker process
+- name: Check if {{ container_name_ }} is listed as docker process
   shell: docker ps -a | grep "{{ container_name_ }}"
   register: container_exists
+  ignore_errors: yes
 - name: stop container {{ container_name_ }} if it exists
   shell: docker stop "{{ container_name_ }}"
   when: container_exists.rc == 0
