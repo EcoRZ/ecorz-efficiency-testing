@@ -76,12 +76,12 @@
         image_name="{{ hostvars[item[0]].image_name }}"
         port_mapping="{{ hostvars[item[0]].port_mapping }}"
         env_var1="{{ hostvars[item[0]].env_var1 }}"
-        env_var2="{{ hostvars[item[0]].env_var2 if hostvars[item[0]].name != hostvars['stresstest_agent'].name else confsvr_ip_env }}"
+        env_var2="{{ hostvars[item[0]].env_var2 if hostvars[item[0]].container_name != hostvars['stresstest_agent'].container_name else confsvr_ip_env }}"
         env_var3="{{ hostvars[item[0]].env_var3 }}"
         env_var4="{{ hostvars[item[0]].env_var4 }}"
         env_var5="{{ hostvars[item[0]].env_var5 }}"
       when:
-        - hostvars[item[0]].name == item[1].server.name
+        - hostvars[item[0]].container_name == item[1].server.name
       with_nested:
         - "{{ groups['docker_containers'] }}"
         - "{{ register_upstream }}"
@@ -91,7 +91,7 @@
           line="{{ item[1].server.name }},{{ item[1].server.accessIPv4 }},{{ hostvars[item[0]].image_name }},{{ hostvars[item[0]].port_mapping }},{{ hostvars[item[0]].env_var1 }},{{ hostvars[item[0]].env_var2 }},{{ hostvars[item[0]].env_var3 }},{{ hostvars[item[0]].env_var4 }},{{ hostvars[item[0]].env_var5 }}"
           create=yes state=present
       when:
-        - hostvars[item[0]].name == item[1].server.name
+        - hostvars[item[0]].container_name == item[1].server.name
       with_nested:
         - "{{ groups['docker_containers'] }}"
         - "{{ register_upstream }}"
@@ -113,6 +113,7 @@
   become: yes
   gather_facts: false
   vars:
+    container_name_: "{{ container_name }}"
     port_opts: "-p {{ port_mapping }}"
     env_opts: "-e {{ env_var1 }} -e {{ env_var2 }} -e {{ env_var3 }} -e {{ env_var4 }} -e {{ env_var5 }}"
   roles:

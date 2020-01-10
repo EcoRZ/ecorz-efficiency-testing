@@ -1,0 +1,5 @@
+---
+# defaults file for destroy_container
+
+name: def_container
+container_name_: def_container

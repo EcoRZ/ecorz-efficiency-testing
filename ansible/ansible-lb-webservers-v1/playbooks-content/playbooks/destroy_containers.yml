@@ -1,0 +1,8 @@
+- hosts: docker_containers
+  remote_user: ubuntu
+  become: yes
+  gather_facts: false
+  vars:
+    container_name_: "{{ container_name }}"
+  roles:
+    - destroy_container

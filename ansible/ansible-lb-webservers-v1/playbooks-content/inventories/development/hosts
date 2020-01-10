@@ -16,7 +16,7 @@ all:
     docker_containers:
       hosts:
         confsvr:
-            name: confsvr
+            container_name: confsvr
             registry_url: omi-registry.e-technik.uni-ulm.de
             image_name: fh/docker-reg/confsvr
             tag: 0.0.1-SNAPSHOT
@@ -28,7 +28,7 @@ all:
             env_var4: dummy=stuff
             env_var5: dummy=stuff
         results_db:
-            name: results_db
+            container_name: results_db
             registry_url: docker.io
             do_login: 0
             image_name: postgres
@@ -41,7 +41,7 @@ all:
             env_var4: dummy=stuff
             env_var5: dummy=stuff
         stresstest_agent:
-            name: stresstest_agent
+            container_name: stresstest_agent
             registry_url: omi-registry.e-technik.uni-ulm.de
             image_name: fh/docker-reg/stresstestagent
             tag: 0.0.1-SNAPSHOT
