@@ -67,6 +67,13 @@
         - item.server.name == "confsvr"
       with_items:
         - "{{ register_upstream }}"
+    - name: remember custom set env-var with results_db-ip content for use in stresstest_agent container
+      set_fact:
+          results_db_ip_env: "RESULTS_DB_URI=jdbc:postgresql://{{ item.server.accessIPv4 }}:5432/ecorz_results"
+      when:
+        - item.server.name == "results_db"
+      with_items:
+        - "{{ register_upstream }}"
     - name: Add VM for docker {{ item.server.name }} installation to inventory
       add_host: >
         name="{{ item[1].server.name }}"
@@ -78,7 +85,7 @@
         env_var1="{{ hostvars[item[0]].env_var1 }}"
         env_var2="{{ hostvars[item[0]].env_var2 if hostvars[item[0]].container_name != hostvars['stresstest_agent'].container_name else confsvr_ip_env }}"
         env_var3="{{ hostvars[item[0]].env_var3 }}"
-        env_var4="{{ hostvars[item[0]].env_var4 }}"
+        env_var4="{{ hostvars[item[0]].env_var4 if hostvars[item[0]].container_name != hostvars['stresstest_agent'].container_name else results_db_ip_env }}"
         env_var5="{{ hostvars[item[0]].env_var5 }}"
       when:
         - hostvars[item[0]].container_name == item[1].server.name

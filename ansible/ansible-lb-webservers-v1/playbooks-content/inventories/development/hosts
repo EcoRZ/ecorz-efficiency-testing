@@ -50,5 +50,5 @@ all:
             env_var1: PROFILE=default
             env_var2: CONFIGSERVER_URI=http://{{ confsvr_ip_ }}:8888
             env_var3: CONFIGSERVER_PORT=8888
-            env_var4: DATABASESERVER_PORT=5432
+            env_var4: RESULTS_DB_URI="jdbc:postgresql://{{ results_db_ip_ }}:5432/ecorz_results"
             env_var5: ENCRYPT_KEY={{ encrypt_key }}

@@ -39,3 +39,4 @@ encrypt_key: imencrypted
 pg_user: user
 pg_pass: secret
 confsvr_ip_: localhost
+results_db_ip_: localhost
