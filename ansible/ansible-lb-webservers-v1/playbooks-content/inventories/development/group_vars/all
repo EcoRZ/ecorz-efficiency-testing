@@ -31,8 +31,8 @@ hosts_tmp_stresstest_file: hosts_stresstest
 hosts_tmp_stresstest: "{{ hosts_tmp_stresstest_folder }}/{{ hosts_tmp_stresstest_file }}"
 
 docker_container_ports:
-  - 8090
-  - 8091
+  - 8080
+  - 8888
   - 5432
 
 encrypt_key: imencrypted
