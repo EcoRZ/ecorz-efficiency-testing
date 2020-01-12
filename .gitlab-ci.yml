@@ -122,7 +122,7 @@ deploy:
     - cd ${ANSIBLE_SITE_DIR}
     - echo 'Ansible refuses to read from a world-writeable folder, hence' && chmod -v 700 $(pwd)
     # set openstack_config and credentials beforehand
-    - source ${OPENSTACK_ENV} && ansible-playbook site.yml --extra-vars "inventories/development/group_vars/all" --extra-vars "key_file_path=${SSH_KEY} reg_login_user=${CONFIG_USER} reg_login_pw=${CONFIG_PW} stresstest_setup=1"
+    - source ${OPENSTACK_ENV} && ansible-playbook site.yml --extra-vars "inventories/development/group_vars/all" --extra-vars "key_file_path=${SSH_KEY} reg_login_user=${CONFIG_USER} reg_login_pw=${CONFIG_PW} pg_user=${DATABASE_USER} pg_pass=${DATABASE_PASSWORD} stresstest_setup=1"
     # TODO: Remove this tmp solution when populating in-memory inventory works
     # in runner
     # - cd "${CI_PROJECT_DIR}" && echo -e "webserver_az1_1,134.60.64.119\nwebserver_az2_1,134.60.64.217\nhaproxy_1,134.60.64.249" > target/hosts
