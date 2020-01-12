@@ -23,8 +23,8 @@ all:
             local_image_path: "{{ registry_url }}/{{ image_name }}:{{ tag }}"
             port_mapping: 8888:8888
             env_var1: ENCRYPT_KEY={{ encrypt_key }}
-            env_var2: dummy=stuff
-            env_var3: dummy=stuff
+            env_var2: REG_LOGIN_USER={{ reg_login_user }}
+            env_var3: REG_LOGIN_PW={{ reg_login_pw }}
             env_var4: dummy=stuff
             env_var5: dummy=stuff
         results_db:

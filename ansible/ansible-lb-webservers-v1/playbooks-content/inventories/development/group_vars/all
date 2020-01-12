@@ -36,6 +36,8 @@ docker_container_ports:
   - 5432
 
 encrypt_key: imencrypted
+reg_login_user: user
+reg_login_pw: pw
 pg_user: user
 pg_pass: secret
 confsvr_ip_: localhost
