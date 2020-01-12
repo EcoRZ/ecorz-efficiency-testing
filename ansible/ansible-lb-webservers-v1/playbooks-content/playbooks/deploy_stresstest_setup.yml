@@ -128,3 +128,19 @@
     env_opts: "-e {{ env_var1 }} -e {{ env_var2 }} -e {{ env_var3 }} -e {{ env_var4 }} -e {{ env_var5 }}"
   roles:
     - deploy_container
+  when:
+    # start confsvr and reults_db before stresstest-agent
+    container_name != "stresstest_agent"
+
+- hosts: docker_containers
+  remote_user: ubuntu
+  become: yes
+  gather_facts: false
+  vars:
+    container_name_: "{{ container_name }}"
+    port_opts: "-p {{ port_mapping }}"
+    env_opts: "-e {{ env_var1 }} -e {{ env_var2 }} -e {{ env_var3 }} -e {{ env_var4 }} -e {{ env_var5 }}"
+  roles:
+    - deploy_container
+  when:
+    container_name == "stresstest_agent"
