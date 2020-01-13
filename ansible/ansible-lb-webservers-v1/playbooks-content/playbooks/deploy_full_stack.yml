@@ -77,9 +77,6 @@
       include_role:
         name: deploy_haproxy
       with_sequence: start=1 end=1
-    - debug:
-        var:
-           register_upstream
     - name: Add webservers az1 to inventory
       add_host: name="{{ item.server.name }}" groups=webservers_az1 ansible_ssh_host="{{ item.server.accessIPv4 }}" ansible_all_ipv4_addresses=["{{ item.server.private_v4 }}"] ansible_ssh_private_key_file="{{ key_file_path }}"
       when:
@@ -113,6 +110,7 @@
   gather_facts: false
   pre_tasks:
     - import_tasks: inst_python_task.yml
+      when: install_py2_on_hosts == 1
   roles:
     - config_webservers
 
@@ -120,5 +118,6 @@
   gather_facts: false
   pre_tasks:
     - import_tasks: inst_python_task.yml
+      when: install_py2_on_hosts == 1
   roles:
     - config_haproxy
