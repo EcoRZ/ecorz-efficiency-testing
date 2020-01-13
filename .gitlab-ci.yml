@@ -20,9 +20,6 @@ stages:
   - deploy
   - post_ansible_setup
 
-# TODO: Save set floating ips to make them referencabe in later stages, tmp
-# solution: write statically into file, because in-memory inventory does not
-# get filled atm
 pre_ansible_setup:
   stage: pre_ansible_setup
   image:
@@ -40,11 +37,7 @@ pre_ansible_setup:
     - cd ${ANSIBLE_SITE_DIR}
     - echo 'Ansible refuses to read from a world-writeable folder, hence' && chmod -v 700 $(pwd)
     # set openstack_config and credentials beforehand
-    # use tmp_solution as ansible in this config seems to be bugged
-    - source ${OPENSTACK_ENV} && ansible-playbook -vvv site.yml --extra-vars "inventories/development/group_vars/all" --extra-vars "key_file_path=${SSH_KEY} webserver_az1_count=${WS_AZ1_COUNT} webserver_az2_count=${WS_AZ2_COUNT} pause_tmp_solution=1 deploy=1"
-    # TODO: Remove this tmp solution when populating in-memory inventory works
-    # in runner
-    - cd "${CI_PROJECT_DIR}" && echo -e "webserver_az1_1,134.60.64.119\nwebserver_az2_1,134.60.64.217\nhaproxy_1,134.60.64.249" > target/hosts
+    - source ${OPENSTACK_ENV} && ansible-playbook -vvv site.yml --extra-vars "inventories/development/group_vars/all" --extra-vars "key_file_path=${SSH_KEY} webserver_az1_count=${WS_AZ1_COUNT} webserver_az2_count=${WS_AZ2_COUNT} deploy=1"
   artifacts:
     paths:
       - "target/hosts"
@@ -123,11 +116,7 @@ deploy:
     - cd ${ANSIBLE_SITE_DIR}
     - echo 'Ansible refuses to read from a world-writeable folder, hence' && chmod -v 700 $(pwd)
     # set openstack_config and credentials beforehand
-    # use tmp_solution as ansible in this config seems to be bugged
-    - source ${OPENSTACK_ENV} && ansible-playbook -vvv site.yml --extra-vars "inventories/development/group_vars/all" --extra-vars "key_file_path=${SSH_KEY} pause_tmp_solution=1 reg_login_user=${CONFIG_USER} reg_login_pw=${CONFIG_PW} pg_user=${DATABASE_USER} pg_pass=${DATABASE_PASSWORD} stresstest_setup=1"
-    # TODO: Remove this tmp solution when populating in-memory inventory works
-    # in runner
-    # - cd "${CI_PROJECT_DIR}" && echo -e "webserver_az1_1,134.60.64.119\nwebserver_az2_1,134.60.64.217\nhaproxy_1,134.60.64.249" > target/hosts
+    - source ${OPENSTACK_ENV} && ansible-playbook -vvv site.yml --extra-vars "inventories/development/group_vars/all" --extra-vars "key_file_path=${SSH_KEY} reg_login_user=${CONFIG_USER} reg_login_pw=${CONFIG_PW} pg_user=${DATABASE_USER} pg_pass=${DATABASE_PASSWORD} stresstest_setup=1"
   artifacts:
     paths:
       - "target/hosts_stresstest"

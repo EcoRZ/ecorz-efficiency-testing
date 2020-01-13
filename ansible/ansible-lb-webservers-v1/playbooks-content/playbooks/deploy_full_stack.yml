@@ -104,15 +104,7 @@
   remote_user: ubuntu
   gather_facts: false
   roles:
-    - role: wait_for_port1_ready
-      when: pause_tmp_solution == "0"
-
-- hosts: localhost
-  gather_facts: false
-  tasks:
-    - pause:
-        seconds: 20
-      when: pause_tmp_solution == "1"
+    - wait_for_port1_ready
 
 - hosts: webservers
   gather_facts: false
