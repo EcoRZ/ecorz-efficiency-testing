@@ -32,7 +32,7 @@ pre_ansible_setup:
     - apt-get update -qy
     - apt-get install -y python-dev python-pip
     # - ln -s /usr/bin/python3 /usr/bin/python
-    - pip install 'ansible==2.8.1' openstacksdk
+    - pip install ansible openstacksdk
     - mkdir -p target/
     - ansible --version
 
@@ -115,7 +115,7 @@ deploy:
     - apt-get update -qy
     - apt-get install -y python-dev python-pip
     # - ln -s /usr/bin/python3 /usr/bin/python
-    - pip install 'ansible==2.8.1' openstacksdk
+    - pip install ansible openstacksdk
     - mkdir -p target/
 
   script:
@@ -140,7 +140,7 @@ post_ansible_setup:
     - apt-get update -qy
     - apt-get install -y ython-dev python-pip
     # - ln -s /usr/bin/python3 /usr/bin/python
-    - pip install 'ansible==2.8.1' openstacksdk
+    - pip install ansible openstacksdk
   script:
     - cd ${ANSIBLE_SITE_DIR}
     - echo 'Ansible refuses to read from a world-writeable folder, hence' && chmod -v 700 $(pwd)
