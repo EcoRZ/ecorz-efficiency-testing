@@ -1,4 +1,6 @@
 - name: Wait for port1 to be ready
+  remote_user: ubuntu
+  become: yes
   wait_for:
       port: "{{ port1 }}"
       host: "{{ ansible_host }}"
