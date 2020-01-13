@@ -30,7 +30,7 @@ pre_ansible_setup:
   before_script:
     - chmod -v 500 ${SSH_KEY}
     - apt-get update -qy
-    - apt-get install -y python-dev python3-pip
+    - apt-get install -y python-dev python3-pip openssh-server
     # - ln -s /usr/bin/python3 /usr/bin/python
     - pip3 install 'ansible==2.8.1' openstacksdk
     - mkdir -p target/
@@ -114,7 +114,7 @@ deploy:
   before_script:
     - chmod -v 500 ${SSH_KEY}
     - apt-get update -qy
-    - apt-get install -y python-dev python3-pip
+    - apt-get install -y python-dev python3-pip openssh-server
     # - ln -s /usr/bin/python3 /usr/bin/python
     - pip3 install 'ansible==2.8.1' openstacksdk
     - mkdir -p target/
@@ -140,7 +140,7 @@ post_ansible_setup:
   before_script:
     - chmod -v 500 ${SSH_KEY}
     - apt-get update -qy
-    - apt-get install -y python-dev python3-pip
+    - apt-get install -y python-dev python3-pip openssh-server
     # - ln -s /usr/bin/python3 /usr/bin/python
     - pip3 install 'ansible==2.8.1' openstacksdk
   script:
