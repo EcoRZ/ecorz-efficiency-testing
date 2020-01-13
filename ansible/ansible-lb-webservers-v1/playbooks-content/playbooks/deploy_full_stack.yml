@@ -77,14 +77,17 @@
       include_role:
         name: deploy_haproxy
       with_sequence: start=1 end=1
+    - debug:
+        var:
+           register_upstream
     - name: Add webservers az1 to inventory
-      add_host: name="{{ item.server.name }}" groups=webservers_az1 ansible_ssh_host="{{ item.server.accessIPv4 }}" ansible_ssh_private_key_file="{{ key_file_path }}"
+      add_host: name="{{ item.server.name }}" groups=webservers_az1 ansible_ssh_host="{{ item.server.accessIPv4 }}" ansible_all_ipv4_addresses=["{{ item.server.private_v4 }}"] ansible_ssh_private_key_file="{{ key_file_path }}"
       when:
         -  item.server.az == az1
       with_items:
         - "{{ register_upstream }}"
     - name: Add webservers az2 to inventory
-      add_host: name="{{ item.server.name }}" groups=webservers_az2 ansible_ssh_host="{{ item.server.accessIPv4 }}" ansible_ssh_private_key_file="{{ key_file_path }}"
+      add_host: name="{{ item.server.name }}" groups=webservers_az2 ansible_ssh_host="{{ item.server.accessIPv4 }}" ansible_all_ipv4_addresses=["{{ item.server.private_v4 }}"] ansible_ssh_private_key_file="{{ key_file_path }}"
       when:
         -  item.server.az == az2
       with_items:

@@ -27,7 +27,7 @@ listen {{haproxy_app_name}}
     balance {{haproxy_algorithm}}
     option httpclose
     option forwardfor
-    {% for host in groups['webservers'] %}
-    server {{ hostvars[host].inventory_hostname }} {{
-hostvars[host] ['ansible_all_ipv4_addresses'] [0] }} check
-    {% endfor %}
+     {% for host in groups['webservers'] %}
+     server {{ hostvars[host].inventory_hostname }} {{
+     hostvars[host] ['ansible_all_ipv4_addresses'] [0]}} check
+     {% endfor %}
