@@ -26,13 +26,13 @@ stages:
 pre_ansible_setup:
   stage: pre_ansible_setup
   image:
-    name: williamyeh/ansible:ubuntu18.04
+    name: ubuntu:18.04
   before_script:
     - chmod -v 500 ${SSH_KEY}
     - apt-get update -qy
     - apt-get install -y python-dev python-pip
     # - ln -s /usr/bin/python3 /usr/bin/python
-    - pip install openstacksdk
+    - pip install 'ansible==2.8.1' openstacksdk
     - mkdir -p target/
     - ansible --version
 
