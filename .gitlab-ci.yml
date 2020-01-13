@@ -32,7 +32,6 @@ pre_ansible_setup:
     - pip3 install 'ansible==2.8.1' openstacksdk
     - mkdir -p target/
     - ansible --version
-
   script:
     - cd ${ANSIBLE_SITE_DIR}
     - echo 'Ansible refuses to read from a world-writeable folder, hence' && chmod -v 700 $(pwd)
@@ -111,12 +110,11 @@ deploy:
     # - ln -s /usr/bin/python3 /usr/bin/python
     - pip3 install 'ansible==2.8.1' openstacksdk
     - mkdir -p target/
-
   script:
     - cd ${ANSIBLE_SITE_DIR}
     - echo 'Ansible refuses to read from a world-writeable folder, hence' && chmod -v 700 $(pwd)
     # set openstack_config and credentials beforehand
-    - source ${OPENSTACK_ENV} && ansible-playbook -vvv site.yml --extra-vars "inventories/development/group_vars/all" --extra-vars "key_file_path=${SSH_KEY} reg_login_user=${CONFIG_USER} reg_login_pw=${CONFIG_PW} pg_user=${DATABASE_USER} pg_pass=${DATABASE_PASSWORD} stresstest_setup=1"
+    - source ${OPENSTACK_ENV} && ansible-playbook -vvv site.yml --extra-vars "inventories/development/group_vars/all" --extra-vars "key_file_path=${SSH_KEY} username=${CONFIG_USER} password=${CONFIG_PW} encrypt_key=${ENCRYPT_KEY} reg_login_user=${CONFIG_USER} reg_login_pw=${CONFIG_PW} pg_user=${DATABASE_USER} pg_pass=${DATABASE_PASSWORD} stresstest_setup=1"
   artifacts:
     paths:
       - "target/hosts_stresstest"
