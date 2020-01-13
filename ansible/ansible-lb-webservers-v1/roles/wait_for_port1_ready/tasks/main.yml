@@ -2,5 +2,5 @@
   wait_for:
       port: "{{ port1 }}"
       host: "{{ ansible_host }}"
-      search_regex: OpenSSH
+      search_regex: "OpenSSH"
       delay: 10
