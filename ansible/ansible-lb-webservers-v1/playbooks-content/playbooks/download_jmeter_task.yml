@@ -1,0 +1,7 @@
+---
+- name: download and install jmeter 5.2.1 in current directory
+  remote_user: ubuntu
+  become: yes
+  vars:
+      install_folder: "jmeter"
+  raw: curl -o {{ install_folder }}.tgz -C - -O http://apache.lauf-forum.at//jmeter/binaries/apache-jmeter-5.2.1.tgz && tar -xvzf {{ install_folder }}.tgz
