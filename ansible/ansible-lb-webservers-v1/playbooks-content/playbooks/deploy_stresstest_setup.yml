@@ -148,6 +148,8 @@
     use_bind_mount: "1"
   pre_tasks:
     - import_tasks: download_jmeter_task.yml
+      when:
+        container_name == "stresstest_agent"
   roles:
     - role: deploy_container
       when:

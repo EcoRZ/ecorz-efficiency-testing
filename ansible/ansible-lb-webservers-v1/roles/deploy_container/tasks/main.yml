@@ -5,6 +5,9 @@
   no_log: True
 - name: pull image
   shell: docker pull "{{ registry_url }}/{{ image_name }}:{{ tag }}"
+- name: debug bind_mount
+  debug:
+    var: use_bind_mount
 - name: run container w/o bind-mount
   shell: docker run -d --name {{ container_name_ }} --restart no --interactive {{ port_opts }} {{ env_opts }} {{ local_image_path }}
   when: use_bind_mount == "0"
