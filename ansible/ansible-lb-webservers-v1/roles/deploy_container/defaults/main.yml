@@ -21,6 +21,7 @@ env_var5: stuff=interesting
 env_var6: stuff=interesting
 env_var7: stuff=interesting
 env_var8: stuff=interesting
+env_var9: stuff=interesting
 
 port_opts: "-p {{ port_mapping }}"
-env_opts: "-e {{ env_var1 }} -e {{ env_var2 }} -e {{ env_var3 }} -e {{ env_var4 }} -e {{ env_var5 }} -e {{ env_var6 }} -e {{ env_var7 }} -e {{ env_var8 }}"
+env_opts: "-e {{ env_var1 }} -e {{ env_var2 }} -e {{ env_var3 }} -e {{ env_var4 }} -e {{ env_var5 }} -e {{ env_var6 }} -e {{ env_var7 }} -e {{ env_var8 }} -e {{ env_var9 }}"

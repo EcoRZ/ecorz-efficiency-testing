@@ -30,6 +30,7 @@ all:
             env_var6: dummy=stuff
             env_var7: dummy=stuff
             env_var8: dummy=stuff
+            env_var9: dummy=stuff
         results_db:
             container_name: results_db
             registry_url: docker.io
@@ -46,6 +47,7 @@ all:
             env_var6: dummy=stuff
             env_var7: dummy=stuff
             env_var8: dummy=stuff
+            env_var9: dummy=stuff
         stresstest_agent:
             container_name: stresstest_agent
             registry_url: omi-registry.e-technik.uni-ulm.de
@@ -61,3 +63,4 @@ all:
             env_var6: JMETER_HOME={{ jmeter_home }}
             env_var7: JMETER_BIN_DIR={{ jmeter_bin_dir }}
             env_var8: JMETER_FS_BASE={{ jmeter_fs_base }}
+            env_var9: LB_IP={{ lb_ip }}

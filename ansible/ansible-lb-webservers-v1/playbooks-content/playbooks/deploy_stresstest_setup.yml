@@ -62,18 +62,27 @@
         - "{{ groups['docker_containers'] }}"
     - name: remember custom set env-var with confsvr-ip content for use in stresstest_agent container
       set_fact:
-          confsvr_ip_env: "CONFIGSERVER_URI=http://{{ item.server.accessIPv4 }}:8888"
+        confsvr_ip_env: "CONFIGSERVER_URI=http://{{ item.server.accessIPv4 }}:8888"
       when:
         - item.server.name == "confsvr"
       with_items:
         - "{{ register_upstream }}"
     - name: remember custom set env-var with results_db-ip content for use in stresstest_agent container
       set_fact:
-          results_db_ip_env: "RESULTS_DB_URI=jdbc:postgresql://{{ item.server.accessIPv4 }}:5432/ecorz_results"
+        results_db_ip_env: "RESULTS_DB_URI=jdbc:postgresql://{{ item.server.accessIPv4 }}:5432/ecorz_results"
       when:
         - item.server.name == "results_db"
       with_items:
         - "{{ register_upstream }}"
+    - name: register ip from loadbalancer read from file {{ hosts_tmp }} via awk
+      vars:
+        file_to_look: "{{ hosts_tmp }}"
+        contents: "{{ lookup('file', file_to_look) }}"
+      shell: awk -F ',' '$1 ~ /haproxy/ { print $2; exit }' <<< "{{ contents }}"
+      register: awk_haproxy_out
+    - name: remember custom set env-var with loadbalancer-ip read from registered var for use in stresstest_agent container
+      set_fact:
+        lb_ip_env: "LB_IP={{ awk_haproxy_out.stdout }}"
     - name: Add VM for docker {{ item.server.name }} installation to inventory
       add_host: >
         name="{{ item[1].server.name }}"
@@ -90,6 +99,7 @@
         env_var6="{{ hostvars[item[0]].env_var6 }}"
         env_var7="{{ hostvars[item[0]].env_var7 }}"
         env_var8="{{ hostvars[item[0]].env_var8 }}"
+        env_var9="{{ hostvars[item[0]].env_var9 if hostvars[item[0]].container_name != hostvars['stresstest_agent'].container_name else lb_ip_env }}"
       when:
         - hostvars[item[0]].container_name == item[1].server.name
       with_nested:
@@ -98,7 +108,7 @@
     - name: persist relevant server vars in {{ hosts_tmp_stresstest }}
       lineinfile: >
           path={{ hosts_tmp_stresstest }}
-          line="{{ item[1].server.name }},{{ item[1].server.accessIPv4 }},{{ hostvars[item[0]].image_name }},{{ hostvars[item[0]].port_mapping }},{{ hostvars[item[0]].env_var1 }},{{ hostvars[item[0]].env_var2 }},{{ hostvars[item[0]].env_var3 }},{{ hostvars[item[0]].env_var4 }},{{ hostvars[item[0]].env_var5 }},{{ hostvars[item[0]].env_var6 }},{{ hostvars[item[0]].env_var7 }},{{ hostvars[item[0]].env_var8 }}"
+          line="{{ item[1].server.name }},{{ item[1].server.accessIPv4 }},{{ hostvars[item[0]].image_name }},{{ hostvars[item[0]].port_mapping }},{{ hostvars[item[0]].env_var1 }},{{ hostvars[item[0]].env_var2 }},{{ hostvars[item[0]].env_var3 }},{{ hostvars[item[0]].env_var4 }},{{ hostvars[item[0]].env_var5 }},{{ hostvars[item[0]].env_var6 }},{{ hostvars[item[0]].env_var7 }},{{ hostvars[item[0]].env_var8 }},{{ hostvars[item[0]].env_var9 }}"
           create=yes state=present
       when:
         - hostvars[item[0]].container_name == item[1].server.name
@@ -128,7 +138,7 @@
   vars:
     container_name_: "{{ container_name }}"
     port_opts: "-p {{ port_mapping }}"
-    env_opts: "-e {{ env_var1 }} -e {{ env_var2 }} -e {{ env_var3 }} -e {{ env_var4 }} -e {{ env_var5 }} -e {{ env_var6 }} -e {{ env_var7 }} -e {{ env_var8 }}"
+    env_opts: "-e {{ env_var1 }} -e {{ env_var2 }} -e {{ env_var3 }} -e {{ env_var4 }} -e {{ env_var5 }} -e {{ env_var6 }} -e {{ env_var7 }} -e {{ env_var8 }} -e {{ env_var9 }}"
     use_bind_mount: "0"
   roles:
     - role: deploy_container
@@ -143,7 +153,7 @@
   vars:
     container_name_: "{{ container_name }}"
     port_opts: "-p {{ port_mapping }}"
-    env_opts: "-e {{ env_var1 }} -e {{ env_var2 }} -e {{ env_var3 }} -e {{ env_var4 }} -e {{ env_var5 }} -e {{ env_var6 }} -e {{ env_var7 }} -e {{ env_var8 }}"
+    env_opts: "-e {{ env_var1 }} -e {{ env_var2 }} -e {{ env_var3 }} -e {{ env_var4 }} -e {{ env_var5 }} -e {{ env_var6 }} -e {{ env_var7 }} -e {{ env_var8 }} -e {{ env_var9 }}"
     install_folder: "jmeter"
     use_bind_mount: "1"
   pre_tasks:
