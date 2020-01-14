@@ -129,6 +129,7 @@
     container_name_: "{{ container_name }}"
     port_opts: "-p {{ port_mapping }}"
     env_opts: "-e {{ env_var1 }} -e {{ env_var2 }} -e {{ env_var3 }} -e {{ env_var4 }} -e {{ env_var5 }} -e {{ env_var6 }} -e {{ env_var7 }} -e {{ env_var8 }}"
+    use_bind_mount: "0"
   roles:
     - role: deploy_container
       when:
