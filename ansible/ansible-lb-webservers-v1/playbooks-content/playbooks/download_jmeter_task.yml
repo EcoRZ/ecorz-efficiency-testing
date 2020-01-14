@@ -4,4 +4,4 @@
   become: yes
   vars:
       install_folder: "jmeter"
-  raw: curl -o {{ install_folder }}.tgz -C - -O http://apache.lauf-forum.at//jmeter/binaries/apache-jmeter-5.2.1.tgz && tar -xvzf {{ install_folder }}.tgz
+  raw: curl -o {{ install_folder }}.tgz -fsSl -O http://apache.lauf-forum.at//jmeter/binaries/apache-jmeter-5.2.1.tgz  > /dev/null && mkdir -p {{ install_folder }} && tar -xvzf {{ install_folder }}.tgz -C {{ install_folder }} --strip-components 1 > /dev/null
