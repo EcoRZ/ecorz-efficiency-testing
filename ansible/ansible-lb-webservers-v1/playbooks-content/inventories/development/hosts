@@ -27,6 +27,9 @@ all:
             env_var3: REG_LOGIN_PW={{ reg_login_pw }}
             env_var4: dummy=stuff
             env_var5: dummy=stuff
+            env_var6: dummy=stuff
+            env_var7: dummy=stuff
+            env_var8: dummy=stuff
         results_db:
             container_name: results_db
             registry_url: docker.io
@@ -40,6 +43,9 @@ all:
             env_var3: POSTGRES_DB=ecorz_results
             env_var4: dummy=stuff
             env_var5: dummy=stuff
+            env_var6: dummy=stuff
+            env_var7: dummy=stuff
+            env_var8: dummy=stuff
         stresstest_agent:
             container_name: stresstest_agent
             registry_url: omi-registry.e-technik.uni-ulm.de
@@ -52,3 +58,6 @@ all:
             env_var3: CONFIGSERVER_PORT=8888
             env_var4: RESULTS_DB_URI="jdbc:postgresql://{{ results_db_ip_ }}:5432/ecorz_results"
             env_var5: ENCRYPT_KEY={{ encrypt_key }}
+            env_var6: JMETER_HOME={{ jmeter_home }}
+            env_var7: JMETER_BIN_DIR={{ jmeter_bin_dir }}
+            env_var8: JMETER_FS_BASE={{ jmeter_fs_base }}
