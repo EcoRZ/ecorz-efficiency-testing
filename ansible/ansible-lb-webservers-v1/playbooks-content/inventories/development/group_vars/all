@@ -45,5 +45,5 @@ pg_pass: secret
 confsvr_ip_: localhost
 results_db_ip_: localhost
 jmeter_home: /usr/local/jmeter
-jmeter_bin_dir: {{ jmeter_home }}/bin
-jmeter_fs_base: {{ jmeter_bin_dir }}/own_plans/dump
+jmeter_bin_dir: "{{ jmeter_home }}/bin"
+jmeter_fs_base: "{{ jmeter_bin_dir }}/own_plans/dump"
