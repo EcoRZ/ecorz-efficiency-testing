@@ -1,7 +1,10 @@
 - name: Ensure Apache is installed
   remote_user: ubuntu
   become: yes
-  apt: name=apache2 state=latest
+  apt:
+    name: apache2
+    state: latest
+    update_cache: yes
 
 - name: Ensure that Apache is started
   remote_user: ubuntu
