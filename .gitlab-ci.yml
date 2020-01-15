@@ -3,6 +3,7 @@ variables:
   MAVEN_OPTS: "-Dhttps.protocols=TLSv1.2 -Dmaven.repo.local=.m2/repository -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
   MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end"
   ANSIBLE_SITE_DIR: "$CI_PROJECT_DIR/ansible/ansible-lb-webservers-v1/playbooks-content"
+  HOSTS_TMP_TARGET_DIR: "$ANSIBLE_SITE_DIR/playbooks"
   CONFIG_SERVER_ROOT: "$CI_PROJECT_DIR/ecorz-eff-test-app/confsvr"
   STRESSTEST_AGENT_ROOT: "$CI_PROJECT_DIR/ecorz-eff-test-app/stresstest-agent"
   CONTAINER_REG_URL: "omi-registry.e-technik.uni-ulm.de/fh/docker-reg"
@@ -39,7 +40,7 @@ pre_ansible_setup:
     - source ${OPENSTACK_ENV} && ansible-playbook -vvv site.yml --extra-vars "inventories/development/group_vars/all" --extra-vars "key_file_path=${SSH_KEY} webserver_az1_count=${WS_AZ1_COUNT} webserver_az2_count=${WS_AZ2_COUNT} deploy=1"
   artifacts:
     paths:
-      - "target/hosts"
+      - "${HOSTS_TMP_TARGET_DIR}/target/hosts"
   allow_failure: true
 
 build_configsvr:
@@ -116,7 +117,7 @@ deploy:
     - source ${OPENSTACK_ENV} && ansible-playbook -vvv site.yml --extra-vars "inventories/development/group_vars/all" --extra-vars "key_file_path=${SSH_KEY} username=${CONFIG_USER} password=${CONFIG_PW} encrypt_key=${ENCRYPT_KEY} reg_login_user=${CONFIG_USER} reg_login_pw=${CONFIG_PW} pg_user=${DATABASE_USER} pg_pass=${DATABASE_PASSWORD} stresstest_setup=1"
   artifacts:
     paths:
-      - "target/hosts_stresstest"
+      - "${HOSTS_TMP_TARGET_DIR}/target/hosts_stresstest"
   allow_failure: true
 
 post_ansible_setup:
