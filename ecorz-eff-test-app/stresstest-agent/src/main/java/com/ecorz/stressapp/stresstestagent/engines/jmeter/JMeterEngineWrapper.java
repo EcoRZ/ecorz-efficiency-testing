@@ -75,11 +75,11 @@ public class JMeterEngineWrapper {
 
     jmeter.addStep(threadGroupElement);
     ClassLoader loader = ClassLoader.getSystemClassLoader();
-    LOGGER.debug(String.format("LOADER: %s", loader));
+    LOGGER.warn(String.format("LOADER: %s", loader));
     URL url = ClassLoader.getSystemClassLoader().getSystemResource("");
-    LOGGER.debug(String.format("SYSRESOURCE: %s", url));
+    LOGGER.warn(String.format("SYSRESOURCE: %s", url));
     String fff = ClassLoader.getSystemClassLoader().getSystemResource("").getPath();
-    LOGGER.debug(String.format("PATH_: %s", fff));
+    LOGGER.warn(String.format("PATH_: %s", fff));
     jmeter.run();
     //Assert.assertTrue("Test run failed. Error rate: " + jmeter.getSummaryResults().getErrorRate(),
     //    jmeter.getSummaryResults().isSuccessful());
