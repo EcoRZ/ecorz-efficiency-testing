@@ -17,6 +17,7 @@ import com.lithium.mineraloil.jmeter.test_elements.LoopElement;
 import com.lithium.mineraloil.jmeter.test_elements.ThreadGroupElement;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
 import org.apache.jmeter.assertions.ResponseAssertion;
@@ -73,6 +74,12 @@ public class JMeterEngineWrapper {
     threadGroupElement.addReportableStep(loopElement);
 
     jmeter.addStep(threadGroupElement);
+    ClassLoader loader = ClassLoader.getSystemClassLoader();
+    LOGGER.debug(String.format("LOADER: %s", loader));
+    URL url = ClassLoader.getSystemClassLoader().getSystemResource("");
+    LOGGER.debug(String.format("SYSRESOURCE: %s", url));
+    String fff = ClassLoader.getSystemClassLoader().getSystemResource("").getPath();
+    LOGGER.debug(String.format("PATH_: %s", fff));
     jmeter.run();
     //Assert.assertTrue("Test run failed. Error rate: " + jmeter.getSummaryResults().getErrorRate(),
     //    jmeter.getSummaryResults().isSuccessful());
