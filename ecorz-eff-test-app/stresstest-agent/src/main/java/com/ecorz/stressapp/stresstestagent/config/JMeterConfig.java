@@ -15,10 +15,12 @@ public class JMeterConfig {
   private String TEST_DURATION;
   @Value("${ecorz.jmeter.test.delay}")
   private String TEST_DELAY;
-  @Value("${ecorz.jmeter.custom.jar.dir}")
+  @Value("${ecorz.jmeter.engine.custom.jar.dir}")
   private String JMETER_CUSTOM_DIR;
-  @Value("${ecorz.jmeter.custom.jar.file}")
-  private String JMETER_CUSTOM_FILE;
+  @Value("${ecorz.jmeter.engine.main.class}")
+  private String JMETER_MAIN_CLASS;
+  @Value("${ecorz.jmeter.engine.cp}")
+  private String JMETER_CP;
 
   public String getJmeterHome (){
     return JMETER_HOME;
@@ -40,7 +42,15 @@ public class JMeterConfig {
     return TEST_DELAY;
   }
 
-  public String getFullCustomJmeterJarFilePath() {
-    return JMETER_CUSTOM_DIR + "/" + JMETER_CUSTOM_FILE;
+  public String getJmeterCustomJarDir() {
+    return JMETER_CUSTOM_DIR;
+  }
+
+  public String getJmeterMainClass() {
+    return JMETER_MAIN_CLASS;
+  }
+
+  public String getJMeterCp() {
+    return JMETER_CP;
   }
 }

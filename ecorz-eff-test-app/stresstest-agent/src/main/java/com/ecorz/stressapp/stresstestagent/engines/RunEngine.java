@@ -59,8 +59,8 @@ public class RunEngine {
 
   private void callJmeterEngineViaRuntime(RunConfigParams runConfigParams) throws RunException {
     final String jarOpts = AgentToEngineConfig.INSTANCE.convertToString(runConfigParams);
-    final String runStr = "java " + jarOpts + " -jar " +
-          jMeterConfig.getFullCustomJmeterJarFilePath();
+    final String runStr = "java -cp \'" + jMeterConfig.getJMeterCp() + "\' " + jarOpts + " " +
+          jMeterConfig.getJmeterMainClass();
 
     callRuntime(runStr);
   }
@@ -78,8 +78,8 @@ public class RunEngine {
 
   private void callJmeterEngineViaRuntime(RunFileParams runFileParams) throws RunException {
     final String jarOpts = AgentToEngineFile.INSTANCE.convertToString(runFileParams);
-    final String runStr = "java " + jarOpts + " -jar " +
-        jMeterConfig.getFullCustomJmeterJarFilePath();
+    final String runStr = "java -cp \'" + jMeterConfig.getJMeterCp() + "\' " + jarOpts + " " +
+        jMeterConfig.getJmeterMainClass();
 
     callRuntime(runStr);
   }
@@ -102,7 +102,7 @@ public class RunEngine {
       int exitVal = process.waitFor();
       if (exitVal != 0) {
         throw new RunException(String.format("Cannot execute command:\n"
-            + "%s\nas return-val was not equal to zero", cmd));
+            + "%s\nas return-val was not equal to zero.\nOutput was:\n%s", cmd, output.toString()));
       }
 
     } catch (IOException e) {

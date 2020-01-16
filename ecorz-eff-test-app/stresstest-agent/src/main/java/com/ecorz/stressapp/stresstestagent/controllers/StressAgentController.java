@@ -56,7 +56,7 @@ public class StressAgentController {
       try {
         return runService.startRun(runUuid);
       } catch (RunException e) {
-        LOGGER.error(String.format("Cannot execute the com.ecorz.stressapp.common.run with id: %s", runId));
+        LOGGER.error(String.format("Cannot execute the run with id: %s, error was: %s", runId, e));
       }
 
       return null;
