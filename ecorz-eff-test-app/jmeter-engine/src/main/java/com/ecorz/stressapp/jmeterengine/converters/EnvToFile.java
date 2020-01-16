@@ -12,7 +12,7 @@ public class EnvToFile {
   }
 
   public File getFileById() {
-    final File fileById = System.getenv(fileByIdEnvVar) != null ? new File(System.getenv(fileByIdEnvVar)) : null;
+    final File fileById = System.getProperty(fileByIdEnvVar) != null ? new File(System.getProperty(fileByIdEnvVar)) : null;
     return fileById;
   }
 }

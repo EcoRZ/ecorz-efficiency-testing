@@ -28,8 +28,8 @@ public class EnvToConfig {
 
   public Map<BMOption, List<String>> getOptAndArgsMap() {
     Map<BMOption,List<String>> optAndArgsMap = new HashMap<>();
-    final String tgString = System.getenv(tgParamEnvVar) != null ? System.getenv(tgParamEnvVar) : "";
-    final String urtString = System.getenv(urtParamEnvVar) != null ? System.getenv(urtParamEnvVar) : "";
+    final String tgString = System.getProperty(tgParamEnvVar) != null ? System.getProperty(tgParamEnvVar) : "";
+    final String urtString = System.getProperty(urtParamEnvVar) != null ? System.getProperty(urtParamEnvVar) : "";
 
     String tgStringArr[] = tgString.split(jMeterOptsDel);
     String urtStringArr[] = urtString.split(jMeterOptsDel);
@@ -47,20 +47,20 @@ public class EnvToConfig {
   }
 
   public String getDumpFile() {
-    final String dumpFile = System.getenv(dumpFileEnvVar) != null ? System.getenv(dumpFileEnvVar) : "";
+    final String dumpFile = System.getProperty(dumpFileEnvVar) != null ? System.getProperty(dumpFileEnvVar) : "";
     return dumpFile;
   }
 
   public RunConfigParams getRunConfigParams() {
-    final String tgParam = System.getenv(tgParamEnvVar) != null ? System.getenv(tgParamEnvVar) : "";
-    final String urtParam = System.getenv(urtParamEnvVar) != null ? System.getenv(urtParamEnvVar) : "";
-    final String dumpFile = System.getenv(dumpFileEnvVar) != null ? System.getenv(dumpFileEnvVar) : "";
-    final String jmeterHome = System.getenv(jMeterHomeEnvVar) != null ? System.getenv(jMeterHomeEnvVar) : "";
-    final String lbIp = System.getenv(lbIpEnvVar) != null ? System.getenv(lbIpEnvVar) : "";
-    final String lbPort = System.getenv(lbPortEnvVar) != null ? System.getenv(lbPortEnvVar) : "";
-    final String testDuration = System.getenv(testDurationEnvVar) != null ? System.getenv(testDurationEnvVar) : "";
-    final String testDelay = System.getenv(testDelayEnvVar) != null ? System.getenv(testDelayEnvVar) : "";
-    final String totalArgs = System.getenv(totalArgsEnvVar) != null ? System.getenv(totalArgsEnvVar) : "";
+    final String tgParam = System.getProperty(tgParamEnvVar) != null ? System.getProperty(tgParamEnvVar) : "";
+    final String urtParam = System.getProperty(urtParamEnvVar) != null ? System.getProperty(urtParamEnvVar) : "";
+    final String dumpFile = System.getProperty(dumpFileEnvVar) != null ? System.getProperty(dumpFileEnvVar) : "";
+    final String jmeterHome = System.getProperty(jMeterHomeEnvVar) != null ? System.getProperty(jMeterHomeEnvVar) : "";
+    final String lbIp = System.getProperty(lbIpEnvVar) != null ? System.getProperty(lbIpEnvVar) : "";
+    final String lbPort = System.getProperty(lbPortEnvVar) != null ? System.getProperty(lbPortEnvVar) : "";
+    final String testDuration = System.getProperty(testDurationEnvVar) != null ? System.getProperty(testDurationEnvVar) : "";
+    final String testDelay = System.getProperty(testDelayEnvVar) != null ? System.getProperty(testDelayEnvVar) : "";
+    final String totalArgs = System.getProperty(totalArgsEnvVar) != null ? System.getProperty(totalArgsEnvVar) : "";
 
     return new RunConfigParams(tgParam, urtParam, dumpFile, jmeterHome, lbIp, lbPort, testDuration, testDelay, totalArgs);
   }

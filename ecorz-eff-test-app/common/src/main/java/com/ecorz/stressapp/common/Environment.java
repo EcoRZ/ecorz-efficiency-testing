@@ -22,5 +22,5 @@ public class Environment {
   public final static String totalArgsEnvVar = String.format("%s.totalargs", defParPrefix);
   public final static String fileByIdEnvVar = String.format("%s.filebyid", defParPrefixJmeter);
 
-  public final static String jMeterOptsDel = ";";
+  public final static String jMeterOptsDel = ",";
 }

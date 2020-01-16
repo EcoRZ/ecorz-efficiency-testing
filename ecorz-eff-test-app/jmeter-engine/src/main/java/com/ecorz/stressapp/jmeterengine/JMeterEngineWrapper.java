@@ -11,6 +11,8 @@ import com.lithium.mineraloil.jmeter.test_elements.ThreadGroupElement;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import org.slf4j.Logger;
@@ -47,6 +49,11 @@ public class JMeterEngineWrapper {
     threadGroupElement.addReportableStep(loopElement);
 
     jmeter.addStep(threadGroupElement);
+    URL[] url_ = ((URLClassLoader) (Thread.currentThread().getContextClassLoader())).getURLs();
+    List<URL> urls = Arrays.asList(url_);
+    for(URL url__: urls)
+      LOGGER.warn(String.format("URL: %s", url__));
+    ClassLoader.getSystemClassLoader().getSystemResource("");
     ClassLoader loader = ClassLoader.getSystemClassLoader();
     LOGGER.warn(String.format("LOADER: %s", loader));
     URL url = ClassLoader.getSystemClassLoader().getSystemResource("");

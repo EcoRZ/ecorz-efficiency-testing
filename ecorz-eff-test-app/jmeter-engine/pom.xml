@@ -36,8 +36,14 @@
   </dependencies>
 
   <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources/config</directory>
+      </resource>
+    </resources>
 
     <plugins>
+
       <!-- Maven Assembly Plugin -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -51,6 +57,7 @@
           <!-- MainClass in mainfest make a executable jar -->
           <archive>
             <manifest>
+              <addClasspath>true</addClasspath>
               <mainClass>com.ecorz.stressapp.jmeterengine.Application</mainClass>
             </manifest>
           </archive>
@@ -68,29 +75,6 @@
         </executions>
       </plugin>
 
-
-      <plugin>
-        <artifactId>maven-resources-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>copy-resources-jmeter</id>
-            <!-- here the phase you need -->
-            <phase>validate</phase>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${basedir}/target/jmeter</outputDirectory>
-              <resources>
-                <resource>
-                  <directory>src/main/jmeter</directory>
-                  <filtering>true</filtering>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
   </build>
 

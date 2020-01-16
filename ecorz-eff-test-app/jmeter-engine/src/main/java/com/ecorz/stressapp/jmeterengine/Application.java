@@ -39,6 +39,6 @@ public class Application {
   }
 
   private static boolean runWithFile() {
-    return System.getenv(fileByIdEnvVar) != null ? true : false;
+    return System.getProperty(fileByIdEnvVar) != null ? true : false;
   }
 }
