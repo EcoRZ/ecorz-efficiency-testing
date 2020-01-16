@@ -1,4 +1,4 @@
-package com.ecorz.stressapp.stresstestagent.engines.jmeter.config;
+package com.ecorz.stressapp.jmeterengine.config;
 
 import com.lithium.mineraloil.jmeter.test_elements.LoopElement;
 

@@ -19,6 +19,8 @@
   <modules>
     <module>confsvr</module>
     <module>stresstest-agent</module>
+    <module>jmeter-engine</module>
+    <module>common</module>
   </modules>
   <build>
     <plugins>

@@ -1,17 +1,13 @@
-package com.ecorz.stressapp.stresstestagent.run.benchmarks;
+package com.ecorz.stressapp.common.run.benchmarks;
 
-import static com.ecorz.stressapp.stresstestagent.run.benchmarks.BMOption.tg;
-import static com.ecorz.stressapp.stresstestagent.run.benchmarks.BMOption.urt;
+import static com.ecorz.stressapp.common.run.benchmarks.BMOption.tg;
+import static com.ecorz.stressapp.common.run.benchmarks.BMOption.urt;
 
-import java.util.AbstractMap;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.google.common.base.MoreObjects;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public enum BenchmarkContainer {
   TGROUP_BENCH(new HashMap<BMOption,List<String>>() {

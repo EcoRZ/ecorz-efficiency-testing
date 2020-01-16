@@ -45,7 +45,7 @@ public class TmpRepository {
 
   public void deleteConfigById(UUID uuid) {
     if(!configMap.containsKey(uuid)) {
-      throw new IllegalArgumentException(String.format("Cannot delete run config with id %s as this id does not exist", uuid));
+      throw new IllegalArgumentException(String.format("Cannot delete com.ecorz.stressapp.common.run config with id %s as this id does not exist", uuid));
     }
 
     configMap.remove(uuid);

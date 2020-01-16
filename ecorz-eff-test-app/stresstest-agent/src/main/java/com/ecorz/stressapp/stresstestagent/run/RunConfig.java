@@ -1,9 +1,6 @@
 package com.ecorz.stressapp.stresstestagent.run;
 
 import com.ecorz.stressapp.stresstestagent.domain.run.RunConfigFields;
-import com.ecorz.stressapp.stresstestagent.run.benchmarks.BMOption;
-import com.ecorz.stressapp.stresstestagent.run.benchmarks.BenchmarkContainer;
-import com.ecorz.stressapp.stresstestagent.run.benchmarks.OptAndArgs;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,6 +8,9 @@ import java.util.List;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.ecorz.stressapp.common.run.benchmarks.BMOption;
+import com.ecorz.stressapp.common.run.benchmarks.BenchmarkContainer;
+import com.ecorz.stressapp.common.run.benchmarks.OptAndArgs;
 
 public class RunConfig {
   private final static Logger LOGGER = LoggerFactory.getLogger(RunConfig.class);

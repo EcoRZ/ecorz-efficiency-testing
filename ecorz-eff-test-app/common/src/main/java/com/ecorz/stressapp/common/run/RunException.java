@@ -1,4 +1,4 @@
-package com.ecorz.stressapp.stresstestagent.run;
+package com.ecorz.stressapp.common.run;
 
 public class RunException extends Exception {
 

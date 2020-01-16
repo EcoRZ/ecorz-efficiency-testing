@@ -1,18 +1,11 @@
 package com.ecorz.stressapp.stresstestagent.controllers;
 
-import com.ecorz.stressapp.stresstestagent.converters.ResultDomainToPersist;
 import com.ecorz.stressapp.stresstestagent.domain.result.ResultDomainResponse;
 import com.ecorz.stressapp.stresstestagent.domain.run.RunConfigFields;
-import com.ecorz.stressapp.stresstestagent.domain.result.ResultDomain;
 import com.ecorz.stressapp.stresstestagent.domain.run.RunConfigFieldsResponse;
-import com.ecorz.stressapp.stresstestagent.result.ResultPersist;
-import com.ecorz.stressapp.stresstestagent.run.RunConfig;
-import com.ecorz.stressapp.stresstestagent.run.RunConfig.RunConfigFactory;
-import com.ecorz.stressapp.stresstestagent.run.RunException;
 import com.ecorz.stressapp.stresstestagent.services.ResultService;
 import com.ecorz.stressapp.stresstestagent.services.RunService;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
+import com.ecorz.stressapp.common.run.RunException;
 
 /*
   Was brauch ich:
@@ -62,7 +56,7 @@ public class StressAgentController {
       try {
         return runService.startRun(runUuid);
       } catch (RunException e) {
-        LOGGER.error(String.format("Cannot execute the run with id: %s", runId));
+        LOGGER.error(String.format("Cannot execute the com.ecorz.stressapp.common.run with id: %s", runId));
       }
 
       return null;

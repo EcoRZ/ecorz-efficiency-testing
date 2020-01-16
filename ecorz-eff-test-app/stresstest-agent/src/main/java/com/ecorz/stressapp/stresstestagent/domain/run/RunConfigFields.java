@@ -1,11 +1,11 @@
 package com.ecorz.stressapp.stresstestagent.domain.run;
 
-import static com.ecorz.stressapp.stresstestagent.run.benchmarks.BMOption.tg;
+import static com.ecorz.stressapp.common.run.benchmarks.BMOption.tg;
 
+import com.ecorz.stressapp.common.run.benchmarks.BMOption;
+import com.ecorz.stressapp.common.run.benchmarks.BenchmarkContainer;
+import com.ecorz.stressapp.common.run.benchmarks.OptAndArgs;
 import com.ecorz.stressapp.stresstestagent.run.RunConfig;
-import com.ecorz.stressapp.stresstestagent.run.benchmarks.BMOption;
-import com.ecorz.stressapp.stresstestagent.run.benchmarks.BenchmarkContainer;
-import com.ecorz.stressapp.stresstestagent.run.benchmarks.OptAndArgs;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.stream.Collectors;

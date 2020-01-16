@@ -1,7 +1,5 @@
-package com.ecorz.stressapp.stresstestagent.engines.jmeter.config;
+package com.ecorz.stressapp.jmeterengine.config;
 
-import com.ecorz.stressapp.stresstestagent.config.JMeterConfig;
-import com.ecorz.stressapp.stresstestagent.config.RunServiceConfig;
 import com.lithium.mineraloil.jmeter.test_elements.HTTPSamplerElement;
 import com.lithium.mineraloil.jmeter.test_elements.ResponseAssertionElement;
 import com.lithium.mineraloil.jmeter.test_elements.ResponseField;
