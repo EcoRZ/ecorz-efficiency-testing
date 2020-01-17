@@ -53,7 +53,7 @@ build_configsvr:
     SNAPSHOT_NAME: "configurationserver-0.0.1-SNAPSHOT.jar"
   script:
     - cd ${CONFIG_SERVER_ROOT}
-    - mvn $MAVEN_CLI_OPTS install -Ddockerfile.skip
+    - mvn $MAVEN_OPTS install -Ddockerfile.skip
   artifacts:
     paths:
       - "${CONFIG_SERVER_DIR_ART}/target/${SNAPSHOT_NAME}"
@@ -65,13 +65,13 @@ build_stresstest_agent:
   before_script:
     # build dependency of stresstestagent
     - cd "${COMMON_ROOT}"
-    - mvn clean install
+    - mvn $MAVEN_OPTS clean install
     # build dependency of stresstestagent
     - cd "${JMETERENGINE_ROOT}"
-    - mvn clean install # mvn -Djmeter-dir=jmeter clean install
+    - mvn $MAVEN_OPTS clean install # mvn -Djmeter-dir=jmeter clean install
   script:
     - cd ${STRESSTEST_AGENT_ROOT}
-    - mvn $MAVEN_CLI_OPTS install -Ddockerfile.skip
+    - mvn $MAVEN_OPTS install -Ddockerfile.skip
   artifacts:
     paths:
       - "${STRESSTEST_AGENT_DIR_ART}/target/${SNAPSHOT_NAME}"
@@ -93,16 +93,16 @@ create_docker_image:
   script:
     - docker login -u ${CONFIG_USER} -p ${CONFIG_PW} ${CONTAINER_REG_URL}
     - cd "${CONFSVR_DIR}"
-    - mvn package
+    - mvn $MAVEN_OPTS package
     - mvn dockerfile:push
     # build dependency of stresstestagent
     - cd "${COMMON_ROOT}"
-    - mvn clean install
+    - mvn $MAVEN_OPTS clean install
     # build dependency of stresstestagent
     - cd "${JMETERENGINE_ROOT}"
-    - mvn clean install # mvn -Djmeter-dir=jmeter clean install
+    - mvn $MAVEN_OPTS clean install # mvn -Djmeter-dir=jmeter clean install
     - cd "${STRESSTESTAGENT_DIR}"
-    - mvn package
+    - mvn $MAVEN_OPTS package
     - mvn dockerfile:push
 
 # TODO
