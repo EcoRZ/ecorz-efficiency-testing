@@ -62,6 +62,13 @@ build_stresstest_agent:
   stage: build
   variables:
     SNAPSHOT_NAME: "stresstestagent-0.0.1-SNAPSHOT.jar"
+  before_script:
+    # build dependency of stresstestagent
+    - cd "${COMMON_ROOT}"
+    - mvn clean install
+    # build dependency of stresstestagent
+    - cd "${JMETERENGINE_ROOT}"
+    - mvn clean install # mvn -Djmeter-dir=jmeter clean install
   script:
     - cd ${STRESSTEST_AGENT_ROOT}
     - mvn $MAVEN_CLI_OPTS install -Ddockerfile.skip
@@ -85,7 +92,6 @@ create_docker_image:
     - sh get-docker.sh
   script:
     - docker login -u ${CONFIG_USER} -p ${CONFIG_PW} ${CONTAINER_REG_URL}
-    - echo "$CI_REGISTRY"
     - cd "${CONFSVR_DIR}"
     - mvn package
     - mvn dockerfile:push
