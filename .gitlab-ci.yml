@@ -91,10 +91,10 @@ create_docker_image:
     - mvn dockerfile:push
     # build dependency of stresstestagent
     - cd "${COMMON_ROOT}"
-    - mvn package
+    - mvn clean install
     # build dependency of stresstestagent
     - cd "${JMETERENGINE_ROOT}"
-    - mvn package # mvn -Djmeter-dir=jmeter clean package
+    - mvn clean install # mvn -Djmeter-dir=jmeter clean install
     - cd "${STRESSTESTAGENT_DIR}"
     - mvn package
     - mvn dockerfile:push
