@@ -93,7 +93,7 @@
     <jar-jmeter-file>jmeterengine-0.0.1-SNAPSHOT-jar-with-dependencies</jar-jmeter-file>
     <docker-jar-dir>/usr/local/stresstestagent</docker-jar-dir>
     <docker-jar-jmeter-dir>/usr/local/jmeter-engine</docker-jar-jmeter-dir>
-    <jmeter-dir>../jmeter-engine</jmeter-dir>
+    <jmeter-dir>.</jmeter-dir>
   </properties>
 
   <build>
@@ -120,25 +120,26 @@
                          </resources>
                      </configuration>
                  </execution>
-                 <execution>
-                   <id>copy-resources-jmeter</id>
-                   <!-- here the phase you need -->
-                   <phase>validate</phase>
-                   <goals>
-                     <goal>copy-resources</goal>
-                   </goals>
-                   <configuration>
-                     <outputDirectory>${basedir}/target/jmeter</outputDirectory>
-                     <resources>
-                       <resource>
-                         <directory>src/main/jmeter</directory>
-                         <filtering>true</filtering>
-                       </resource>
-                     </resources>
-                   </configuration>
-                 </execution>
                </executions>
          </plugin>
+       <plugin>
+         <groupId>com.coderplus.maven.plugins</groupId>
+         <artifactId>copy-rename-maven-plugin</artifactId>
+         <version>1.0</version>
+         <executions>
+           <execution>
+             <id>copy-file</id>
+             <phase>generate-sources</phase>
+             <goals>
+               <goal>copy</goal>
+             </goals>
+             <configuration>
+               <sourceFile>../jmeter-engine/target/jmeterengine-0.0.1-SNAPSHOT-jar-with-dependencies.jar</sourceFile>
+               <destinationFile>target/jmeterengine-0.0.1-SNAPSHOT-jar-with-dependencies.jar</destinationFile>
+             </configuration>
+           </execution>
+         </executions>
+       </plugin>
 
        <!--
           <plugin>
