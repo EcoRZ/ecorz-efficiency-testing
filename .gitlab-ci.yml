@@ -38,6 +38,7 @@ pre_ansible_setup:
     - echo 'Ansible refuses to read from a world-writeable folder, hence' && chmod -v 700 $(pwd)
     # set openstack_config and credentials beforehand
     - source ${OPENSTACK_ENV} && ansible-playbook -vvv site.yml --extra-vars "inventories/development/group_vars/all" --extra-vars "key_file_path=${SSH_KEY} webserver_az1_count=${WS_AZ1_COUNT} webserver_az2_count=${WS_AZ2_COUNT} deploy=1"
+    - find "$CI_PROJECT_DIR" -type f -iname "hosts"
   artifacts:
     paths:
       - "${HOSTS_TMP_TARGET_DIR}/target/hosts"
