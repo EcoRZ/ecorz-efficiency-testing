@@ -12,7 +12,6 @@ install_folder: install_dir
 bind_mount_dir: /usr/local/jmeter
 image_name: image-name
 tag: latest
-jmeter_cp: "jmeter-engine/target/jmeterengine-0.0.1-SNAPSHOT-jar-with-dependencies.jar:jmeter-engine/target/classes"
 port_mapping: 80:8080
 env_var1: stuff=interesting
 env_var2: stuff=interesting

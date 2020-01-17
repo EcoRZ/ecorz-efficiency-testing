@@ -47,4 +47,5 @@ results_db_ip_: localhost
 jmeter_home: /usr/local/jmeter
 jmeter_bin_dir: "{{ jmeter_home }}/bin"
 jmeter_fs_base: "{{ jmeter_bin_dir }}/own_plans/dump"
+jmeter_cp: "jmeter-engine/target/jmeterengine-0.0.1-SNAPSHOT-jar-with-dependencies.jar:jmeter-engine/target/classes"
 lb_ip: "127.0.0.1"

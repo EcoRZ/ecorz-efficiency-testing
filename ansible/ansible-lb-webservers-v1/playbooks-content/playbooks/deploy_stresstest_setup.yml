@@ -154,9 +154,9 @@
   vars:
     container_name_: "{{ container_name }}"
     port_opts: "-p {{ port_mapping }}"
+    jmeter_cp: "../jmeter-engine/jmeterengine-0.0.1-SNAPSHOT-jar-with-dependencies.jar:usr/local/jmeter"
     env_opts: "-e {{ env_var1 }} -e {{ env_var2 }} -e {{ env_var3 }} -e {{ env_var4 }} -e {{ env_var5 }} -e {{ env_var6 }} -e {{ env_var7 }} -e {{ env_var8 }} -e {{ env_var9 }} -e {{ env_var10 }}"
     install_folder: "jmeter"
-    jmeter_cp: "../jmeter-engine/jmeterengine-0.0.1-SNAPSHOT-jar-with-dependencies.jar:usr/local/jmeter"
     use_bind_mount: "1"
     bind_mount_dir: "/usr/local/jmeter"
   pre_tasks:
