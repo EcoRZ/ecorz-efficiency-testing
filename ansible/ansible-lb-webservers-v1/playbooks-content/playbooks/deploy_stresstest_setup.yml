@@ -78,7 +78,7 @@
       vars:
         file_to_look: "{{ hosts_tmp }}"
         contents: "{{ lookup('file', file_to_look) }}"
-      shell: awk -F ',' '$1 ~ /haproxy/ { print $2; exit }' <<< "{{ contents }}"
+      shell: echo -e "{{ contents }}" |  awk -F ',' '$1 ~ /haproxy/ { print $2; exit }'
       register: awk_haproxy_out
     - name: remember custom set env-var with loadbalancer-ip read from registered var for use in stresstest_agent container
       set_fact:
