@@ -28,4 +28,5 @@ services:
       # JMETER_BIN_DIR: ${JMETER_BIN_DIR_}
       # JMETER_FS_BASE: ${JMETER_FS_BASE_}
       # LB_IP: ${LB_IP_}
+      # JMETER_CP: ${JMETER_CP_}
 

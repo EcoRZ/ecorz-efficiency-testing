@@ -100,6 +100,7 @@
         env_var7="{{ hostvars[item[0]].env_var7 }}"
         env_var8="{{ hostvars[item[0]].env_var8 }}"
         env_var9="{{ hostvars[item[0]].env_var9 if hostvars[item[0]].container_name != hostvars['stresstest_agent'].container_name else lb_ip_env }}"
+        env_var10="{{ hostvars[item[0]].env_var10 }}"
       when:
         - hostvars[item[0]].container_name == item[1].server.name
       with_nested:
@@ -108,7 +109,7 @@
     - name: persist relevant server vars in {{ hosts_tmp_stresstest }}
       lineinfile: >
           path={{ hosts_tmp_stresstest }}
-          line="{{ item[1].server.name }},{{ item[1].server.accessIPv4 }},{{ hostvars[item[0]].image_name }},{{ hostvars[item[0]].port_mapping }},{{ hostvars[item[0]].env_var1 }},{{ hostvars[item[0]].env_var2 }},{{ hostvars[item[0]].env_var3 }},{{ hostvars[item[0]].env_var4 }},{{ hostvars[item[0]].env_var5 }},{{ hostvars[item[0]].env_var6 }},{{ hostvars[item[0]].env_var7 }},{{ hostvars[item[0]].env_var8 }},{{ hostvars[item[0]].env_var9 }}"
+          line="{{ item[1].server.name }},{{ item[1].server.accessIPv4 }},{{ hostvars[item[0]].image_name }},{{ hostvars[item[0]].port_mapping }},{{ hostvars[item[0]].env_var1 }},{{ hostvars[item[0]].env_var2 }},{{ hostvars[item[0]].env_var3 }},{{ hostvars[item[0]].env_var4 }},{{ hostvars[item[0]].env_var5 }},{{ hostvars[item[0]].env_var6 }},{{ hostvars[item[0]].env_var7 }},{{ hostvars[item[0]].env_var8 }},{{ hostvars[item[0]].env_var9 }},{{ hostvars[item[0]].env_var10 }}"
           create=yes state=present
       when:
         - hostvars[item[0]].container_name == item[1].server.name
@@ -138,7 +139,7 @@
   vars:
     container_name_: "{{ container_name }}"
     port_opts: "-p {{ port_mapping }}"
-    env_opts: "-e {{ env_var1 }} -e {{ env_var2 }} -e {{ env_var3 }} -e {{ env_var4 }} -e {{ env_var5 }} -e {{ env_var6 }} -e {{ env_var7 }} -e {{ env_var8 }} -e {{ env_var9 }}"
+    env_opts: "-e {{ env_var1 }} -e {{ env_var2 }} -e {{ env_var3 }} -e {{ env_var4 }} -e {{ env_var5 }} -e {{ env_var6 }} -e {{ env_var7 }} -e {{ env_var8 }} -e {{ env_var9 }} -e {{ env_var10 }}"
     use_bind_mount: "0"
   roles:
     - role: deploy_container
@@ -153,9 +154,11 @@
   vars:
     container_name_: "{{ container_name }}"
     port_opts: "-p {{ port_mapping }}"
-    env_opts: "-e {{ env_var1 }} -e {{ env_var2 }} -e {{ env_var3 }} -e {{ env_var4 }} -e {{ env_var5 }} -e {{ env_var6 }} -e {{ env_var7 }} -e {{ env_var8 }} -e {{ env_var9 }}"
+    env_opts: "-e {{ env_var1 }} -e {{ env_var2 }} -e {{ env_var3 }} -e {{ env_var4 }} -e {{ env_var5 }} -e {{ env_var6 }} -e {{ env_var7 }} -e {{ env_var8 }} -e {{ env_var9 }} -e {{ env_var10 }}"
     install_folder: "jmeter"
+    jmeter_cp: "../jmeter-engine/jmeterengine-0.0.1-SNAPSHOT-jar-with-dependencies.jar:usr/local/jmeter"
     use_bind_mount: "1"
+    bind_mount_dir: "/usr/local/jmeter"
   pre_tasks:
     - import_tasks: download_jmeter_task.yml
       when:
