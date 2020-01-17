@@ -63,6 +63,9 @@ build_stresstest_agent:
   variables:
     SNAPSHOT_NAME: "stresstestagent-0.0.1-SNAPSHOT.jar"
   before_script:
+    # need to compile in par-directory once 
+    - cd "${JMETERENGINE_ROOT}/.."
+    - mvn $MAVEN_OPTS clean install
     # build dependency of stresstestagent
     - cd "${COMMON_ROOT}"
     - mvn $MAVEN_OPTS clean install
@@ -90,6 +93,9 @@ create_docker_image:
   before_script:
     - curl -fsSL https://get.docker.com -o get-docker.sh
     - sh get-docker.sh
+    # need to compile in par-directory once
+    - cd "${JMETERENGINE_ROOT}/.."
+    - mvn $MAVEN_OPTS clean install
   script:
     - docker login -u ${CONFIG_USER} -p ${CONFIG_PW} ${CONTAINER_REG_URL}
     - cd "${CONFSVR_DIR}"
