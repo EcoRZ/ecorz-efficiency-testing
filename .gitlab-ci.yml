@@ -6,6 +6,8 @@ variables:
   HOSTS_TMP_TARGET_DIR: "$ANSIBLE_SITE_DIR/playbooks"
   CONFIG_SERVER_ROOT: "$CI_PROJECT_DIR/ecorz-eff-test-app/confsvr"
   STRESSTEST_AGENT_ROOT: "$CI_PROJECT_DIR/ecorz-eff-test-app/stresstest-agent"
+  COMMON_ROOT: "$CI_PROJECT_DIR/ecorz-eff-test-app/common"
+  JMETERENGINE_ROOT: "$CI_PROJECT_DIR/ecorz-eff-test-app/jmeter-engine"
   CONTAINER_REG_URL: "omi-registry.e-technik.uni-ulm.de/fh/docker-reg"
 # Cache the Maven repository so that each job does not have to download it.
 cache:
@@ -86,6 +88,12 @@ create_docker_image:
     - cd "${CONFSVR_DIR}"
     - mvn package
     - mvn dockerfile:push
+    # build dependency of stresstestagent
+    - cd "${COMMON_ROOT}"
+    - mvn package
+    # build dependency of stresstestagent
+    - cd "${JMETERENGINE_ROOT}"
+    - mvn package # mvn -Djmeter-dir=jmeter clean package
     - cd "${STRESSTESTAGENT_DIR}"
     - mvn package
     - mvn dockerfile:push

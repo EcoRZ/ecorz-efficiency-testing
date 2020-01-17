@@ -90,6 +90,10 @@
     <docker.image.tag>latest</docker.image.tag>
     <!-- Spring boot main class -->
     <start-class>com.ecorz.stressapp.stresstestagent.Application</start-class>
+    <jar-jmeter-file>jmeterengine-0.0.1-SNAPSHOT-jar-with-dependencies</jar-jmeter-file>
+    <docker-jar-dir>/usr/local/stresstestagent</docker-jar-dir>
+    <docker-jar-jmeter-dir>/usr/local/jmeter-engine</docker-jar-jmeter-dir>
+    <jmeter-dir>../jmeter-engine</jmeter-dir>
   </properties>
 
   <build>
@@ -175,6 +179,10 @@
            <tag>${project.version}</tag>
            <buildArgs>
              <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+             <JAR_JMETER_FILE>${jar-jmeter-file}.jar</JAR_JMETER_FILE>
+             <DOCKER_JAR_DIR>${docker-jar-dir}</DOCKER_JAR_DIR>
+             <DOCKER_JAR_JMETER_DIR>${docker-jar-jmeter-dir}</DOCKER_JAR_JMETER_DIR>
+             <JMETER_DIR>${jmeter-dir}</JMETER_DIR>
            </buildArgs>
            <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
          </configuration>
