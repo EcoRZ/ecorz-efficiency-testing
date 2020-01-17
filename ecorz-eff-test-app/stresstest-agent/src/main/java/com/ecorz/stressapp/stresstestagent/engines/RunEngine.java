@@ -16,9 +16,15 @@ import com.ecorz.stressapp.common.run.benchmarks.BenchmarkContainer;
 import com.ecorz.stressapp.stresstestagent.config.JMeterConfig;
 import com.ecorz.stressapp.stresstestagent.config.RunServiceConfig;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -59,7 +65,8 @@ public class RunEngine {
 
   private void callJmeterEngineViaRuntime(RunConfigParams runConfigParams) throws RunException {
     final String jarOpts = AgentToEngineConfig.INSTANCE.convertToString(runConfigParams);
-    final String runStr = "java -cp \'" + jMeterConfig.getJMeterCp() + "\' " + jarOpts + " " +
+    final String java_ = System.getProperty("java.home") + "/bin/java";
+    final String runStr = java_ + " -cp \'" + jMeterConfig.getJMeterCp() + "\' " + jarOpts + " " +
           jMeterConfig.getJmeterMainClass();
 
     callRuntime(runStr);
@@ -78,7 +85,8 @@ public class RunEngine {
 
   private void callJmeterEngineViaRuntime(RunFileParams runFileParams) throws RunException {
     final String jarOpts = AgentToEngineFile.INSTANCE.convertToString(runFileParams);
-    final String runStr = "java -cp \'" + jMeterConfig.getJMeterCp() + "\' " + jarOpts + " " +
+    final String java_ = System.getProperty("java.home") + "/bin/java";
+    final String runStr = java_ + " -cp \'" + jMeterConfig.getJMeterCp() + "\' " + jarOpts + " " +
         jMeterConfig.getJmeterMainClass();
 
     callRuntime(runStr);
@@ -87,12 +95,21 @@ public class RunEngine {
   private void callRuntime(String cmd) throws RunException {
     try {
       LOGGER.warn(String.format("Running jmeter-engine with cmd: %s", cmd));
-      Process process = Runtime.getRuntime().exec(cmd);
+
+      String tmpFileName = "tmp_file";
+      BufferedWriter writer = new BufferedWriter(new FileWriter(tmpFileName));
+      writer.write(cmd);
+      writer.close();
+
+      Process process = Runtime.getRuntime().exec("sh tmp_file");
+      Files.deleteIfExists(Paths.get(tmpFileName));
+
+      //Process process = Runtime.getRuntime().exec(cmd);
 
       StringBuilder output = new StringBuilder();
 
       BufferedReader reader = new BufferedReader(
-          new InputStreamReader(process.getInputStream()));
+          new InputStreamReader(process.getErrorStream()));
 
       String line;
       while ((line = reader.readLine()) != null) {
