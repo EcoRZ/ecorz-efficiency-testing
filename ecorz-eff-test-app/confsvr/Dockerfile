@@ -9,6 +9,6 @@ RUN rm jce_policy-8.zip
 RUN yes |cp -v ./UnlimitedJCEPolicyJDK8/*.jar /usr/lib/jvm/java-1.8-openjdk/jre/lib/security/
 ARG JAR_FILE
 ADD target/${JAR_FILE} /usr/local/configserver/
-ADD target/dockerfile/com.ecorz.stressapp.common.run.sh com.ecorz.stressapp.common.run.sh
-RUN chmod +x com.ecorz.stressapp.common.run.sh
-CMD ./com.ecorz.stressapp.common.run.sh
+ADD target/dockerfile/run.sh run.sh
+RUN chmod +x run.sh
+CMD ./run.sh
