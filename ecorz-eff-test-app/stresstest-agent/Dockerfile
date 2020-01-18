@@ -10,5 +10,5 @@ ADD target/${JAR_FILE} ${DOCKER_JAR_DIR}/
 ADD ${JMETER_DIR}/target/${JAR_JMETER_FILE} ${DOCKER_JAR_JMETER_DIR}/
 ADD target/dockerfile/run.sh run.sh
 RUN chmod +x run.sh
-ENV JAR_DIR ${DOCKER_JAR_DIR}
+ENV JAR_DIR=${DOCKER_JAR_DIR}
 CMD ./run.sh
