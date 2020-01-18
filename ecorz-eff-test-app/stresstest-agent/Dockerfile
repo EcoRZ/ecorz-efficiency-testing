@@ -1,6 +1,5 @@
 FROM openjdk:8-jdk-alpine
 RUN apk update && apk upgrade && apk add netcat-openbsd
-RUN mkdir -p /usr/local/stresstest_agent
 RUN mkdir -p /usr/local/jmeter
 ARG JAR_FILE
 ARG JAR_JMETER_FILE
