@@ -56,7 +56,8 @@ all:
             image_name: fh/docker-reg/stresstestagent
             tag: 0.0.1-SNAPSHOT
             local_image_path: "{{ registry_url }}/{{ image_name }}:{{ tag }}"
-            jmeter_cp: "jmeter-engine/target/jmeterengine-0.0.1-SNAPSHOT-jar-with-dependencies.jar:jmeter-engine/target/classes"
+            # jmeter_cp: "jmeter-engine/target/jmeterengine-0.0.1-SNAPSHOT-jar-with-dependencies.jar:jmeter-engine/target/classes"
+            jmeter_cp: "../jmeter-engine/jmeterengine-0.0.1-SNAPSHOT-jar-with-dependencies.jar:usr/local/jmeter"
             lb_ip: "127.0.0.1"
             port_mapping: 8080:8080
             env_var1: PROFILE=default
