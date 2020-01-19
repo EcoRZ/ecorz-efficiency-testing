@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ResultService {
 
-  // todo: Use Repos and consequently Opstgres DB
+  // todo: Use Repos and consequently postgres DB
   // @Autowired
   // private ResultRepository resultRepository;
   @Autowired

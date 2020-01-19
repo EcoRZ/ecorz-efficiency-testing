@@ -3,6 +3,7 @@ package com.ecorz.stressapp.stresstestagent.controllers;
 import com.ecorz.stressapp.stresstestagent.domain.result.ResultDomainResponse;
 import com.ecorz.stressapp.stresstestagent.domain.run.RunConfigFields;
 import com.ecorz.stressapp.stresstestagent.domain.run.RunConfigFieldsResponse;
+import com.ecorz.stressapp.stresstestagent.orchestration.Orchestrator;
 import com.ecorz.stressapp.stresstestagent.services.ResultService;
 import com.ecorz.stressapp.stresstestagent.services.RunService;
 import java.util.UUID;
@@ -30,31 +31,29 @@ import com.ecorz.stressapp.common.run.RunException;
 @RequestMapping(value="v1")
 public class StressAgentController {
     @Autowired
-    private RunService runService;
-    @Autowired
-    private ResultService resultService;
+    private Orchestrator orchestrator;
     private final static Logger LOGGER = LoggerFactory.getLogger(StressAgentController.class);
 
     @RequestMapping(value="/run/setconfig",method = RequestMethod.POST)
     public UUID setRun( @Valid @RequestBody RunConfigFields configFields) {
-      return runService.saveRun(configFields);
+      return orchestrator.saveRun(configFields);
     }
 
     @RequestMapping(value="/run/setfile",method = RequestMethod.POST)
     public UUID setRun( @Valid @RequestBody String file) {
-      return runService.saveRun(file);
+      return orchestrator.saveRun(file);
     }
 
     @RequestMapping(value="/run",method = RequestMethod.GET)
     public List<RunConfigFieldsResponse> getRunConfigFieldsList() {
-      return runService.getRuns();
+      return orchestrator.getRuns();
     }
 
     @RequestMapping(value="/run/{runId}",method = RequestMethod.POST)
     public UUID startRun( @PathVariable("runId") String runId) {
       UUID runUuid = UUID.fromString(runId);
       try {
-        return runService.startRun(runUuid);
+        return orchestrator.startRun(runUuid);
       } catch (RunException e) {
         LOGGER.error(String.format("Cannot execute the run with id: %s, error was: %s", runId, e));
       }
@@ -65,11 +64,11 @@ public class StressAgentController {
     @RequestMapping(value="/run/{runId}",method = RequestMethod.DELETE)
     public void deleteRun( @PathVariable("runId") String runId) {
       UUID uuid = UUID.fromString(runId);
-      runService.deleteRun(uuid);
+      orchestrator.deleteRun(uuid);
     }
 
     @RequestMapping(value="/result",method = RequestMethod.GET)
     public List<ResultDomainResponse> getResults() {
-      return resultService.getResults();
+      return orchestrator.getResults();
     }
 }
