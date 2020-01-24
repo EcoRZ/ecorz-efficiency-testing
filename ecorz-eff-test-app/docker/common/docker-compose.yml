@@ -29,4 +29,7 @@ services:
       # JMETER_FS_BASE: ${JMETER_FS_BASE_}
       # LB_IP: ${LB_IP_}
       # JMETER_CP: ${JMETER_CP_}
+      # PROM_USER: ${PROM_USER_}
+      # PROM_PW: ${PROM_PW_}
+      # PROM_REST_END: ${PROM_REST_END_}
 
