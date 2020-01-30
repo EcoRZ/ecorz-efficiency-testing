@@ -10,13 +10,24 @@ public class ResultFile {
   private final String fullFileName;
 
   public static class ResultsFileFactory {
-    public static ResultFile of(String directory, BenchmarkContainer container) {
+    public static ResultFile jMeter(String directory, BenchmarkContainer container) {
+      String strDate = generateDateString();
+
+      final String finalName = String.format("%s/%s-run-%s", directory, strDate, container);
+      return new ResultFile(finalName);
+    }
+
+    public static ResultFile prometheus(String directory) {
+      String strDate = generateDateString();
+
+      final String finalName = String.format("%s/%s-prometheus", directory, strDate);
+      return new ResultFile(finalName);
+    }
+
+    private static String generateDateString() {
       Date date = Calendar.getInstance().getTime();
       DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd_hh-mm-ss");
-      String strDate = dateFormat.format(date);
-
-      final String finalName = String.format("%s/%s-com.ecorz.stressapp.common.run-%s", directory, strDate, container);
-      return new ResultFile(finalName);
+      return dateFormat.format(date);
     }
   }
 

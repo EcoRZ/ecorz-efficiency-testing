@@ -94,7 +94,7 @@ public class RunEngine {
 
   private void callRuntime(String cmd) throws RunException {
     try {
-      LOGGER.warn(String.format("Running jmeter-engine with cmd: %s", cmd));
+      LOGGER.warn(String.format("Running jMeter-engine with cmd: %s", cmd));
 
       String tmpFileName = "tmp_file";
       BufferedWriter writer = new BufferedWriter(new FileWriter(tmpFileName));

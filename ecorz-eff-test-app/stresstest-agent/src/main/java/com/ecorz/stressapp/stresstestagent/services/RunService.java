@@ -4,6 +4,7 @@ import com.ecorz.stressapp.common.run.benchmarks.BMOption;
 import com.ecorz.stressapp.common.run.benchmarks.OptAndArgs;
 import com.ecorz.stressapp.stresstestagent.config.ResultServiceConfig;
 import com.ecorz.stressapp.stresstestagent.config.RunServiceConfig;
+import com.ecorz.stressapp.stresstestagent.domain.Util;
 import com.ecorz.stressapp.stresstestagent.domain.run.RunConfigFields;
 import com.ecorz.stressapp.stresstestagent.domain.run.RunConfigFieldsResponse;
 import com.ecorz.stressapp.stresstestagent.engines.RunEngine;
@@ -13,7 +14,6 @@ import com.ecorz.stressapp.stresstestagent.result.ResultPersist;
 import com.ecorz.stressapp.stresstestagent.run.RunConfig;
 import com.ecorz.stressapp.stresstestagent.run.RunConfig.RunConfigFactory;
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -34,14 +34,12 @@ public class RunService {
   @Autowired
   private TmpRepository tmpRepository;
   @Autowired
-  private ResultService resultService;
-  @Autowired
   private RunEngine runEngine;
   // todo: put this config in ResultService and adjust code here
   @Autowired
-  private ResultServiceConfig resultConfig;
-  @Autowired
   private RunServiceConfig runConfig;
+  @Autowired
+  private Util util;
 
   public UUID saveRun(RunConfigFields runConfigFields) {
     UUID uuid = UUID.randomUUID();
@@ -72,16 +70,8 @@ public class RunService {
           return response; } ).collect(Collectors.toList());
   }
 
-  public UUID startRun(UUID runUuid) throws RunException {
-    RunConfig configFields = tmpRepository.getConfigById(runUuid);
-
-    if(configFields == null) {
-      throw new RunException(String.format("Cannot start com.ecorz.stressapp.common.run with id %s as it does not exist.", runUuid));
-    }
-
-    BenchmarkContainer bmContainer = configFields.getContainer();
-    final ResultFile file = ResultFile.ResultsFileFactory.of(
-        resultConfig.getResultsDumpFolder(), bmContainer);
+  public void startRun(UUID runUuid, ResultFile resultFile) throws RunException {
+    BenchmarkContainer bmContainer = util.getContainerFromRunUuid(runUuid);
 
     if(tmpRepository.getFileById(runUuid) != null) {
       LOGGER.warn("Using temporary solution to trigger engine directly with file");
@@ -92,12 +82,9 @@ public class RunService {
             tmpRepository.getFileById(runUuid)), e);
       }
     } else {
-      runEngine.trigger(bmContainer, file.getFullFileName());
+      // todo: check if resultFile == generateFile()
+      runEngine.trigger(bmContainer, resultFile.getFullFileName());
     }
-    UUID uuid = UUID.randomUUID();
-    resultService.saveResult(new ResultPersist(uuid, file.getFullFileName()));
-
-    return uuid;
   }
 
   public void deleteRun(UUID uuid) {

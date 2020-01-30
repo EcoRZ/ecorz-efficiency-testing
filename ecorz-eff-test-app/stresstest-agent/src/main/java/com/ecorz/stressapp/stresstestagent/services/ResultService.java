@@ -1,9 +1,16 @@
 package com.ecorz.stressapp.stresstestagent.services;
 
+import com.ecorz.stressapp.common.result.ResultException;
+import com.ecorz.stressapp.common.run.RunException;
+import com.ecorz.stressapp.common.run.benchmarks.BenchmarkContainer;
+import com.ecorz.stressapp.stresstestagent.config.ResultServiceConfig;
+import com.ecorz.stressapp.stresstestagent.domain.Util;
 import com.ecorz.stressapp.stresstestagent.domain.result.ResultDomainResponse;
 import com.ecorz.stressapp.stresstestagent.repository.TmpRepository;
 import com.ecorz.stressapp.stresstestagent.domain.result.ResultDomain;
+import com.ecorz.stressapp.stresstestagent.result.ResultFile;
 import com.ecorz.stressapp.stresstestagent.result.ResultPersist;
+import com.ecorz.stressapp.stresstestagent.run.RunConfig;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -19,6 +26,10 @@ public class ResultService {
   // private ResultRepository resultRepository;
   @Autowired
   private TmpRepository tmpRepository;
+  @Autowired
+  private ResultServiceConfig resultConfig;
+  @Autowired
+  private Util util;
 
   public UUID saveResult(ResultPersist resultPersist) {
     UUID uuid = UUID.randomUUID();
@@ -32,5 +43,23 @@ public class ResultService {
         map(entry -> { ResultDomainResponse response = new ResultDomainResponse();
         response.uuid(entry.getKey()); response.resultFileName(entry.getValue().
               getResultFileName()); return response; } ).collect(Collectors.toList());
+  }
+
+  public ResultFile generateFileJMeter(UUID runUuid) throws ResultException {
+    BenchmarkContainer bmContainer = null;
+    try {
+      bmContainer = util.getContainerFromRunUuid(runUuid);
+    } catch (RunException e) {
+      throw new ResultException(String.format("Cannot create a JMeter Result File"
+          + " for run %s as it does not seem to exist", runUuid));
+    }
+
+    return ResultFile.ResultsFileFactory.jMeter(
+        resultConfig.getResultsDumpFolder(), bmContainer);
+  }
+
+  public ResultFile generateFilePrometheus() {
+    return ResultFile.ResultsFileFactory.prometheus(
+        resultConfig.getResultsDumpFolder());
   }
 }

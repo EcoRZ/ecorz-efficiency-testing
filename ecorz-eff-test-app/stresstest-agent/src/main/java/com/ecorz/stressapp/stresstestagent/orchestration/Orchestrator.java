@@ -1,5 +1,6 @@
 package com.ecorz.stressapp.stresstestagent.orchestration;
 
+import com.ecorz.stressapp.common.result.ResultException;
 import com.ecorz.stressapp.common.run.RunException;
 import com.ecorz.stressapp.stresstestagent.config.JMeterConfig;
 import com.ecorz.stressapp.stresstestagent.config.PrometheusServiceConfig;
@@ -11,6 +12,8 @@ import com.ecorz.stressapp.stresstestagent.domain.run.RunConfigFields;
 import com.ecorz.stressapp.stresstestagent.domain.run.RunConfigFieldsResponse;
 import com.ecorz.stressapp.stresstestagent.prometheus.PrometheusException;
 import com.ecorz.stressapp.stresstestagent.prometheus.QueryFields;
+import com.ecorz.stressapp.stresstestagent.result.ResultFile;
+import com.ecorz.stressapp.stresstestagent.result.ResultPersist;
 import com.ecorz.stressapp.stresstestagent.services.DummyService;
 import com.ecorz.stressapp.stresstestagent.services.JmeterService;
 import com.ecorz.stressapp.stresstestagent.services.PrometheusService;
@@ -55,25 +58,55 @@ public class Orchestrator {
   }
 
   public UUID startRun(UUID runUuid) throws RunException {
+    UUID orchestrationUuid = UUID.randomUUID();
+
+    EvalDates evalDates = startRunJMeter(runUuid, orchestrationUuid);
+    startRunPrometheus(runUuid, orchestrationUuid, evalDates);
+
+    return  orchestrationUuid;
+  }
+
+  private EvalDates startRunJMeter(UUID runUuid, UUID orchestrationUuid) throws RunException {
+    ResultFile resultFileJMeter = null;
+
+    try {
+      resultFileJMeter = resultService.generateFileJMeter(runUuid);
+    } catch (ResultException e) {
+      throw new RunException(String.format("Cannot generate JMeter file for run %s", runUuid), e);
+    }
+
+    Date startDate = new Date();
     //blocking call
-    UUID uuid = runService.startRun(runUuid);
+    runService.startRun(runUuid, resultFileJMeter);
+    Date endDate = new Date();
 
     try {
       RunShutdown.INSTANCE.doShutdown(runUuid);
     } catch (RunShutdownException e) {
-     throw new RunException(String.format("Cannot shutdown run %s", runUuid), e);
+      throw new RunException(String.format("Cannot shutdown run %s", runUuid), e);
     }
 
-    QueryFields fields = prometheusService.generateFields();
-    String dumpFileName = prometheusService.generateDumpFileName();
+    resultService.saveResult(new ResultPersist(orchestrationUuid,
+        resultFileJMeter.getFullFileName()));
+
+    return new EvalDates(startDate, endDate);
+  }
+
+  private void startRunPrometheus(UUID runUuid, UUID orchestrationUuid, EvalDates evalDates) throws RunException {
+    ResultFile resultFilePrometheus = resultService.generateFilePrometheus();
+
+    QueryFields fields = prometheusService.generateFields(evalDates.startDate.getTime(),
+        evalDates.endDate.getTime());
+
     try {
       //blocking call
-      dumpPowerConsumption(fields, dumpFileName);
+      prometheusService.dump(fields, resultFilePrometheus);
     } catch (PrometheusException e) {
       throw new RunException(String.format("Cannot dump Prometheus results for run %s", runUuid), e);
     }
 
-    return  uuid;
+    resultService.saveResult(new ResultPersist(orchestrationUuid,
+        resultFilePrometheus.getFullFileName()));
   }
 
   public List<RunConfigFieldsResponse> getRuns() {
@@ -86,9 +119,5 @@ public class Orchestrator {
 
   public List<ResultDomainResponse> getResults() {
     return resultService.getResults();
-  }
-
-  private void dumpPowerConsumption(QueryFields fields, String dumpFileName) throws PrometheusException {
-    prometheusService.dump(fields, dumpFileName);
   }
 }

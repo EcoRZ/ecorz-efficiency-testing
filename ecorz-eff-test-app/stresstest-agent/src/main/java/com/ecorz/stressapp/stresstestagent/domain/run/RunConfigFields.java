@@ -122,7 +122,7 @@ public class RunConfigFields {
 
     int actualArgsNum = entry.args.size();
     if(actualArgsNum != requiredArgsNum) {
-      throw new IllegalArgumentException(String.format("Incorrect number of args set for %s. Required: %d; Got: %d",
+      throw new IllegalArgumentException(String.format("Incorrect number jMeter args set for %s. Required: %d; Got: %d",
           entry.opt.toString(), requiredArgsNum, actualArgsNum));
     }
   }
