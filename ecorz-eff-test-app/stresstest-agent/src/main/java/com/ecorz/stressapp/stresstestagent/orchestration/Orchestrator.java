@@ -11,7 +11,7 @@ import com.ecorz.stressapp.stresstestagent.domain.result.ResultDomainResponse;
 import com.ecorz.stressapp.stresstestagent.domain.run.RunConfigFields;
 import com.ecorz.stressapp.stresstestagent.domain.run.RunConfigFieldsResponse;
 import com.ecorz.stressapp.stresstestagent.prometheus.PrometheusException;
-import com.ecorz.stressapp.stresstestagent.prometheus.QueryFields;
+import com.ecorz.stressapp.stresstestagent.prometheus.PromFields;
 import com.ecorz.stressapp.stresstestagent.result.ResultFile;
 import com.ecorz.stressapp.stresstestagent.result.ResultPersist;
 import com.ecorz.stressapp.stresstestagent.services.DummyService;
@@ -95,7 +95,7 @@ public class Orchestrator {
   private void startRunPrometheus(UUID runUuid, UUID orchestrationUuid, EvalDates evalDates) throws RunException {
     ResultFile resultFilePrometheus = resultService.generateFilePrometheus();
 
-    QueryFields fields = prometheusService.generateFields(evalDates.startDate.getTime(),
+    PromFields fields = prometheusService.generateFields(evalDates.startDate.getTime(),
         evalDates.endDate.getTime());
 
     try {
