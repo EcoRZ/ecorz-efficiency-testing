@@ -14,13 +14,13 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PrometheusService {
-  @Autowired
   private PrometheusServiceConfig prometheusServiceConfig;
 
   private final Client promClient;
 
   @Autowired
-  PrometheusService() {
+  PrometheusService(PrometheusServiceConfig prometheusServiceConfig) {
+    this.prometheusServiceConfig = prometheusServiceConfig;
     this.promClient = new Client(prometheusServiceConfig.getPromRestEnd(),
         prometheusServiceConfig.getPromQueryCmdIdent());
   }
