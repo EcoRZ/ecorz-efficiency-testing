@@ -5,21 +5,21 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class JMeterConfig {
-  @Value("${ecorz.jMeter.home}")
+  @Value("${ecorz.jmeter.home}")
   private String JMETER_HOME;
-  @Value("${ecorz.jMeter.home.bin}")
+  @Value("${ecorz.jmeter.home.bin}")
   private String JMETER_HOME_BIN;
-  @Value("${ecorz.jMeter.fs.base.directory}")
+  @Value("${ecorz.jmeter.fs.base.directory}")
   private String FILE_SERVER_BASE_DIRECTORY;
-  @Value("${ecorz.jMeter.test.duration}")
+  @Value("${ecorz.jmeter.test.duration}")
   private String TEST_DURATION;
-  @Value("${ecorz.jMeter.test.delay}")
+  @Value("${ecorz.jmeter.test.delay}")
   private String TEST_DELAY;
-  @Value("${ecorz.jMeter.engine.custom.jar.dir}")
+  @Value("${ecorz.jmeter.engine.custom.jar.dir}")
   private String JMETER_CUSTOM_DIR;
-  @Value("${ecorz.jMeter.engine.main.class}")
+  @Value("${ecorz.jmeter.engine.main.class}")
   private String JMETER_MAIN_CLASS;
-  @Value("${ecorz.jMeter.engine.cp}")
+  @Value("${ecorz.jmeter.engine.cp}")
   private String JMETER_CP;
 
   public String getJmeterHome (){
