@@ -6,6 +6,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public final class TimeGenerator {
 
@@ -47,7 +48,7 @@ public final class TimeGenerator {
   }
 
   public static DateFormat generateFormat() {
-    return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+    return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.GERMANY);
   }
 
   private static Calendar getCalWithOffset(int useOff) {

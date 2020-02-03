@@ -12,6 +12,8 @@ public class PrometheusServiceConfig {
   private String promPassword;
   @Value("${ecorz.prometheus.rest.end}")
   private String promRestEnd;
+  @Value("${ecorz.prometheus.instance.minus.offset}")
+  private String promInstanceMinusOff;
   @Value("${ecorz.prometheus.query.cmd.ident}")
   private String promQueryCmdIdent;
   @Value("${ecorz.prometheus.start.measure.offset}")
@@ -41,6 +43,10 @@ public class PrometheusServiceConfig {
 
   public String getPromRestEnd (){
     return promRestEnd;
+  }
+
+  public String getPromInstanceMinusOff(){
+    return promInstanceMinusOff;
   }
 
   public String getPromQueryCmdIdent(){

@@ -1,8 +1,5 @@
 package com.ecorz.stressapp.stresstestagent.prometheus;
 
-import java.text.DateFormat;
-import java.util.Calendar;
-
 public class PromFields {
   private final PromMetaFields metaFields;
   private final PromQueryFields queryFields;
@@ -117,6 +114,8 @@ public class PromFields {
   }
 
   public static class PromQueryFields {
+    private final long startTimeMs;
+    private final long endTimeMs;
     private final String startDate;
     private final String endDate;
     private final String timeStep;
@@ -124,9 +123,12 @@ public class PromFields {
     private final String node19Id;
     private final String node20Id;
 
-    private PromQueryFields(String startDate, String endDate,
-        String timeStep, String encQueryTemplate, String node19Id,
-        String node20Id) {
+    private PromQueryFields(long startTimeMs, long endTimeMs,
+        String startDate, String endDate,
+        String timeStep, String encQueryTemplate,
+        String node19Id, String node20Id) {
+      this.startTimeMs = startTimeMs;
+      this.endTimeMs = endTimeMs;
       this.startDate = startDate;
       this.endDate = endDate;
       this.timeStep = timeStep;
@@ -141,6 +143,14 @@ public class PromFields {
 
     public String getEndDate() {
       return endDate;
+    }
+
+    public long getStartTimeMs() {
+      return startTimeMs;
+    }
+
+    public long getEndTimeMs() {
+      return endTimeMs;
     }
 
     public String getTimeStep() {
@@ -160,6 +170,8 @@ public class PromFields {
     }
 
     public static class Builder {
+      private long startTimeMs_;
+      private long endTimeMs_;
       private String startDate_;
       private String endDate_;
       private String timeStep_;
@@ -172,6 +184,16 @@ public class PromFields {
 
       public static Builder getBuilder() {
         return new Builder();
+      }
+
+      public Builder startTimeMs(long startTimeMs_) {
+        this.startTimeMs_ = startTimeMs_;
+        return this;
+      }
+
+      public Builder endTimeMs(long endTimeMs_) {
+        this.endTimeMs_ = endTimeMs_;
+        return this;
       }
 
       public Builder startDate(String startDate_) {
@@ -205,8 +227,9 @@ public class PromFields {
       }
 
       public PromQueryFields build() {
-        return new PromQueryFields(startDate_, endDate_,
-            timeStep_, encQueryTemplate_, node19Id_, node20Id_);
+        return new PromQueryFields(startTimeMs_, endTimeMs_,
+            startDate_, endDate_, timeStep_, encQueryTemplate_,
+            node19Id_, node20Id_);
       }
     }
   }
