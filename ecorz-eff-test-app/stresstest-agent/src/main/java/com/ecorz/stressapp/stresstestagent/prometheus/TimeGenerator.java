@@ -47,7 +47,7 @@ public final class TimeGenerator {
   }
 
   public static DateFormat generateFormat() {
-    return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
+    return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
   }
 
   private static Calendar getCalWithOffset(int useOff) {
