@@ -31,6 +31,9 @@ public class ResultService {
   @Autowired
   private Util util;
 
+  // jmeter-engine dumps files in cp-folder, so to use it, rel path must be current folder
+  private static final String jMeterEngineRelativeDumpFolder = ".";
+
   public UUID saveResult(ResultPersist resultPersist) {
     UUID uuid = UUID.randomUUID();
     tmpRepository.addResultPersist(uuid, resultPersist);
@@ -55,11 +58,15 @@ public class ResultService {
     }
 
     return ResultFile.ResultsFileFactory.jMeter(
-        resultConfig.getResultsDumpFolder(), bmContainer);
+        jMeterEngineRelativeDumpFolder, bmContainer);
   }
 
   public ResultFile generateFilePrometheus() {
     return ResultFile.ResultsFileFactory.prometheus(
         resultConfig.getResultsDumpFolder());
+  }
+
+  public final String getResultsDumpFolder() {
+    return resultConfig.getResultsDumpFolder();
   }
 }
