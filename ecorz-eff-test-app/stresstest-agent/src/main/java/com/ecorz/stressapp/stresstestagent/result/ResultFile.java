@@ -5,6 +5,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class ResultFile {
   private final String fullFileName;
@@ -26,7 +27,7 @@ public class ResultFile {
 
     private static String generateDateString() {
       Date date = Calendar.getInstance().getTime();
-      DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd_hh-mm-ss");
+      DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd_hh-mm-ss", Locale.GERMANY);
       return dateFormat.format(date);
     }
   }
