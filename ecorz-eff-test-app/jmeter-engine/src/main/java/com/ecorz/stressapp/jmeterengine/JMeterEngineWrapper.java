@@ -49,17 +49,6 @@ public class JMeterEngineWrapper {
     threadGroupElement.addReportableStep(loopElement);
 
     jmeter.addStep(threadGroupElement);
-    URL[] url_ = ((URLClassLoader) (Thread.currentThread().getContextClassLoader())).getURLs();
-    List<URL> urls = Arrays.asList(url_);
-    for(URL url__: urls)
-      LOGGER.warn(String.format("URL: %s", url__));
-    ClassLoader.getSystemClassLoader().getSystemResource("");
-    ClassLoader loader = ClassLoader.getSystemClassLoader();
-    LOGGER.warn(String.format("LOADER: %s", loader));
-    URL url = ClassLoader.getSystemClassLoader().getSystemResource("");
-    LOGGER.warn(String.format("SYSRESOURCE: %s", url));
-    String fff = ClassLoader.getSystemClassLoader().getSystemResource("").getPath();
-    LOGGER.warn(String.format("PATH_: %s", fff));
     jmeter.run();
     //Assert.assertTrue("Test com.ecorz.stressapp.common.run failed. Error rate: " + jmeter.getSummaryResults().getErrorRate(),
     //    jmeter.getSummaryResults().isSuccessful());
