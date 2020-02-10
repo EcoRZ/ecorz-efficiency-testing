@@ -137,7 +137,7 @@ deploy:
     - echo 'Ansible refuses to read from a world-writeable folder, hence' && chmod -v 700 $(pwd)
     # set openstack_config and credentials beforehand
     - source ${OPENSTACK_ENV} && ansible-playbook -vvv site.yml --extra-vars "inventories/development/group_vars/all"
-      --extra-vars "key_file_path=${SSH_KEY} username=${CONFIG_USER} password=${CONFIG_PW} encrypt_key=${ENCRYPT_KEY}xi
+      --extra-vars "key_file_path=${SSH_KEY} username=${CONFIG_USER} password=${CONFIG_PW} encrypt_key=${ENCRYPT_KEY}
       reg_login_user=${CONFIG_USER} reg_login_pw=${CONFIG_PW} pg_user=${DATABASE_USER} pg_pass=${DATABASE_PASSWORD}
       prom_user=${PROM_USER} prom_pw=${PROM_PW} prom_rest_end=${PROM_REST_END} stresstest_setup=1"
   artifacts:
