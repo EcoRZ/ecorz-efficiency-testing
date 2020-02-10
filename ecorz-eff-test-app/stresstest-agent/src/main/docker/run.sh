@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 arrCP=(${JMETER_CP//:/ })
 cp_dump_folder=${arrCP[1]}
