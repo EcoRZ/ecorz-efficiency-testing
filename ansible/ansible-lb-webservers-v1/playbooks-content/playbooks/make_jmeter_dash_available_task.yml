@@ -1,0 +1,11 @@
+---
+- name: Enable jmeter.save.saveservice.print_field_names line in jmeter.properties
+  remote_user: ubuntu
+  become: yes
+  vars:
+    file_location: "jmeter/bin/jmeter.properties"
+  lineinfile:
+    path: "{{ file_location }}"
+    regexp: '^#(jmeter\.save\.saveservice\.print_field_names=).*$'
+    line: '\1true'
+    backrefs: yes

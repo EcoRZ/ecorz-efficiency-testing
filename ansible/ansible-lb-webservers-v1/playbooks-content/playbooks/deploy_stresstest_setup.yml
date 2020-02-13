@@ -166,6 +166,9 @@
     - import_tasks: download_jmeter_task.yml
       when:
         container_name == "stresstest_agent"
+    - import_tasks: make_jmeter_dash_available_task.yml
+      when:
+        container_name == "stresstest_agent"
   roles:
     - role: deploy_container
       when:
