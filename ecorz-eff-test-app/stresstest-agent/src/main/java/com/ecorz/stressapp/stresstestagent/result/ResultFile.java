@@ -27,7 +27,7 @@ public class ResultFile {
 
     private static String generateDateString() {
       Date date = Calendar.getInstance().getTime();
-      DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd_hh-mm-ss", Locale.GERMANY);
+      DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_hh-mm-ss", Locale.GERMANY);
       return dateFormat.format(date);
     }
   }
