@@ -76,13 +76,13 @@ public class Orchestrator {
   private EvalDates startRunJMeter(UUID runUuid, UUID orchestrationUuid) throws RunException {
     ResultFile resultFileJMeter = null;
 
+    Date startDate = new Date();
     try {
-      resultFileJMeter = resultService.generateFileJMeter(runUuid);
+      resultFileJMeter = resultService.generateFileJMeter(runUuid, startDate);
     } catch (ResultException e) {
       throw new RunException(String.format("Cannot generate JMeter file for run %s", runUuid), e);
     }
 
-    Date startDate = new Date();
     //blocking call
     runService.startRun(runUuid, resultFileJMeter);
     Date endDate = new Date();
@@ -100,7 +100,7 @@ public class Orchestrator {
   }
 
   private void startRunPrometheus(UUID runUuid, UUID orchestrationUuid, EvalDates evalDates) throws RunException {
-    ResultFile resultFilePrometheus = resultService.generateFilePrometheus();
+    ResultFile resultFilePrometheus = resultService.generateFilePrometheus(evalDates.startDate);
 
     PromFields fields = prometheusService.generateFields(evalDates.startDate.getTime(),
         evalDates.endDate.getTime());

@@ -12,6 +12,7 @@ import com.ecorz.stressapp.stresstestagent.result.ResultFile;
 import com.ecorz.stressapp.stresstestagent.result.ResultPersist;
 import com.ecorz.stressapp.stresstestagent.run.RunConfig;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -48,7 +49,7 @@ public class ResultService {
               getResultFileName()); return response; } ).collect(Collectors.toList());
   }
 
-  public ResultFile generateFileJMeter(UUID runUuid) throws ResultException {
+  public ResultFile generateFileJMeter(UUID runUuid, Date date) throws ResultException {
     BenchmarkContainer bmContainer = null;
     try {
       bmContainer = util.getContainerFromRunUuid(runUuid);
@@ -58,12 +59,12 @@ public class ResultService {
     }
 
     return ResultFile.ResultsFileFactory.jMeter(
-        jMeterEngineRelativeDumpFolder, bmContainer);
+        jMeterEngineRelativeDumpFolder, bmContainer, date);
   }
 
-  public ResultFile generateFilePrometheus() {
+  public ResultFile generateFilePrometheus(Date date) {
     return ResultFile.ResultsFileFactory.prometheus(
-        resultConfig.getResultsDumpFolder());
+        resultConfig.getResultsDumpFolder(), date);
   }
 
   public final String getResultsDumpFolder() {
