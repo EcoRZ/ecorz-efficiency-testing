@@ -1,0 +1,7 @@
+---
+- name: install pip3
+  remote_user: ubuntu
+  become: yes
+  apt:
+    name: pip3
+    state: latest

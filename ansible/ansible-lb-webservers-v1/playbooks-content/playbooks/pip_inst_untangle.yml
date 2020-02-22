@@ -1,0 +1,7 @@
+---
+- name: install untangle module with pip
+  remote_user: ubuntu
+  become: yes
+  pip:
+    name: untangle
+    executable: pip3
