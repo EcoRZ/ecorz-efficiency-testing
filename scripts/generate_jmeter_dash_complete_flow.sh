@@ -45,3 +45,10 @@ mv $(basename $package_folder) ~/Documents/EcoRz/ap5/praxistransfer
 local_folder=~/Documents/EcoRz/ap5/praxistransfer/$(basename $package_folder)
 # execute in der Form: local_generate_jmeter_dash.sh ~/Documents/EcoRz/ap5/praxistransfer/<run-pattern>/<run-pattern>.csv
 local_scripts/local_generate_jmeter_dash.sh "$local_folder"/$(basename $csv_file)
+# move jtl to data-store
+data_store_ip=134.60.64.78
+data_store_jtl_folder="jmeter_jtl_files"
+remote_copy_file_from.sh "$key_location" "$user_name" "$public_ip" "$jtl_file" "./"
+remote_copy_file_to.sh "$key_location" "$user_name" "$data_store_ip" $(basename $jtl_file) "$data_store_jtl_folder"
+rm $(basename $jtl_file)
+remote_scripts/remote_delete_jtl_file.sh "$key_location" "$user_name" "$public_ip" "$jtl_file"
