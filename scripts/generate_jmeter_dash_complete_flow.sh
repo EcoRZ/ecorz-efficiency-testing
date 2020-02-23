@@ -48,7 +48,6 @@ local_scripts/local_generate_jmeter_dash.sh "$local_folder"/$(basename $csv_file
 # move jtl to data-store
 data_store_ip=134.60.64.78
 data_store_jtl_folder="jmeter_jtl_files"
-remote_copy_file_from.sh "$key_location" "$user_name" "$public_ip" "$jtl_file" "./"
-remote_copy_file_to.sh "$key_location" "$user_name" "$data_store_ip" $(basename $jtl_file) "$data_store_jtl_folder"
-rm $(basename $jtl_file)
-remote_scripts/remote_delete_jtl_file.sh "$key_location" "$user_name" "$public_ip" "$jtl_file"
+remote_copy_file_to.sh "$key_location" "$user_name" "$data_store_ip" "$local_folder"/$(basename $jtl_file) "$data_store_jtl_folder"
+rm "$local_folder"/$(basename $jtl_file)
+remote_scripts/remote_delete_jtl_file.sh "$key_location" "$user_name" "$public_ip" "$package_folder"/$(basename $jtl_file)
