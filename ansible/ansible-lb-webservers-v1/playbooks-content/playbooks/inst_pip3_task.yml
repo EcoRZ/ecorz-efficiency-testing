@@ -3,5 +3,5 @@
   remote_user: ubuntu
   become: yes
   apt:
-    name: pip3
+    name: python3-pip
     state: latest
