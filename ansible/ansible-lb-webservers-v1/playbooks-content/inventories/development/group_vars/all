@@ -10,7 +10,7 @@ sec_group_name_docker: docker_ecorz
 port_nmbr_ssh: 22
 port_nmbr_web: 80
 
-az1: "noisyneighbour2"
+az1: "noisyneighbour"
 az2: "noisyneighbour3"
 
 webserver_pref_az1: webserver_az1
