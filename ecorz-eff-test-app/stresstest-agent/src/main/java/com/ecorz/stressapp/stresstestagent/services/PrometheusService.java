@@ -43,7 +43,7 @@ public class PrometheusService {
         promPassword(prometheusServiceConfig.getPromPassword()).
         promRestEnd(prometheusServiceConfig.getPromRestEnd()).
         promQueryCmdIdent(prometheusServiceConfig.getPromQueryCmdIdent()).
-        node19Cpus(prometheusServiceConfig.getPromNode19Cpus()).
+        node18Cpus(prometheusServiceConfig.getPromNode18Cpus()).
         node20Cpus(prometheusServiceConfig.getPromNode20Cpus()).
         build();
 
@@ -53,7 +53,7 @@ public class PrometheusService {
         startDate(startDate).endDate(endDate).
         timeStep(prometheusServiceConfig.getPromTimeStep()).
         encQueryTemplate(prometheusServiceConfig.getPromEncQueryTemplate()).
-        node19Id(prometheusServiceConfig.getPromNode19Id()).
+        node18Id(prometheusServiceConfig.getPromNode18Id()).
         node20Id(prometheusServiceConfig.getPromNode20Id()).
         build();
 
@@ -63,9 +63,9 @@ public class PrometheusService {
   }
 
   public void dump(PromFields fields, ResultFile dumpFile) throws PrometheusException {
-    final String queryStringNode19 = QueryStringGenerator.generatePostQueryNode19(fields.getQueryFields());
+    final String queryStringNode18 = QueryStringGenerator.generatePostQueryNode18(fields.getQueryFields());
     // final String queryStringNode20 = QueryStringGenerator.generatePostQueryNode20(fields.getQueryFields());
-    List<String> unformattedPowerContent = promClient.executePost(fields.getMetaFields(), queryStringNode19);
+    List<String> unformattedPowerContent = promClient.executePost(fields.getMetaFields(), queryStringNode18);
 
     DumpFileContentGenerator generator = new DumpFileContentGenerator(fields.getQueryFields(), unformattedPowerContent);
     final String fileContent = generator.generate();

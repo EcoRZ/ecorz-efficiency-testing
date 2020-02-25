@@ -24,16 +24,16 @@ public class PromFields {
     private final String promPassword;
     private final String promRestEnd;
     private final String promQueryCmdIdent;
-    private final String node19Cpus;
+    private final String node18Cpus;
     private final String node20Cpus;
 
     private PromMetaFields(String promUser, String promPassword, String promRestEnd,
-       String promQueryCmdIdent, String node19Cpus, String node20Cpus) {
+       String promQueryCmdIdent, String node18Cpus, String node20Cpus) {
       this.promUser = promUser;
       this.promPassword = promPassword;
       this.promRestEnd = promRestEnd;
       this.promQueryCmdIdent = promQueryCmdIdent;
-      this.node19Cpus = node19Cpus;
+      this.node18Cpus = node18Cpus;
       this.node20Cpus = node20Cpus;
     }
 
@@ -53,8 +53,8 @@ public class PromFields {
       return promQueryCmdIdent;
     }
 
-    public String getNode19Cpus() {
-      return node19Cpus;
+    public String getNode18Cpus() {
+      return node18Cpus;
     }
 
     public String getNode20Cpus() {
@@ -66,7 +66,7 @@ public class PromFields {
       private String promPassword_;
       private String promRestEnd_;
       private String promQueryCmdIdent_;
-      private String node19Cpus_;
+      private String node18Cpus_;
       private String node20Cpus_;
 
       private Builder() {
@@ -96,8 +96,8 @@ public class PromFields {
         return this;
       }
 
-      public Builder node19Cpus(String node19Cpus_) {
-        this.node19Cpus_ = node19Cpus_;
+      public Builder node18Cpus(String node18Cpus_) {
+        this.node18Cpus_ = node18Cpus_;
         return this;
       }
 
@@ -108,7 +108,7 @@ public class PromFields {
 
       public PromMetaFields build() {
         return new PromMetaFields(promUser_, promPassword_,
-            promRestEnd_, promQueryCmdIdent_, node19Cpus_, node20Cpus_);
+            promRestEnd_, promQueryCmdIdent_, node18Cpus_, node20Cpus_);
       }
     }
   }
@@ -120,20 +120,20 @@ public class PromFields {
     private final String endDate;
     private final String timeStep;
     private final String encQueryTemplate;
-    private final String node19Id;
+    private final String node18Id;
     private final String node20Id;
 
     private PromQueryFields(long startTimeMs, long endTimeMs,
         String startDate, String endDate,
         String timeStep, String encQueryTemplate,
-        String node19Id, String node20Id) {
+        String node18Id, String node20Id) {
       this.startTimeMs = startTimeMs;
       this.endTimeMs = endTimeMs;
       this.startDate = startDate;
       this.endDate = endDate;
       this.timeStep = timeStep;
       this.encQueryTemplate = encQueryTemplate;
-      this.node19Id = node19Id;
+      this.node18Id = node18Id;
       this.node20Id = node20Id;
     }
 
@@ -161,8 +161,8 @@ public class PromFields {
       return encQueryTemplate;
     }
 
-    public String getNode19Id() {
-      return node19Id;
+    public String getNode18Id() {
+      return node18Id;
     }
 
     public String getNode20Id() {
@@ -176,7 +176,7 @@ public class PromFields {
       private String endDate_;
       private String timeStep_;
       private String encQueryTemplate_;
-      private String node19Id_;
+      private String node18Id_;
       private String node20Id_;
 
       private Builder() {
@@ -216,8 +216,8 @@ public class PromFields {
         return this;
       }
 
-      public Builder node19Id(String node19Id_) {
-        this.node19Id_ = node19Id_;
+      public Builder node18Id(String node18Id_) {
+        this.node18Id_ = node18Id_;
         return this;
       }
 
@@ -229,7 +229,7 @@ public class PromFields {
       public PromQueryFields build() {
         return new PromQueryFields(startTimeMs_, endTimeMs_,
             startDate_, endDate_, timeStep_, encQueryTemplate_,
-            node19Id_, node20Id_);
+            node18Id_, node20Id_);
       }
     }
   }

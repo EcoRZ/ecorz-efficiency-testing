@@ -14,10 +14,10 @@ public class QueryStringGenerator {
   private QueryStringGenerator() {
   }
 
-  public static String generatePostQueryNode19(PromQueryFields queryFields) {
+  public static String generatePostQueryNode18(PromQueryFields queryFields) {
     Map<String,String> vals = buildNodeAgnosticMap(queryFields);
-    vals.put(nodeNmbr, "19");
-    vals.put(nodeId, queryFields.getNode19Id());
+    vals.put(nodeNmbr, "18");
+    vals.put(nodeId, queryFields.getNode18Id());
 
     return VarSubstituter.substitute(vals, queryFields.getEncQueryTemplate());
   }
