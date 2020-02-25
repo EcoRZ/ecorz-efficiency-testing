@@ -51,6 +51,12 @@
         port_nmbr: "{{ port_nmbr_web }}"
       include_role:
         name: create_rule
+    - name: Display az1_count
+      debug:
+        var: webserver_az1_count
+    - name: Display az2_count
+      debug:
+        var: webserver_az2_count
     - name: Deploy webservers in az1
       vars:
         webs_name: "{{ webserver_pref_az1 }}_{{ item }}"
