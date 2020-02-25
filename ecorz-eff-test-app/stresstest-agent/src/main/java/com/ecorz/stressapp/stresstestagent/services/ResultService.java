@@ -1,6 +1,7 @@
 package com.ecorz.stressapp.stresstestagent.services;
 
 import com.ecorz.stressapp.common.result.ResultException;
+import com.ecorz.stressapp.common.result.ResultFileWriter;
 import com.ecorz.stressapp.common.run.RunException;
 import com.ecorz.stressapp.common.run.benchmarks.BenchmarkContainer;
 import com.ecorz.stressapp.stresstestagent.config.ResultServiceConfig;
@@ -8,9 +9,11 @@ import com.ecorz.stressapp.stresstestagent.domain.Util;
 import com.ecorz.stressapp.stresstestagent.domain.result.ResultDomainResponse;
 import com.ecorz.stressapp.stresstestagent.repository.TmpRepository;
 import com.ecorz.stressapp.stresstestagent.domain.result.ResultDomain;
+import com.ecorz.stressapp.stresstestagent.result.DumpFileMetaTmpGenerator;
 import com.ecorz.stressapp.stresstestagent.result.ResultFile;
 import com.ecorz.stressapp.stresstestagent.result.ResultPersist;
 import com.ecorz.stressapp.stresstestagent.run.RunConfig;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -67,7 +70,29 @@ public class ResultService {
         resultConfig.getResultsDumpFolder(), date);
   }
 
+  public ResultFile generateFileMeta(Date date) {
+    return ResultFile.ResultsFileFactory.meta(
+        resultConfig.getResultsDumpFolder(), date);
+  }
+
   public final String getResultsDumpFolder() {
     return resultConfig.getResultsDumpFolder();
+  }
+
+  public void dumpMetaTmp(UUID runUuid, ResultFile resultFileMeta) throws ResultException {
+    if(tmpRepository.getConfigMap().get(runUuid) == null) {
+      throw new ResultException(String.format("Cannot dump meta as there is no run with id: %s", runUuid));
+    }
+
+    RunConfig config = tmpRepository.getConfigMap().get(runUuid);
+    DumpFileMetaTmpGenerator generator = new DumpFileMetaTmpGenerator(config.
+        getContainer());
+    final String fileContent = generator.generate();
+
+    try {
+      ResultFileWriter.dump(resultFileMeta.getFullFileName(), fileContent);
+    } catch (IOException e) {
+      throw new ResultException(String.format("Cannot write into file %s", resultFileMeta.getFullFileName()), e);
+    }
   }
 }

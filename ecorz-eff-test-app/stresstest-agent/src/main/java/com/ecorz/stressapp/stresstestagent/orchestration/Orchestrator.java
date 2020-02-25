@@ -69,6 +69,7 @@ public class Orchestrator {
 
     EvalDates evalDates = startRunJMeter(runUuid, orchestrationUuid);
     startRunPrometheus(runUuid, orchestrationUuid, evalDates);
+    startMetaSavingTmp(runUuid, orchestrationUuid, evalDates);
 
     return  orchestrationUuid;
   }
@@ -114,6 +115,17 @@ public class Orchestrator {
 
     resultService.saveResult(new ResultPersist(orchestrationUuid,
         resultFilePrometheus.getFullFileName()));
+  }
+
+  private void startMetaSavingTmp(UUID runUuid, UUID orchestrationUuid, EvalDates evalDates) throws RunException {
+    ResultFile resultFileMeta = resultService.generateFileMeta(evalDates.startDate);
+    try {
+      resultService.dumpMetaTmp(runUuid, resultFileMeta);
+    } catch (ResultException e) {
+      throw new RunException(String.format("Cannot dump Meta results for run %s", runUuid), e);
+    }
+    resultService.saveResult(new ResultPersist(orchestrationUuid,
+        resultFileMeta.getFullFileName()));
   }
 
   public List<RunConfigFieldsResponse> getRuns() {

@@ -32,10 +32,24 @@ public class ResultFile {
       return new ResultFile(finalName);
     }
 
+    public static ResultFile meta(String directory) {
+      String strDate = generateDateString();
+
+      final String finalName = String.format("%s/%s-meta", directory, strDate);
+      return new ResultFile(finalName);
+    }
+
     public static ResultFile prometheus(String directory, Date date) {
       String strDate = generateDateString(date);
 
       final String finalName = String.format("%s/%s-prometheus", directory, strDate);
+      return new ResultFile(finalName);
+    }
+
+    public static ResultFile meta(String directory, Date date) {
+      String strDate = generateDateString(date);
+
+      final String finalName = String.format("%s/%s-meta", directory, strDate);
       return new ResultFile(finalName);
     }
 
