@@ -3,6 +3,3 @@
 # vars file for create_subnet
 # vars file for create_subnet
 # vars file for create_subnet
-
-webserver_az1_count: 1
-webserver_az2_count: 1
