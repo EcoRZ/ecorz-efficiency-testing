@@ -57,22 +57,22 @@
         nw_name: ecorz_nw
         sec_group_list: [default,ansible,webserver]
         az: "{{ az1 }}"
+        exclusive_loop_end: "{{ webserver_az1_count|int + 1}}"
       include_role:
         name: deploy_webserver
-      with_sequence: start=1 end="{{ webserver_az1_count }}"
-      when:
-        - webserver_az1_count|int > 0
+      loop: "{{ range(1, exclusive_loop_end|int, 1)|list|default([]) }}"
+      when: webserver_az1_count|int > 0
     - name: Deploy webservers in az2
       vars:
         webs_name: "{{ webserver_pref_az2 }}_{{ item }}"
         nw_name: ecorz_nw
         sec_group_list: [default,ansible,webserver]
         az: "{{ az2 }}"
+        exclusive_loop_end: "{{ webserver_az2_count|int + 1}}"
       include_role:
         name: deploy_webserver
-      with_sequence: start=1 end="{{ webserver_az2_count }}"
-      when:
-        - webserver_az2_count|int > 0
+      loop: "{{ range(1, exclusive_loop_end|int, 1)|list|default([]) }}"
+      when: webserver_az2_count|int > 0
     - name: Deploy haproxy
       vars:
         haproxy_name: "haproxy_{{ item }}"
