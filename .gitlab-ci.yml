@@ -45,7 +45,6 @@ pre_ansible_setup:
   artifacts:
     paths:
       - "${HOSTS_TMP_DIR_ART}/target/hosts"
-  allow_failure: true
 
 build_configsvr:
   stage: build
