@@ -159,5 +159,5 @@ post_ansible_setup:
     - cd ${ANSIBLE_SITE_DIR}
     - echo 'Ansible refuses to read from a world-writeable folder, hence' && chmod -v 700 $(pwd)
     # set openstack_config and credentials beforehand
-    - source ${OPENSTACK_ENV} && export ANSIBLE_HOST_KEY_CHECKING=False && ansible-playbook site.yml --extra-vars "inventories/development/group_vars/all" --extra-vars "key_file_path=${SSH_KEY} delete=1"
+    - source ${OPENSTACK_ENV} && export ANSIBLE_HOST_KEY_CHECKING=False && ansible-playbook site.yml --extra-vars "inventories/development/group_vars/all" --extra-vars "key_file_path=${SSH_KEY} webserver_az1_count=${WS_AZ1_COUNT} webserver_az2_count=${WS_AZ2_COUNT} delete=1"
   when: manual
