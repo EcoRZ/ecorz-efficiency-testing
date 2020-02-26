@@ -16,7 +16,7 @@ cache:
   paths:
     - .m2/repository/
     - target/
-    - .pip
+    - .pip/
 
 stages:
   - pre_ansible_setup
@@ -30,13 +30,10 @@ stages:
 pre_ansible_setup:
   stage: pre_ansible_setup
   image:
-    name: ubuntu:18.04
+    name: omi-registry.e-technik.uni-ulm.de/fh/docker-reg/stresstest_ansible
   before_script:
     - chmod -v 500 ${SSH_KEY}
-    - apt-get update -qy
-    - apt-get install -y python-dev python3-pip openssh-server
     - mkdir -p target/ .pip/
-    - pip3 --cache-dir=.pip install 'ansible==2.8.1' openstacksdk
   script:
     - cd ${ANSIBLE_SITE_DIR}
     - echo 'Ansible refuses to read from a world-writeable folder, hence' && chmod -v 700 $(pwd)
@@ -124,13 +121,10 @@ deploy:
     CONF_SVR_CONT_NAME: "confsvr"
     STRESSTEST_AGENT_CONT_NAME: "stresstest_agent"
   image:
-    name: ubuntu:18.04
+    name: omi-registry.e-technik.uni-ulm.de/fh/docker-reg/stresstest_ansible
   before_script:
     - chmod -v 500 ${SSH_KEY}
-    - apt-get update -qy
-    - apt-get install -y python-dev python3-pip openssh-server
     - mkdir -p target/ .pip/
-    - pip3 --cache-dir=.pip install 'ansible==2.8.1' openstacksdk
   script:
     - cd ${ANSIBLE_SITE_DIR}
     - echo 'Ansible refuses to read from a world-writeable folder, hence' && chmod -v 700 $(pwd)
@@ -147,13 +141,10 @@ deploy:
 post_ansible_setup:
   stage: post_ansible_setup
   image:
-    name: ubuntu:18.04
+    name: omi-registry.e-technik.uni-ulm.de/fh/docker-reg/stresstest_ansible
   before_script:
     - chmod -v 500 ${SSH_KEY}
-    - apt-get update -qy
-    - apt-get install -y python-dev python3-pip openssh-server
     - mkdir -p target/ .pip/
-    - pip3 --cache-dir=.pip install 'ansible==2.8.1' openstacksdk
   script:
     - cd ${ANSIBLE_SITE_DIR}
     - echo 'Ansible refuses to read from a world-writeable folder, hence' && chmod -v 700 $(pwd)
