@@ -30,8 +30,8 @@ public class DumpFileMetaTmpGenerator {
     StringBuilder sb = new StringBuilder();
     sb.append(header + "\n");
     sb.append(String.format("%s\n", container));
-    sb.append(String.format("%s: %s\n", "arg2", setParams.get(BMOption.tg)));
-    sb.append(String.format("%s: %s\n", "arg1", setParams.get(BMOption.urt)));
+    sb.append(String.format("%s: %s\n", "threadGroup[num-of-threads, rampUpPeriod, unused]:", setParams.get(BMOption.tg)));
+    sb.append(String.format("%s: %s\n", "uniform-random-timer(unused)[rand-del-max, const-delay-off, unused]", setParams.get(BMOption.urt)));
 
     return sb.toString();
   }
