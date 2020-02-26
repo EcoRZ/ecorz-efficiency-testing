@@ -53,16 +53,16 @@ public class ResultService {
   }
 
   public ResultFile generateFileJMeter(UUID runUuid, Date date) throws ResultException {
-    BenchmarkContainer bmContainer = null;
+    String bmContainerName = "<unknown>";
     try {
-      bmContainer = util.getContainerFromRunUuid(runUuid);
+      bmContainerName = util.getContainerNameFromRunUuid(runUuid);
     } catch (RunException e) {
       throw new ResultException(String.format("Cannot create a JMeter Result File"
           + " for run %s as it does not seem to exist", runUuid));
     }
 
     return ResultFile.ResultsFileFactory.jMeter(
-        jMeterEngineRelativeDumpFolder, bmContainer, date);
+        jMeterEngineRelativeDumpFolder, bmContainerName, date);
   }
 
   public ResultFile generateFilePrometheus(Date date) {

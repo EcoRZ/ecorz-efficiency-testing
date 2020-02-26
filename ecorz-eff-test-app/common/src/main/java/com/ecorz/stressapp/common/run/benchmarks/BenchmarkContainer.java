@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+// only the 2 enum instances of this class are used, with the defined methods they can be muted at runtime
 public enum BenchmarkContainer {
   TGROUP_BENCH(new HashMap<BMOption,List<String>>() {
     { put(tg, Arrays.asList("0", "0", "0")); }

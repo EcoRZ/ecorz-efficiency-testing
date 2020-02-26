@@ -13,14 +13,14 @@ public class Util {
   @Autowired
   private TmpRepository tmpRepository;
 
-  public BenchmarkContainer getContainerFromRunUuid(UUID runUuid) throws RunException {
-    RunConfig configFields = tmpRepository.getConfigById(runUuid);
+  public String getContainerNameFromRunUuid(UUID runUuid) throws RunException {
+    RunConfig config = tmpRepository.getConfigById(runUuid);
 
-    if(configFields == null) {
+    if(config == null) {
       throw new RunException(String.format("Cannot get run with id %s as it does not exist.", runUuid));
     }
 
-    return configFields.getContainer();
+    return config.getContainer().name();
   }
 
 }

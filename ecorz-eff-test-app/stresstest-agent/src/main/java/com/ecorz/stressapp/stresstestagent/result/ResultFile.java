@@ -18,10 +18,10 @@ public class ResultFile {
       return new ResultFile(finalName);
     }
 
-    public static ResultFile jMeter(String directory, BenchmarkContainer container, Date date) {
+    public static ResultFile jMeter(String directory, String containerName, Date date) {
       String strDate = generateDateString(date);
 
-      final String finalName = String.format("%s/%s-run-%s", directory, strDate, container);
+      final String finalName = String.format("%s/%s-run-%s", directory, strDate, containerName);
       return new ResultFile(finalName);
     }
 

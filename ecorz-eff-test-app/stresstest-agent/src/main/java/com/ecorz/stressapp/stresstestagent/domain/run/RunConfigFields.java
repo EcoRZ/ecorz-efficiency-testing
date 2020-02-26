@@ -10,6 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
+//todo: this class operates on "inconsistent" values: optAndArgs from bm-container might be different
+//than optAndArgs from RunConfig as bm-container values are always the currently set ones in bm-container
 public class RunConfigFields {
   @JsonProperty
   String bmName;
@@ -34,14 +37,19 @@ public class RunConfigFields {
     switch(container) {
       // todo: handle this with Optional
       case TGROUP_BENCH: {
-        checkOptSet(container, tg);
-        checkArgsSet(container, container.getOptAndArgsMap().entrySet().
-            stream().filter(entry -> entry.getKey() == tg).
-            map(entry -> new OptAndArgs(entry.getKey(), entry.getValue())).
+        checkOptSet(container, config, tg);
+        checkArgsSet(container, config.getOptAndArgsList().
+            stream().filter(item -> item.opt == tg).
             collect(Collectors.toList()).get(0), 3);
-        arg1Tmp = container.getOptAndArgsMap().get(tg).get(0);
-        arg2Tmp = container.getOptAndArgsMap().get(tg).get(1);
-        arg3Tmp = container.getOptAndArgsMap().get(tg).get(2);
+        arg1Tmp = config.getOptAndArgsList().
+            stream().filter(item -> item.opt == tg).
+            collect(Collectors.toList()).get(0).args.get(0);
+        arg2Tmp = config.getOptAndArgsList().
+            stream().filter(item -> item.opt == tg).
+            collect(Collectors.toList()).get(0).args.get(1);
+        arg3Tmp = config.getOptAndArgsList().
+            stream().filter(item -> item.opt == tg).
+            collect(Collectors.toList()).get(0).args.get(2);
         break;
       }
       case NOT_IMPLEMENTED: {
@@ -106,8 +114,10 @@ public class RunConfigFields {
     return stuff;
   }
 
-  private static void checkOptSet(BenchmarkContainer container, BMOption opt) {
-    if(container.getOptAndArgsMap().get(opt) == null) {
+  private static void checkOptSet(BenchmarkContainer container, RunConfig config, BMOption opt) {
+    if(config.getOptAndArgsList().
+        stream().filter(item -> item.opt == tg).
+        collect(Collectors.toList()) == null) {
       throw new IllegalArgumentException(String.format("Required Option %s not set for benchmark %s",
           opt, container.toString()));
     }

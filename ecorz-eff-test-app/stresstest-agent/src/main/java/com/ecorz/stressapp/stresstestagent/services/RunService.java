@@ -71,7 +71,8 @@ public class RunService {
   }
 
   public void startRun(UUID runUuid, ResultFile resultFile) throws RunException {
-    BenchmarkContainer bmContainer = util.getContainerFromRunUuid(runUuid);
+    final String bmContainerName = util.getContainerNameFromRunUuid(runUuid);
+    RunConfig runConfig = tmpRepository.getConfigById(runUuid);
 
     if(tmpRepository.getFileById(runUuid) != null) {
       LOGGER.warn("Using temporary solution to trigger engine directly with file");
@@ -83,7 +84,7 @@ public class RunService {
       }
     } else {
       // todo: check if resultFile == generateFile()
-      runEngine.trigger(bmContainer, resultFile.getFullFileName());
+      runEngine.trigger(bmContainerName, runConfig, resultFile.getFullFileName());
     }
   }
 

@@ -12,11 +12,13 @@ import com.ecorz.stressapp.common.run.benchmarks.BMOption;
 import com.ecorz.stressapp.common.run.benchmarks.BenchmarkContainer;
 import com.ecorz.stressapp.common.run.benchmarks.OptAndArgs;
 
+// This class overrides the opts and args of the benchmark enum to the latest values
 public class RunConfig {
   private final static Logger LOGGER = LoggerFactory.getLogger(RunConfig.class);
 
   private final UUID uuid;
   private final BenchmarkContainer container;
+  private final List<OptAndArgs> optAndArgsList;
   private final List<String> stuff;
 
   public static class RunConfigFactory {
@@ -61,12 +63,14 @@ public class RunConfig {
 
     this.uuid = UUID.randomUUID();
     this.container = BenchmarkContainer.NOT_IMPLEMENTED;
+    this.optAndArgsList = new ArrayList<>();
     this.stuff = new ArrayList<>();
   }
 
   private RunConfig(UUID uuid, BenchmarkContainer container, List<OptAndArgs> optAndArgsList, List<String> stuff) {
     this.uuid = uuid;
     this.container = container;
+    this.optAndArgsList = optAndArgsList;
 
     for(OptAndArgs optAndArgs: optAndArgsList) {
       List<String> args = new ArrayList<>();
@@ -81,6 +85,10 @@ public class RunConfig {
 
   public BenchmarkContainer getContainer() {
     return container;
+  }
+
+  public List<OptAndArgs> getOptAndArgsList() {
+    return optAndArgsList;
   }
 
   public List<String> getStuff() {
