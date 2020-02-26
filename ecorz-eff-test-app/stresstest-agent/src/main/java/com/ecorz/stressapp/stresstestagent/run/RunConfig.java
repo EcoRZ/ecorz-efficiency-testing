@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.ecorz.stressapp.common.run.benchmarks.BMOption;
@@ -26,14 +27,26 @@ public class RunConfig {
     public static RunConfig createThreadGroupConfig(UUID uuid, ArgsWrapper wrapper, List<String> stuff) {
       OptAndArgs optAndArgs1 = new OptAndArgs(BMOption.tg, Arrays.asList(wrapper.arg1, wrapper.arg2,
           wrapper.arg3));
-      List<OptAndArgs> optAndArgsList = Arrays.asList(optAndArgs1);
+      OptAndArgs optAndArgs2 =
+          new OptAndArgs(
+              BMOption.urt,
+                  BenchmarkContainer.TGROUP_BENCH
+                      .getOptAndArgsMap()
+                      .get(BMOption.urt));
+      List<OptAndArgs> optAndArgsList = Arrays.asList(optAndArgs1, optAndArgs2);
       return new RunConfig(uuid, BenchmarkContainer.TGROUP_BENCH, optAndArgsList, stuff);
     }
 
     public static RunConfig createURandomTimerConfig(UUID uuid, ArgsWrapper wrapper, List<String> stuff) {
       OptAndArgs optAndArgs1 = new OptAndArgs(BMOption.urt, Arrays.asList(wrapper.arg1, wrapper.arg2,
           wrapper.arg3));
-      List<OptAndArgs> optAndArgsList = Arrays.asList(optAndArgs1);
+      OptAndArgs optAndArgs2 =
+          new OptAndArgs(
+              BMOption.tg,
+              BenchmarkContainer.URT_BENCH
+                  .getOptAndArgsMap()
+                  .get(BMOption.tg));
+      List<OptAndArgs> optAndArgsList = Arrays.asList(optAndArgs1, optAndArgs2);
       return new RunConfig(uuid, BenchmarkContainer.URT_BENCH, optAndArgsList, stuff);
     }
 

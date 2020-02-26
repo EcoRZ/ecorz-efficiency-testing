@@ -1,6 +1,7 @@
 package com.ecorz.stressapp.stresstestagent.domain.run;
 
 import static com.ecorz.stressapp.common.run.benchmarks.BMOption.tg;
+import static com.ecorz.stressapp.common.run.benchmarks.BMOption.urt;
 
 import com.ecorz.stressapp.common.run.benchmarks.BMOption;
 import com.ecorz.stressapp.common.run.benchmarks.BenchmarkContainer;
@@ -9,7 +10,6 @@ import com.ecorz.stressapp.stresstestagent.run.RunConfig;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.stream.Collectors;
-
 
 //todo: this class operates on "inconsistent" values: optAndArgs from bm-container might be different
 //than optAndArgs from RunConfig as bm-container values are always the currently set ones in bm-container
@@ -23,6 +23,12 @@ public class RunConfigFields {
   @JsonProperty
   String arg3;
   @JsonProperty
+  String arg1Fixed;
+  @JsonProperty
+  String arg2Fixed;
+  @JsonProperty
+  String arg3Fixed;
+  @JsonProperty
   List<String> stuff;
 
   public static RunConfigFields ofConfig(RunConfig config) {
@@ -32,7 +38,8 @@ public class RunConfigFields {
     String bmNameTmp = container.toString();
     fields.bmName(bmNameTmp);
 
-    String arg1Tmp,arg2Tmp, arg3Tmp ;
+    String arg1Tmp,arg2Tmp, arg3Tmp;
+    String arg1FixedTmp,arg2FixedTmp, arg3FixedTmp;
     // todo: get the hard coded info which option corresponds to arg1, arg2, arg3 from global config
     switch(container) {
       // todo: handle this with Optional
@@ -50,19 +57,39 @@ public class RunConfigFields {
         arg3Tmp = config.getOptAndArgsList().
             stream().filter(item -> item.opt == tg).
             collect(Collectors.toList()).get(0).args.get(2);
+
+        checkOptSet(container, config, urt);
+        checkArgsSet(container, config.getOptAndArgsList().
+            stream().filter(item -> item.opt == urt).
+            collect(Collectors.toList()).get(0), 3);
+        arg1FixedTmp = config.getOptAndArgsList().
+            stream().filter(item -> item.opt == urt).
+            collect(Collectors.toList()).get(0).args.get(0);
+        arg2FixedTmp = config.getOptAndArgsList().
+            stream().filter(item -> item.opt == urt).
+            collect(Collectors.toList()).get(0).args.get(1);
+        arg3FixedTmp = config.getOptAndArgsList().
+            stream().filter(item -> item.opt == urt).
+            collect(Collectors.toList()).get(0).args.get(2);
         break;
       }
       case NOT_IMPLEMENTED: {
         arg1Tmp = arg2Tmp = arg3Tmp = "";
+        arg1FixedTmp = arg2FixedTmp = arg3FixedTmp = "";
         break;
       }
       case URT_BENCH:
       default:
         throw new IllegalArgumentException(String.format("Arg field generation from Config not implemented for %s yet.", container.toString()));
     }
+
     fields.arg1(arg1Tmp);
     fields.arg2(arg2Tmp);
     fields.arg3(arg3Tmp);
+
+    fields.arg1Fixed(arg1FixedTmp);
+    fields.arg2Fixed(arg2FixedTmp);
+    fields.arg3Fixed(arg3FixedTmp);
 
     fields.stuff(config.getStuff());
 
@@ -89,6 +116,21 @@ public class RunConfigFields {
     return this;
   }
 
+  public RunConfigFields arg1Fixed(String arg1Fixed) {
+    this.arg1Fixed = arg1Fixed;
+    return this;
+  }
+
+  public RunConfigFields arg2Fixed(String arg2Fixed) {
+    this.arg2Fixed = arg2Fixed;
+    return this;
+  }
+
+  public RunConfigFields arg3Fixed(String arg3Fixed) {
+    this.arg3Fixed = arg3Fixed;
+    return this;
+  }
+
   public RunConfigFields stuff(List<String> stuff) {
     this.stuff = stuff;
     return this;
@@ -108,6 +150,18 @@ public class RunConfigFields {
 
   public String getArg3() {
     return arg3;
+  }
+
+  public String getArg1Fixed() {
+    return arg1Fixed;
+  }
+
+  public String getArg2Fixed() {
+    return arg2Fixed;
+  }
+
+  public String getArg3Fixed() {
+    return arg3Fixed;
   }
 
   public List<String> getStuff() {

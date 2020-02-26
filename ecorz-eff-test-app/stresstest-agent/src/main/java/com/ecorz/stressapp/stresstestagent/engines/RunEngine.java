@@ -66,9 +66,9 @@ public class RunEngine {
 
   private void checkList(List<OptAndArgs> optAndArgsMap) throws RunException {
     if(optAndArgsMap.stream().filter(item -> item.opt == BMOption.tg).
-        collect(Collectors.toList()).get(0) == null ||
+        collect(Collectors.toList()) == null ||
         optAndArgsMap.stream().filter(item -> item.opt == BMOption.urt).
-            collect(Collectors.toList()).get(0) == null) {
+        collect(Collectors.toList()) == null) {
       throw new RunException("OptAndArgsList does not contain all required Opts");
     }
   }
