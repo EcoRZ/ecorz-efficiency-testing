@@ -60,12 +60,12 @@ public class Orchestrator {
   public UUID startRun(UUID runUuid) throws RunException {
     UUID orchestrationUuid = UUID.randomUUID();
 
-    /*if(!ConsistencyChecks.dumpFolderIsConsistent(
+    if(!ConsistencyChecks.dumpFolderIsConsistent(
         jmeterService.getJMeterCP(), resultService.getResultsDumpFolder()
     )) {
       throw new RunException(String.format("JMeter cp: %s and dumpFolder: %s are not consistent",
          jmeterService.getJMeterCP(), resultService.getResultsDumpFolder()));
-    }*/
+    }
 
     EvalDates evalDates = startRunJMeter(runUuid, orchestrationUuid);
     startRunPrometheus(runUuid, orchestrationUuid, evalDates);
