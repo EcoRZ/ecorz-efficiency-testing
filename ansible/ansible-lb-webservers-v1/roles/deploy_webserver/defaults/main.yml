@@ -1,5 +1,5 @@
 ---
-# defaults file for deploy_webserver_apache
+# defaults file for deploy_webserver
 
 name: def_webserver
 nw_name: def_nw
