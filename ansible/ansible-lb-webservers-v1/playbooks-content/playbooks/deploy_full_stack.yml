@@ -116,7 +116,7 @@
     - import_tasks: inst_python_task.yml
       when: install_py2_on_hosts == "1"
   roles:
-    - config_webservers
+    - config_webservers_apache
 
 - hosts: haproxies
   gather_facts: false

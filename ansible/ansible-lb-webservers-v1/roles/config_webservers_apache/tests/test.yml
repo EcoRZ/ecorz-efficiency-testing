@@ -2,5 +2,4 @@
 - hosts: localhost
   remote_user: root
   roles:
-    - config_webservers
-    - config_webservers
+    - config_webservers_apache
