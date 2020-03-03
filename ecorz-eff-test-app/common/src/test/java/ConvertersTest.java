@@ -17,12 +17,13 @@ public class ConvertersTest {
       AgentToEngineConfig.jMeterHomeCmdLineDefString + "/home/john/jmeter " +
       AgentToEngineConfig.lbIpCmdLineDefString + "192.168.178.23 " +
       AgentToEngineConfig.lbPortCmdLineDefString + "8080 " +
+      AgentToEngineConfig.wsTestStrCmdLineDefString + "test " +
       AgentToEngineConfig.testDurationCmdLineDefString + "43 " +
       AgentToEngineConfig.testDelayCmdLineDefString + "23 " +
-      AgentToEngineConfig.totalArgsCmdLineDefString + "7";
+      AgentToEngineConfig.totalArgsCmdLineDefString + "8";
   private final static RunConfigParams usedParams = new RunConfigParams("10",
       "100", "dumpFile","/home/john/jmeter", "192.168.178.23",
-      "8080", "43", "23", "7");
+      "8080", "test", "43", "23", "8");
 
   private String testStr;
   private RunConfigParams params;

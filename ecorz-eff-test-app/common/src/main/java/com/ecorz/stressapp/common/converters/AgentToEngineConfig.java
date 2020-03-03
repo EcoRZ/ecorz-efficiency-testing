@@ -9,6 +9,7 @@ import static com.ecorz.stressapp.common.Environment.testDurationEnvVar;
 import static com.ecorz.stressapp.common.Environment.tgParamEnvVar;
 import static com.ecorz.stressapp.common.Environment.totalArgsEnvVar;
 import static com.ecorz.stressapp.common.Environment.urtParamEnvVar;
+import static com.ecorz.stressapp.common.Environment.wsTestStrEnvVar;
 
 import com.ecorz.stressapp.common.run.RunConfigParams;
 import java.util.regex.Matcher;
@@ -23,6 +24,7 @@ public class AgentToEngineConfig {
   public final static String jMeterHomeCmdLineDefString = String.format("-D%s=", jMeterHomeEnvVar);
   public final static String lbIpCmdLineDefString = String.format("-D%s=", lbIpEnvVar);
   public final static String lbPortCmdLineDefString = String.format("-D%s=", lbPortEnvVar);
+  public final static String wsTestStrCmdLineDefString = String.format("-D%s=", wsTestStrEnvVar);
   public final static String testDurationCmdLineDefString = String.format("-D%s=", testDurationEnvVar);
   public final static String testDelayCmdLineDefString = String.format("-D%s=", testDelayEnvVar);
   public final static String totalArgsCmdLineDefString = String.format("-D%s=", totalArgsEnvVar);
@@ -33,6 +35,7 @@ public class AgentToEngineConfig {
   private final static Pattern jMeterHomePattern = Pattern.compile(jMeterHomeCmdLineDefString + "([^\\s]+)");
   private final static Pattern lbIpPattern = Pattern.compile(lbIpCmdLineDefString + "([^\\s]+)");
   private final static Pattern lbPortPattern = Pattern.compile(lbPortCmdLineDefString + "([^\\s]+)");
+  private final static Pattern wsTestStrPattern = Pattern.compile(wsTestStrCmdLineDefString + "([^\\s]+)");
   private final static Pattern testDurationPattern = Pattern.compile(testDurationCmdLineDefString + "([^\\s]+)");
   private final static Pattern testDelayPattern = Pattern.compile(testDelayCmdLineDefString + "([^\\s]+)");
   private final static Pattern totalArgsPattern = Pattern.compile(totalArgsCmdLineDefString + "([^\\s]+)");
@@ -49,6 +52,7 @@ public class AgentToEngineConfig {
     builder.append(String.format("%s%s ", jMeterHomeCmdLineDefString, params.jmeterHome));
     builder.append(String.format("%s%s ", lbIpCmdLineDefString, params.lbIp));
     builder.append(String.format("%s%s ", lbPortCmdLineDefString, params.lbPort));
+    builder.append(String.format("%s%s ", wsTestStrCmdLineDefString, params.wsTestStr));
     builder.append(String.format("%s%s ", testDurationCmdLineDefString, params.testDuration));
     builder.append(String.format("%s%s ", testDelayCmdLineDefString, params.testDelay));
     builder.append(String.format("%s%s", totalArgsCmdLineDefString, params.totalArgs));
@@ -63,6 +67,7 @@ public class AgentToEngineConfig {
     String jmeterHome = "dump";
     String lbIp = "dump";
     String lbPort = "dump";
+    String wsTestStr = "dump";
     String testDuration = "dump";
     String testDelay = "dump";
     String totalArgs = "dump";
@@ -103,6 +108,12 @@ public class AgentToEngineConfig {
       lbPort = matcher.group(1);
     }
 
+    matcher = wsTestStrPattern.matcher(paramsString);
+
+    if (matcher.find()) {
+      wsTestStr = matcher.group(1);
+    }
+
     matcher = testDurationPattern.matcher(paramsString);
 
     if (matcher.find()) {
@@ -121,7 +132,7 @@ public class AgentToEngineConfig {
       totalArgs = matcher.group(1);
     }
 
-    return new RunConfigParams(tgParam, urtParam, dumpFile, jmeterHome, lbIp, lbPort, testDuration,
-        testDelay, totalArgs);
+    return new RunConfigParams(tgParam, urtParam, dumpFile, jmeterHome, lbIp, lbPort, wsTestStr,
+        testDuration, testDelay, totalArgs);
   }
 }

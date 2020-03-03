@@ -10,6 +10,7 @@ import static com.ecorz.stressapp.common.Environment.testDurationEnvVar;
 import static com.ecorz.stressapp.common.Environment.tgParamEnvVar;
 import static com.ecorz.stressapp.common.Environment.totalArgsEnvVar;
 import static com.ecorz.stressapp.common.Environment.urtParamEnvVar;
+import static com.ecorz.stressapp.common.Environment.wsTestStrEnvVar;
 
 import com.ecorz.stressapp.common.run.RunConfigParams;
 import com.ecorz.stressapp.common.run.benchmarks.BMOption;
@@ -58,10 +59,12 @@ public class EnvToConfig {
     final String jmeterHome = System.getProperty(jMeterHomeEnvVar) != null ? System.getProperty(jMeterHomeEnvVar) : "";
     final String lbIp = System.getProperty(lbIpEnvVar) != null ? System.getProperty(lbIpEnvVar) : "";
     final String lbPort = System.getProperty(lbPortEnvVar) != null ? System.getProperty(lbPortEnvVar) : "";
+    final String wsTestStr = System.getProperty(wsTestStrEnvVar) != null ? System.getProperty(wsTestStrEnvVar) : "";
     final String testDuration = System.getProperty(testDurationEnvVar) != null ? System.getProperty(testDurationEnvVar) : "";
     final String testDelay = System.getProperty(testDelayEnvVar) != null ? System.getProperty(testDelayEnvVar) : "";
     final String totalArgs = System.getProperty(totalArgsEnvVar) != null ? System.getProperty(totalArgsEnvVar) : "";
 
-    return new RunConfigParams(tgParam, urtParam, dumpFile, jmeterHome, lbIp, lbPort, testDuration, testDelay, totalArgs);
+    return new RunConfigParams(tgParam, urtParam, dumpFile, jmeterHome, lbIp, lbPort, wsTestStr,
+        testDuration, testDelay, totalArgs);
   }
 }

@@ -54,14 +54,27 @@ public class RunEngine {
   }
 
   private RunConfigParams generateParams(List<OptAndArgs> optAndArgsList, String dumpFile) throws RunException{
+    final String wsTestStr = generateTestStr();
     checkList(optAndArgsList);
     return new RunConfigParams(optAndArgsList.stream().filter(item -> item.opt == tg).
         collect(Collectors.toList()).get(0).args.stream().collect(Collectors.joining(jMeterOptsDel)),
         optAndArgsList.stream().filter(item -> item.opt == urt).
         collect(Collectors.toList()).get(0).args.stream().collect(Collectors.joining(jMeterOptsDel)),
         dumpFile, jMeterConfig.getJmeterHome(), runServiceConfig.getLbIp(),
-        runServiceConfig.getLbPort(), jMeterConfig.getTestDuration(), jMeterConfig.getTestDelay(),
+        runServiceConfig.getLbPort(), wsTestStr, jMeterConfig.getTestDuration(), jMeterConfig.getTestDelay(),
         runServiceConfig.getTotalArgs());
+  }
+
+  private String generateTestStr() throws RunException {
+    final String useWhat = runServiceConfig.getUseWhat().trim();
+
+    if(useWhat.equals("python")) {
+      return runServiceConfig.getStrPython();
+    } else if(useWhat.equals("apache")) {
+      return runServiceConfig.getStrApache();
+    } else {
+      throw new RunException(String.format("%s is no valid webserver option.", useWhat));
+    }
   }
 
   private void checkList(List<OptAndArgs> optAndArgsMap) throws RunException {

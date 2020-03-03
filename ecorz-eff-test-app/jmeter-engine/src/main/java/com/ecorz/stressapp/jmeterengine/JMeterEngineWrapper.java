@@ -30,10 +30,8 @@ public class JMeterEngineWrapper {
     checkValidOpt(optAndArgsMap, BMOption.urt, configParams.totalArgs);
     LOGGER.warn(String.format("%s option/step cannot be set at the current implementation state.", BMOption.urt));
 
-    // todo: Configure testString
     HTTPSamplerElement httpSamplerElement = DefaultHttpSamplerElement.INSTANCE.create(
-"particular configuration snippets which manage modules, global configuration",
-          configParams.lbIp, Integer.valueOf(configParams.lbPort)
+      configParams.wsTestStr, configParams.lbIp, Integer.valueOf(configParams.lbPort)
     );
 
     LoopElement loopElement = DefaultLoopElement.INSTANCE.create(-1);

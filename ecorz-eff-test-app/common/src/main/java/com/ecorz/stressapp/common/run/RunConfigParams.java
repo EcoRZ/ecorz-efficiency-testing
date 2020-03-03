@@ -9,18 +9,20 @@ public class RunConfigParams {
   public final String jmeterHome;
   public final String lbIp;
   public final String lbPort;
+  public final String wsTestStr;
   public final String testDuration;
   public final String testDelay;
   public final String totalArgs;
 
   public RunConfigParams(String tgParam, String urtParam, String dumpFile, String jmeterHome,
-        String lbIp, String lbPort, String testDuration, String testDelay, String totalArgs) {
+        String lbIp, String lbPort, String wsTestStr, String testDuration, String testDelay, String totalArgs) {
     this.tgParam = tgParam;
     this.urtParam = urtParam;
     this.dumpFile = dumpFile;
     this.jmeterHome = jmeterHome;
     this.lbIp = lbIp;
     this.lbPort = lbPort;
+    this.wsTestStr = wsTestStr;
     this.testDuration = testDuration;
     this.testDelay = testDelay;
     this.totalArgs = totalArgs;
@@ -40,6 +42,7 @@ public class RunConfigParams {
         dumpFile.equals(that.dumpFile) &&
         lbIp.equals(that.lbIp) &&
         lbPort.equals(that.lbPort) &&
+        wsTestStr.equals(that.wsTestStr) &&
         testDuration.equals(that.testDuration) &&
         testDelay.equals(that.testDelay) &&
         totalArgs.equals(that.totalArgs) &&
@@ -48,7 +51,6 @@ public class RunConfigParams {
 
   @Override
   public int hashCode() {
-
-    return Objects.hash(tgParam, urtParam, dumpFile, jmeterHome, lbIp, lbPort, testDuration, testDelay, totalArgs);
+    return Objects.hash(tgParam, urtParam, dumpFile, jmeterHome, lbIp, lbPort, wsTestStr, testDuration, testDelay, totalArgs);
   }
 }
