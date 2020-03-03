@@ -4,6 +4,7 @@
   become: yes
   shell: nc -z -w 1  localhost "{{ port }}"
   register: in_use
+  ignore_errors: yes
 - name: start python simpleHttpWebserver on port "{{ port }}"
   remote_user: ubuntu
   become: yes
