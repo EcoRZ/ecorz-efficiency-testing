@@ -1,7 +1,4 @@
 - name: start python simpleHttpWebserver on port 9000
   remote_user: ubuntu
   become: yes
-  script:
-    cmd: -m http.server 9000
-  args:
-    executable: python3
+  shell: python3 -m http.server 9000
