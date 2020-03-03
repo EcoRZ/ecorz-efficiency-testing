@@ -1,4 +1,11 @@
-- name: start python simpleHttpWebserver on port 9000
+---
+- name: Check if port "{{ port }}" is already in use
   remote_user: ubuntu
   become: yes
-  shell: nohup python3 -m http.server 9000 </dev/null >/dev/null 2>&1 &
+  shell: nc -z -w 1  localhost "{{ port }}"
+  register: in_use
+- name: start python simpleHttpWebserver on port "{{ port }}"
+  remote_user: ubuntu
+  become: yes
+  shell: nohup python3 -m http.server "{{ port }}" </dev/null >/dev/null 2>&1 &
+  when: in_use.rc != 0
