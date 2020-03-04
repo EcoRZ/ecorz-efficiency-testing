@@ -52,7 +52,7 @@ public class AgentToEngineConfig {
     builder.append(String.format("%s%s ", jMeterHomeCmdLineDefString, params.jmeterHome));
     builder.append(String.format("%s%s ", lbIpCmdLineDefString, params.lbIp));
     builder.append(String.format("%s%s ", lbPortCmdLineDefString, params.lbPort));
-    builder.append(String.format("%s%s ", wsTestStrCmdLineDefString, params.wsTestStr));
+    builder.append(String.format("%s\"%s\" ", wsTestStrCmdLineDefString, params.wsTestStr));
     builder.append(String.format("%s%s ", testDurationCmdLineDefString, params.testDuration));
     builder.append(String.format("%s%s ", testDelayCmdLineDefString, params.testDelay));
     builder.append(String.format("%s%s", totalArgsCmdLineDefString, params.totalArgs));
