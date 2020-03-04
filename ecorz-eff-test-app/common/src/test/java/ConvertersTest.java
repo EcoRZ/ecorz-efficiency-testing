@@ -17,7 +17,7 @@ public class ConvertersTest {
       AgentToEngineConfig.jMeterHomeCmdLineDefString + "/home/john/jmeter " +
       AgentToEngineConfig.lbIpCmdLineDefString + "192.168.178.23 " +
       AgentToEngineConfig.lbPortCmdLineDefString + "8080 " +
-      AgentToEngineConfig.wsTestStrCmdLineDefString + "test " +
+      AgentToEngineConfig.wsTestStrCmdLineDefString + "\"test\" " +
       AgentToEngineConfig.testDurationCmdLineDefString + "43 " +
       AgentToEngineConfig.testDelayCmdLineDefString + "23 " +
       AgentToEngineConfig.totalArgsCmdLineDefString + "8";

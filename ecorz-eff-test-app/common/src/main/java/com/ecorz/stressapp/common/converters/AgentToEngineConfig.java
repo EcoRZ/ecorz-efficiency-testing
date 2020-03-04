@@ -111,7 +111,13 @@ public class AgentToEngineConfig {
     matcher = wsTestStrPattern.matcher(paramsString);
 
     if (matcher.find()) {
-      wsTestStr = matcher.group(1);
+      // strip possible quotes
+      final Pattern quotePattern = Pattern.compile("\"?([^\"]*)\"?");
+      final Matcher quoteMatcher = quotePattern.matcher(matcher.group(1));
+
+      if (quoteMatcher.find()) {
+        wsTestStr = quoteMatcher.group(1);
+      }
     }
 
     matcher = testDurationPattern.matcher(paramsString);
