@@ -79,14 +79,14 @@ public class ResultService {
     return resultConfig.getResultsDumpFolder();
   }
 
-  public void dumpMetaTmp(UUID runUuid, ResultFile resultFileMeta) throws ResultException {
+  public void dumpMetaTmp(UUID runUuid, ResultFile resultFileMeta, String wsType) throws ResultException {
     if(tmpRepository.getConfigMap().get(runUuid) == null) {
       throw new ResultException(String.format("Cannot dump meta as there is no run with id: %s", runUuid));
     }
 
     RunConfig config = tmpRepository.getConfigMap().get(runUuid);
     DumpFileMetaTmpGenerator generator = new DumpFileMetaTmpGenerator(config.
-        getContainer());
+        getContainer(), wsType);
     final String fileContent = generator.generate();
 
     try {

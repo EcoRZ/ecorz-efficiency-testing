@@ -120,7 +120,7 @@ public class Orchestrator {
   private void startMetaSavingTmp(UUID runUuid, UUID orchestrationUuid, EvalDates evalDates) throws RunException {
     ResultFile resultFileMeta = resultService.generateFileMeta(evalDates.startDate);
     try {
-      resultService.dumpMetaTmp(runUuid, resultFileMeta);
+      resultService.dumpMetaTmp(runUuid, resultFileMeta, runService.getWsTypeStr());
     } catch (ResultException e) {
       throw new RunException(String.format("Cannot dump Meta results for run %s", runUuid), e);
     }

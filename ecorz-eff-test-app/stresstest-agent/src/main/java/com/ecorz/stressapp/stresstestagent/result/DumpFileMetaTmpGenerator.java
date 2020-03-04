@@ -12,10 +12,12 @@ public class DumpFileMetaTmpGenerator {
   private final static Logger LOGGER = LoggerFactory.getLogger(DumpFileMetaTmpGenerator.class);
   private final static String header = "meta-info";
   private final BenchmarkContainer container;
+  private final String wsType;
 
   public DumpFileMetaTmpGenerator(
-      BenchmarkContainer container) {
+      BenchmarkContainer container, String wsType) {
     this.container = container;
+    this.wsType = wsType;
   }
 
   public String generate() throws ResultException {
@@ -30,6 +32,7 @@ public class DumpFileMetaTmpGenerator {
     StringBuilder sb = new StringBuilder();
     sb.append(header + "\n");
     sb.append(String.format("%s\n", container));
+    sb.append(String.format("%s: %s\n", "Webserver Type", wsType));
     sb.append(String.format("%s: %s\n", "threadGroup[num-of-threads, rampUpPeriod, unused]", setParams.get(BMOption.tg)));
     sb.append(String.format("%s: %s\n", "uniform-random-timer(unused)[rand-del-max, const-delay-off, unused]", setParams.get(BMOption.urt)));
 

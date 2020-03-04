@@ -88,6 +88,10 @@ public class RunService {
     }
   }
 
+  public String getWsTypeStr() {
+    return runConfig.getUseWhat().trim();
+  }
+
   public void deleteRun(UUID uuid) {
     tmpRepository.deleteConfigById(uuid);
   }
