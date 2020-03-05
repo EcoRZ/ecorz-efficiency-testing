@@ -1,4 +1,4 @@
-- hosts: docker_containers
+- hosts: docker_containers_medium:docker_containers_xlarge
   remote_user: ubuntu
   become: yes
   gather_facts: false

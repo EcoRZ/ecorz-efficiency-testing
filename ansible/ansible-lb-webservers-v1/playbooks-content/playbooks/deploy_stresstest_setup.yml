@@ -95,10 +95,36 @@
     - name: remember custom set env-var with loadbalancer-ip read from registered var for use in stresstest_agent container
       set_fact:
         lb_ip_env: "LB_IP={{ awk_haproxy_out.stdout }}"
-    - name: Add VM for docker {{ item.server.name }} installation to inventory
+    - name: Add VM medium for docker {{ item.server.name }} installation to inventory
       add_host: >
         name="{{ item[1].server.name }}"
-        groups=docker_containers
+        groups=docker_containers_medium
+        ansible_ssh_host="{{ item[1].server.accessIPv4 }}"
+        ansible_ssh_private_key_file="{{ key_file_path }}"
+        image_name="{{ hostvars[item[0]].image_name }}"
+        port_mapping="{{ hostvars[item[0]].port_mapping }}"
+        env_var1="{{ hostvars[item[0]].env_var1 }}"
+        env_var2="{{ hostvars[item[0]].env_var2 }}"
+        env_var3="{{ hostvars[item[0]].env_var3 }}"
+        env_var4="{{ hostvars[item[0]].env_var4 }}"
+        env_var5="{{ hostvars[item[0]].env_var5 }}"
+        env_var6="{{ hostvars[item[0]].env_var6 }}"
+        env_var7="{{ hostvars[item[0]].env_var7 }}"
+        env_var8="{{ hostvars[item[0]].env_var8 }}"
+        env_var9="{{ hostvars[item[0]].env_var9 }}"
+        env_var10="{{ hostvars[item[0]].env_var10 }}"
+        env_var11="{{ hostvars[item[0]].env_var11 }}"
+        env_var12="{{ hostvars[item[0]].env_var12 }}"
+        env_var13="{{ hostvars[item[0]].env_var13 }}"
+      when:
+        - hostvars[item[0]].container_name == item[1].server.name
+      with_nested:
+        - "{{ groups['docker_containers_medium'] }}"
+        - "{{ register_upstream }}"
+    - name: Add VM xlarge for docker {{ item.server.name }} installation to inventory
+      add_host: >
+        name="{{ item[1].server.name }}"
+        groups=docker_containers_xlarge
         ansible_ssh_host="{{ item[1].server.accessIPv4 }}"
         ansible_ssh_private_key_file="{{ key_file_path }}"
         image_name="{{ hostvars[item[0]].image_name }}"
@@ -119,9 +145,9 @@
       when:
         - hostvars[item[0]].container_name == item[1].server.name
       with_nested:
-        - "{{ groups['docker_containers'] }}"
+        - "{{ groups['docker_containers_xlarge'] }}"
         - "{{ register_upstream }}"
-    - name: persist relevant server vars in {{ hosts_tmp_stresstest }}
+    - name: persist relevant server vars in {{ hosts_tmp_stresstest }} for docker_containers_medium
       lineinfile: >
           path={{ hosts_tmp_stresstest }}
           line="{{ item[1].server.name }},{{ item[1].server.accessIPv4 }},{{ hostvars[item[0]].image_name }},{{ hostvars[item[0]].port_mapping }},{{ hostvars[item[0]].env_var1 }},{{ hostvars[item[0]].env_var2 }},{{ hostvars[item[0]].env_var3 }},{{ hostvars[item[0]].env_var4 }},{{ hostvars[item[0]].env_var5 }},{{ hostvars[item[0]].env_var6 }},{{ hostvars[item[0]].env_var7 }},{{ hostvars[item[0]].env_var8 }},{{ hostvars[item[0]].env_var9 }},{{ hostvars[item[0]].env_var10 }},{{ hostvars[item[0]].env_var11 }},{{ hostvars[item[0]].env_var12 }},{{ hostvars[item[0]].env_var13 }}"
@@ -129,16 +155,27 @@
       when:
         - hostvars[item[0]].container_name == item[1].server.name
       with_nested:
-        - "{{ groups['docker_containers'] }}"
+        - "{{ groups['docker_containers_medium'] }}"
+        - "{{ register_upstream }}"
+    - name: persist relevant server vars in {{ hosts_tmp_stresstest }} for docker_containers_xlarge
+      lineinfile: >
+          path={{ hosts_tmp_stresstest }}
+          line="{{ item[1].server.name }},{{ item[1].server.accessIPv4 }},{{ hostvars[item[0]].image_name }},{{ hostvars[item[0]].port_mapping }},{{ hostvars[item[0]].env_var1 }},{{ hostvars[item[0]].env_var2 }},{{ hostvars[item[0]].env_var3 }},{{ hostvars[item[0]].env_var4 }},{{ hostvars[item[0]].env_var5 }},{{ hostvars[item[0]].env_var6 }},{{ hostvars[item[0]].env_var7 }},{{ hostvars[item[0]].env_var8 }},{{ hostvars[item[0]].env_var9 }},{{ hostvars[item[0]].env_var10 }},{{ hostvars[item[0]].env_var11 }},{{ hostvars[item[0]].env_var12 }},{{ hostvars[item[0]].env_var13 }}"
+          create=yes state=present
+      when:
+        - hostvars[item[0]].container_name == item[1].server.name
+      with_nested:
+        - "{{ groups['docker_containers_xlarge'] }}"
         - "{{ register_upstream }}"
 
-- hosts: docker_containers
+
+- hosts: docker_containers_medium:docker_containers_xlarge
   remote_user: ubuntu
   gather_facts: false
   roles:
     - wait_for_port1_ready
 
-- hosts: docker_containers
+- hosts: docker_containers_medium:docker_containers_xlarge
   remote_user: ubuntu
   gather_facts: false
   roles:
@@ -147,7 +184,7 @@
 - name: Destroy containers if they already exist
   import_playbook: destroy_containers.yml
 
-- hosts: docker_containers
+- hosts: docker_containers_medium
   remote_user: ubuntu
   become: yes
   gather_facts: false
@@ -162,7 +199,7 @@
         # start confsvr and reults_db before stresstest-agent
         container_name != "stresstest_agent"
 
-- hosts: docker_containers
+- hosts: docker_containers_xlarge
   remote_user: ubuntu
   become: yes
   gather_facts: false
