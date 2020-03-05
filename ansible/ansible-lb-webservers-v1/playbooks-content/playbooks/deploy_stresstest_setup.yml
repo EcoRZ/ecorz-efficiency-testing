@@ -144,6 +144,7 @@
     port_opts: "-p {{ port_mapping }}"
     env_opts: "-e {{ env_var1 }} -e {{ env_var2 }} -e {{ env_var3 }} -e {{ env_var4 }} -e {{ env_var5 }} -e {{ env_var6 }} -e {{ env_var7 }} -e {{ env_var8 }} -e {{ env_var9 }} -e {{ env_var10 }} -e {{ env_var11 }} -e {{ env_var12 }} -e {{ env_var13 }}"
     use_bind_mount: "0"
+    az: "diskless"
   roles:
     - role: deploy_container
       when:
