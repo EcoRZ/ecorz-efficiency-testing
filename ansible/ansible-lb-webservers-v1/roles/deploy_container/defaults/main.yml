@@ -13,6 +13,7 @@ bind_mount_dir: /usr/local/jmeter
 image_name: image-name
 tag: latest
 port_mapping: 80:8080
+az: diskless
 env_var1: stuff=interesting
 env_var2: stuff=interesting
 env_var3: stuff=interesting
