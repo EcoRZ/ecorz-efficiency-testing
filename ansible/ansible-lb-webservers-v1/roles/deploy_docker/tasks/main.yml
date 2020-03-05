@@ -1,5 +1,5 @@
 ---
-- name: Install Docker on VM
+- name: Install VM for docker
   os_server:
     state: present
     # container name must be set here -> not best design, i.e. make deploy vm
@@ -8,7 +8,7 @@
     image: ubuntu-1804
     key_name: id_rsa_omistack
     timeout: 200
-    flavor: medium
+    flavor: "{{ flav }}"
     availability_zone: "{{ az }}"
     network: "{{ nw_name }}"
     security_groups: "{{ sec_group_list|join(',') }}"

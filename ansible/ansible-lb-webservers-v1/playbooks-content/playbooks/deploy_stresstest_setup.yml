@@ -162,7 +162,8 @@
     install_folder: "jmeter"
     use_bind_mount: "1"
     bind_mount_dir: "/usr/local/jmeter"
-    az: noisyneighbour3
+    az: "noisyneighbour3"
+    flav: "held_xlarge"
   pre_tasks:
     - import_tasks: download_jmeter_task.yml
       when:

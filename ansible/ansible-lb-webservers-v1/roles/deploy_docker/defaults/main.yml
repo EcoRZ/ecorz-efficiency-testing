@@ -7,4 +7,5 @@ nw_name: def_nw
 sec_group_list: [ansible]
 
 az: def_az
+flav: medium
 register_upstream: []
