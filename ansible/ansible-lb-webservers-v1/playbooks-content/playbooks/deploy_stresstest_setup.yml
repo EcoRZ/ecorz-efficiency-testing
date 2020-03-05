@@ -155,8 +155,19 @@
       when:
         - hostvars[item[0]].container_name == item[1].server.name
       with_nested:
-        - "{{ [ groups['docker_containers_medium'], groups['docker_containers_xlarge'] ]  }}"
+        - "{{ groups['docker_containers_medium'] }}"
         - "{{ register_upstream }}"
+    - name: persist relevant server vars in {{ hosts_tmp_stresstest }} for docker_containers_xlarge
+      lineinfile: >
+          path={{ hosts_tmp_stresstest }}
+          line="{{ item[1].server.name }},{{ item[1].server.accessIPv4 }},{{ hostvars[item[0]].image_name }},{{ hostvars[item[0]].port_mapping }},{{ hostvars[item[0]].env_var1 }},{{ hostvars[item[0]].env_var2 }},{{ hostvars[item[0]].env_var3 }},{{ hostvars[item[0]].env_var4 }},{{ hostvars[item[0]].env_var5 }},{{ hostvars[item[0]].env_var6 }},{{ hostvars[item[0]].env_var7 }},{{ hostvars[item[0]].env_var8 }},{{ hostvars[item[0]].env_var9 }},{{ hostvars[item[0]].env_var10 }},{{ hostvars[item[0]].env_var11 }},{{ hostvars[item[0]].env_var12 }},{{ hostvars[item[0]].env_var13 }}"
+          state=present
+      when:
+        - hostvars[item[0]].container_name == item[1].server.name
+      with_nested:
+        - "{{ groups['docker_containers_xlarge'] }}"
+        - "{{ register_upstream }}"
+
 
 - hosts: docker_containers_medium:docker_containers_xlarge
   remote_user: ubuntu
