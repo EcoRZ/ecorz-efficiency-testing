@@ -51,15 +51,27 @@
       include_role:
         name: create_rule
       loop: "{{ docker_container_ports }}"
-    - name: Deploy VMs for docker installation
+    - name: Deploy VMs medium for docker installation
       vars:
         docker_container_name: "{{ item }}"
         nw_name: ecorz_nw
         sec_group_list: [default,ansible,docker_ecorz]
+        az: "diskless"
       include_role:
         name: deploy_docker
       with_items:
-        - "{{ groups['docker_containers'] }}"
+        - "{{ groups['docker_containers_medium'] }}"
+    - name: Deploy VMs xlarge for docker installation
+      vars:
+        docker_container_name: "{{ item }}"
+        nw_name: ecorz_nw
+        sec_group_list: [default,ansible,docker_ecorz]
+        az: "noisyneighbour3"
+        flav: "held_xlarge"
+      include_role:
+        name: deploy_docker
+      with_items:
+        - "{{ groups['docker_containers_xlarge'] }}"
     - name: remember custom set env-var with confsvr-ip content for use in stresstest_agent container
       set_fact:
         confsvr_ip_env: "CONFIGSERVER_URI=http://{{ item.server.accessIPv4 }}:8888"
@@ -144,7 +156,6 @@
     port_opts: "-p {{ port_mapping }}"
     env_opts: "-e {{ env_var1 }} -e {{ env_var2 }} -e {{ env_var3 }} -e {{ env_var4 }} -e {{ env_var5 }} -e {{ env_var6 }} -e {{ env_var7 }} -e {{ env_var8 }} -e {{ env_var9 }} -e {{ env_var10 }} -e {{ env_var11 }} -e {{ env_var12 }} -e {{ env_var13 }}"
     use_bind_mount: "0"
-    az: "diskless"
   roles:
     - role: deploy_container
       when:
@@ -163,7 +174,6 @@
     install_folder: "jmeter"
     use_bind_mount: "1"
     bind_mount_dir: "/usr/local/jmeter"
-    az: "noisyneighbour3"
     flav: "held_xlarge"
   pre_tasks:
     - import_tasks: download_jmeter_task.yml

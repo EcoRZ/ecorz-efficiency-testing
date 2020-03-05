@@ -13,7 +13,7 @@ all:
     haproxies:
       hosts:
         # haproxy
-    docker_containers:
+    docker_containers_medium:
       hosts:
         confsvr:
             container_name: confsvr
@@ -56,6 +56,8 @@ all:
             env_var11: dummy=stuff
             env_var12: dummy=stuff
             env_var13: dummy=stuff
+    docker_containers_xlarge:
+      hosts:
         stresstest_agent:
             container_name: stresstest_agent
             registry_url: omi-registry.e-technik.uni-ulm.de
