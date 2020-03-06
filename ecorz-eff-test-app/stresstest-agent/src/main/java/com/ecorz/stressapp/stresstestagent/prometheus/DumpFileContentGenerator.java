@@ -47,6 +47,7 @@ public final class DumpFileContentGenerator {
       sb.append(String.format("%.1f,%s,%s\n", (float)(i-1)*tStepSec/2,
           date.toString(),
           rawContent.get(i).replaceAll("\"", "").replaceAll("\\]", "")));
+      date = TimeGenerator.generateDateTimePlusOff(date, tStepSec/2);
     }
 
     return sb.toString();

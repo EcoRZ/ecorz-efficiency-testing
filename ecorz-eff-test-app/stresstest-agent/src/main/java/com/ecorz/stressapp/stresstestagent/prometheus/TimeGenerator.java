@@ -44,7 +44,14 @@ public final class TimeGenerator {
     DateFormat dateFormat = generateFormat();
     Date date = new Date(startTimeMs + offMs);
 
-    return dateFormat.format(date);
+    return dateFormat.format(date.);
+  }
+
+  public static Date generateDateTimePlusOff(Date dateStart, int offMs) {
+    Date finalDate = (Date) dateStart;
+    finalDate.setTime(finalDate.getTime() + offMs);
+
+    return finalDate;
   }
 
   public static DateFormat generateFormat() {
