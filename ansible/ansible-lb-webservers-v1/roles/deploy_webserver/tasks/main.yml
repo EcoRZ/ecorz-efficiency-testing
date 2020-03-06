@@ -6,7 +6,7 @@
     image: ubuntu-1804
     key_name: id_rsa_omistack
     timeout: 200
-    flavor: medium
+    flavor: small
     network: "{{ nw_name }}"
     security_groups: "{{ sec_group_list|join(',') }}"
     availability_zone: "{{ az }}"
