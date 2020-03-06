@@ -57,7 +57,7 @@ if [ ! -d "$jtl_dir" ]; then
   exit 2
 fi
 
-mv "$local_folder"/$(basename $jtl_file)" "$jtl_dir"
+mv "$local_folder"/"$(basename $jtl_file)" "$jtl_dir"
 
 # rm "$local_folder"/$(basename $jtl_file)
 remote_scripts/remote_delete_jtl_file.sh "$key_location" "$user_name" "$public_ip" "$package_folder"/$(basename $jtl_file)
