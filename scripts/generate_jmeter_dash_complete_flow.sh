@@ -46,8 +46,18 @@ local_folder=~/Documents/EcoRz/ap5/praxistransfer/$(basename $package_folder)
 # execute in der Form: local_generate_jmeter_dash.sh ~/Documents/EcoRz/ap5/praxistransfer/<run-pattern>/<run-pattern>.csv
 local_scripts/local_generate_jmeter_dash.sh "$local_folder"/$(basename $csv_file)
 # move jtl to data-store
-data_store_ip=134.60.64.78
-data_store_jtl_folder="jmeter_jtl_files"
-remote_copy_file_to.sh "$key_location" "$user_name" "$data_store_ip" "$local_folder"/$(basename $jtl_file) "$data_store_jtl_folder"
-rm "$local_folder"/$(basename $jtl_file)
+# data_store_ip=134.60.64.78
+# data_store_jtl_folder="jmeter_jtl_files"
+# remote_copy_file_to.sh "$key_location" "$user_name" "$data_store_ip" "$local_folder"/$(basename $jtl_file) "$data_store_jtl_folder"
+# copy file to hdd
+jtl_dir="/run/media/florian/312f1f78-3c46-4fe0-8270-2b8c6948b735/florian-EcoRZ-ap5/messdaten_nach_reboot/messdaten/jmeter_jtl_files/"
+
+if [ ! -d "$jtl_dir" ]; then
+  echo "dir ${jtl_dir} does not exist, exiting..."
+  exit 2
+fi
+
+mv "$local_folder"/$(basename $jtl_file)" "$jtl_dir"
+
+# rm "$local_folder"/$(basename $jtl_file)
 remote_scripts/remote_delete_jtl_file.sh "$key_location" "$user_name" "$public_ip" "$package_folder"/$(basename $jtl_file)
