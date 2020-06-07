@@ -1,4 +1,10 @@
-Use with:
+Main software
+
+# Prerequisites (so far)
+* Access to Openstack Cloud
+* Prometheus monitoring infrastructure
+
+# Use
 * deploy:
   * ansible-playbook site.yml --extra-vars "inventories/development/group_vars/all" --extra-vars "key_path={{ path_to_ssh_key }} key_name={{ key_name_ }} deploy=1"
 * delete:
